@@ -1,0 +1,4 @@
+import base
+class DevConfig(base.Config):
+    SECRET_KEY = "THIS DOESN'T MATTER!"
+
