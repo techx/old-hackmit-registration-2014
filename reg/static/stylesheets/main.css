@@ -1,0 +1,10 @@
+body,
+input,
+.ui.input input,
+textarea {
+  font-family: 'Lato', 'Helvetica Neue', 'Helvetica', sans-serif;
+}
+
+.montserrat {
+  font-family: 'Montserrat', sans-serif;
+}

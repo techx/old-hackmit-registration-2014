@@ -37,15 +37,15 @@ class LoginForm(Form):
 
 @app.route('/')
 def index():
-    return app.send_static_file('assets/index.html')
+    return render_template('index.html')
 
 @app.route('/sponsor')
 def sponsors():
-	return app.send_static_file('assets/HackMIT2014Sponsorship.pdf')
+	return app.send_static_file('assets/docs/HackMIT2014Sponsorship.pdf')
 
 @app.route('/register')
 def get_registration_page():
-	return render_template('register')
+	return render_template('register.html')
 
 @app.route('/accounts', methods=['POST'])
 def register_user():
@@ -64,7 +64,7 @@ def register_user():
 
 @app.route('/login')
 def login():
-    return render_template('login')
+    return render_template('login.html')
     #raise NotImplementedError("csrf token")
 
 @app.route('/sessions', methods=['POST'])
@@ -95,7 +95,7 @@ def sessions():
 @login_required
 def dashboard():
     # TODO: show the dashboard
-    return render_template('dashboard', csrf_token=None)
+    return render_template('dashboard.html', csrf_token=None)
 
 if __name__ == '__main__':
     debug = app.config['DEBUG']

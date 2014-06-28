@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <title> HACKMIT - {% block title %} | Oct 4-5 {% endblock %}</title>
+  <link href='//fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+  <link href='//fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <link href="static/stylesheets/main.css" rel="stylesheet" type="text/css">
+
+  <!-- Include Semantic-UI -->
+  <script src="static/bower_components/semantic-ui/build/packaged/javascript/semantic.min.js"></script>
+  <link href="static/bower_components/semantic-ui/build/packaged/css/semantic.min.css" rel="stylesheet" type="text/css">
+
+  {% block head %}
+
+  <script src="static/js/index.js"></script>
+
+  {% endblock %}
+
+</head>
+<body>
+
+<div class="nav">
+  <div class="ui secondary pointing menu">
+    <a class="item" href="{{ url_for('index') }}">
+      HACKMIT
+    </a>
+    <div class="right menu">
+      <a class="item" href="{{ url_for('login') }}">
+        Log In
+      </a>
+      <a class="item" href="{{ url_for('get_registration_page') }}">
+        Register
+      </a>
+      <a class="item" href="{{ url_for('dashboard') }}">
+        Dashboard
+      </a>
+      <a class="logout item">
+        Logout
+      </a>
+    </div>
+  </div>
+</div>
+
+<div class="content">
+{% block content %}
+
+{% endblock %}
+</div>
+
+</body>
+</html>
