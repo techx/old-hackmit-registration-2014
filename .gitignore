@@ -1,2 +1,3 @@
 *.pyc
-*/config
+**/config/prod.py.def
+venv/
