@@ -3,7 +3,7 @@ from flask.ext.login import LoginManager, login_required, login_user, current_us
 from flask_wtf.csrf import CsrfProtect
 
 from models import db, Account
-from forms import LoginForm
+from forms import LoginForm, RegistrationForm
 
 app = Flask(__name__,instance_relative_config=True)
 app.config.from_object('config.dev.DevelopmentConfig')
@@ -76,10 +76,10 @@ def get_registration_page():
 
 @app.route('/accounts', methods=['POST'])
 def register_user():
-    json = request.json
-    user_type = json['type']
-    email_address  = json['email']
-    hashed_password = json['hashedPassword']
+    form = RegistrationForm()
+    role = form.role.data
+    email_address  = form.email.data
+    hashed_password = form.hashedPassword.data
 
     if not email_address.endswith(".edu"):
         raise AuthenticationError('Nice try, but use your .edu email.')
@@ -103,13 +103,10 @@ def login():
 
 @app.route('/sessions', methods=['POST'])
 def sessions():
-    json = request.json
     form = LoginForm()
 
     if not form.validate_on_submit():
-        print "Login form didn't validate"
-        #TODO: Return an error for bad data
-        raise NotImplementedError()    
+        raise AuthenticationError("Your data is bad and you should feel bad. What did you do?", status_code=403)
     
     email_address  = form.email.data
     hashed_password = form.hashedPassword.data

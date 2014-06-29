@@ -17,7 +17,7 @@ $(document).ready(function() {
       contentType:'application/json',
       dataType: 'json',
       data: JSON.stringify({
-        type: 'hacker',
+        role: 'hacker',
         email: $email.val(),
         hashedPassword: SHA224($password.val())
       }),
