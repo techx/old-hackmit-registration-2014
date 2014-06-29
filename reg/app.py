@@ -78,11 +78,13 @@ def get_registration_page():
 def register_user():
     form = RegistrationForm()
     role = form.role.data
-    email_address  = form.email.data
+    email_address = form.email.data
     hashed_password = form.hashedPassword.data
 
-    if not email_address.endswith(".edu"):
-        raise AuthenticationError('Nice try, but use your .edu email.')
+    if not form.validate_on_submit():
+        #Need to generalize this error
+        raise NotImplementedError()
+        raise AuthenticationError('BAD DATA RECEIVED!!')
 
     if Account.query.filter_by(email_address=email_address).first() != None:
         # Send back an error saying that this account already exists
