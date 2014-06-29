@@ -30,12 +30,6 @@ $ pip install -r requirements.txt
 $ bower install
 ```
 
-- Create a db by running a python shell in the reg folder and executing:
-```python
-from app import db
-db.create_all()
-```
-
 Running
 -------
 
