@@ -41,12 +41,23 @@
 
       {% block navItems %}
 
-      <a class="item" href="{{ url_for('login') }}">
-        Log In
-      </a>
-      <a class="item" href="{{ url_for('get_registration_page') }}">
-        Register
-      </a>
+      {% if current_user.is_authenticated() %}
+
+        <a class="item" href="{{ url_for('dashboard') }}">
+          Dashboard
+        </a>
+
+      {% else %}
+
+        <a class="item" href="{{ url_for('login') }}">
+          Log In
+        </a>
+        <a class="item" href="{{ url_for('get_registration_page') }}">
+          Register
+        </a>
+
+      {% endif %}
+
 
       {% endblock %}
 
