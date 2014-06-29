@@ -2,15 +2,24 @@
 
 {% block head %}
 
-<script src="static/js/dashboard.js"></script>
+<script src="static/js/lottery.js"></script>
 
 {% endblock %}
 
 {% block navItems %}
 
-<a class="active item" href="{{ url_for('dashboard') }}">
+<a class="item" href="{{ url_for('lottery') }}">
+  Apply
+</a>
+
+<a class="item" href="{{ url_for('team') }}">
+  Team
+</a>
+
+<a class="active item">
   Dashboard
 </a>
+
 <a class="item" href="{{ url_for('logout') }}">
   Logout
 </a>
@@ -19,19 +28,57 @@
 
 {% block title %}
 
-    Dashboard
+Apply
 
 {% endblock %}
 
 {% block content %}
 
-  <div class="dashboard">
-    <center>
-      <br>
-      <br>
-      <br>
-      <h1> Dashboard Yay! </h1>
-    </center>
+<div class="lottery">
+
+  <div class="ui stackable aligned three column grid">
+
+    <div class="row"></div>
+
+    <div class="row">
+      <div class="column"></div>
+
+      <div class="center aligned column">
+        <h1>
+          Welcome back, Hacker!
+        </h1>
+
+        <br>
+
+        <h2>
+          Your Info here:
+        </h2>
+        <h3>
+          blah blah blah
+        </h3>
+        <br>
+
+        <button class="ui fluid green button">
+          Lottery Application
+        </button>
+
+        <br>
+
+        <button class="ui fluid blue button">
+          Teams
+        </button>
+
+      </div>
+
+
+
+      <div class="column"></div>
+
+    </div>
+
+    <div class="row"></div>
+
   </div>
+</div>
 
 {% endblock %}

@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block head %}
+
+<script src="static/js/lottery.js"></script>
+
+{% endblock %}
+
+{% block navItems %}
+
+<a class="active item">
+  Apply
+</a>
+
+<a class="item" href="{{ url_for('team') }}">
+  Team
+</a>
+
+<a class="item" href="{{ url_for('dashboard') }}">
+  Dashboard
+</a>
+
+<a class="item" href="{{ url_for('logout') }}">
+  Logout
+</a>
+
+{% endblock %}
+
+{% block title %}
+
+    Apply
+
+{% endblock %}
+
+{% block content %}
+
+  <div class="lottery">
+
+    <div class="ui stackable aligned three column grid">
+
+      <div class="row"></div>
+
+      <div class="row">
+        <div class="column"></div>
+
+        <div class="column">
+          <div class="ui form basic segment">
+            <div class="ui error message">
+              <div class="header">Action Forbidden</div>
+              <p>You can only sign up for an account once with a given e-mail address.</p>
+            </div>
+            <h1>Lottery Application</h1>
+            <div class="name field">
+              <label>Full Legal Name</label>
+              <input id="name" type="text">
+            </div>
+            <div class="field">
+              <label>Gender</label>
+              <div class="ui fluid selection dropdown">
+                <div class="text">Select</div>
+                <i class="dropdown icon"></i>
+                <input id="gender" type="hidden">
+                <div class="menu">
+                  <div class="item" data-value="male">Male</div>
+                  <div class="item" data-value="female">Female</div>
+                  <div class="item" data-value="other">Other</div>
+                  <div class="item" data-value="nope">I would prefer not to respond. </div>
+                </div>
+              </div>
+            </div>
+            <div class="field">
+              <label>School</label>
+              <input id="school" type="text">
+            </div>
+            <div class="field">
+              <label>Traveling from (if not school)</label>
+              <input id="travelling" type="text">
+            </div>
+            <div class="field">
+              <label>Invite Code (optional) </label>
+              <input id="invite" type="text">
+            </div>
+            <div class="inline field">
+              <div class="ui checkbox">
+                <input id="adult" type="checkbox">
+                <label>I am 18+ years old.</label>
+              </div>
+            </div>
+
+            <div class="ui purple fluid submit button">Save</div>
+          </div>
+        </div>
+
+        <div class="column"></div>
+
+      </div>
+
+      <div class="row"></div>
+
+    </div>
+ </div>
+
+{% endblock %}

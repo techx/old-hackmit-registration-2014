@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block head %}
+
+<script src="static/js/team.js"></script>
+
+{% endblock %}
+
+{% block navItems %}
+
+<a class="item" href="{{ url_for('lottery') }}">
+  Apply
+</a>
+
+<a class="active item">
+  Team
+</a>
+
+<a class="item" href="{{ url_for('get_registration_page') }}">
+  Dashboard
+</a>
+
+<a class="item" href="{{ url_for('logout') }}">
+  Logout
+</a>
+
+{% endblock %}
+
+{% block title %}
+
+Login
+
+{% endblock %}
+
+{% block content %}
+
+<div class="login">
+
+  <div class="ui stackable middle aligned three column grid">
+
+    <div class="row">
+      <div class="column"></div>
+      <div class="center aligned column">
+
+      </div>
+      <div class="column"></div>
+    </div>
+
+    <div class="row">
+      <div class="column"></div>
+
+      <div class="column">
+        <div class="ui form basic segment">
+          <div class="ui error message">
+            <div class="header">Action Forbidden</div>
+            <p>You can only sign up for an account once with a given e-mail address.</p>
+          </div>
+          <h1>Create a Team</h1>
+          <div class="name field">
+            <label>Team Name</label>
+            <input id="team-name" type="text">
+          </div>
+          <div class="ui purple fluid submit button">Create Team</div>
+        </div>
+
+        <div class="ui form basic segment">
+          <div class="ui error message">
+            <div class="header">Action Forbidden</div>
+            <p>You can only sign up for an account once with a given e-mail address.</p>
+          </div>
+          <h1>Join a Team</h1>
+          <div class="name field">
+            <label>Team Invite Code</label>
+            <input id="team-code" type="text">
+          </div>
+          <div class="ui purple fluid submit button">Join Team</div>
+        </div>
+      </div>
+
+      <div class="column">
+      </div>
+    </div>
+
+    <div class="row"></div>
+
+  </div>
+
+</div>
+
+{% endblock %}

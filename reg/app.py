@@ -131,6 +131,16 @@ def sessions():
 def dashboard():
     return render_template('dashboard.html')
 
+@app.route('/lottery')
+@login_required
+def lottery():
+    return render_template('lottery.html')
+
+@app.route('/team')
+@login_required
+def team():
+    return render_template('team.html')
+
 @app.route('/logout')
 def logout():
     logout_user()
