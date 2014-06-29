@@ -1,12 +1,37 @@
-<!DOCTYPE html>
-<html>
-<head lang="en">
-  <meta charset="UTF-8">
-  <title></title>
-</head>
-<body>
+{% extends "base.html" %}
 
-<h1> DASHBOARD </h1>
+{% block head %}
 
-</body>
-</html>
+<script src="static/js/dashboard.js"></script>
+
+{% endblock %}
+
+{% block navItems %}
+
+<a class="active item" href="{{ url_for('dashboard') }}">
+  Dashboard
+</a>
+<a class="item" href="{{ url_for('logout') }}">
+  Logout
+</a>
+
+{% endblock %}
+
+{% block title %}
+
+    Dashboard
+
+{% endblock %}
+
+{% block content %}
+
+  <div class="dashboard">
+    <center>
+      <br>
+      <br>
+      <br>
+      <h1> Dashboard Yay! </h1>
+    </center>
+  </div>
+
+{% endblock %}

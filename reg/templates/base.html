@@ -12,6 +12,17 @@
   <script src="static/bower_components/semantic-ui/build/packaged/javascript/semantic.min.js"></script>
   <link href="static/bower_components/semantic-ui/build/packaged/css/semantic.min.css" rel="stylesheet" type="text/css">
 
+  <script>
+    var csrftoken = "{{ csrf_token() }}";
+    $.ajaxSetup({
+      beforeSend: function(xhr, settings) {
+        if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type)) {
+          xhr.setRequestHeader("X-CSRFToken", csrftoken)
+        }
+      }
+    })
+  </script>
+
   {% block head %}
 
   <script src="static/js/index.js"></script>
@@ -35,12 +46,6 @@
       </a>
       <a class="item" href="{{ url_for('get_registration_page') }}">
         Register
-      </a>
-      <a class="item" href="{{ url_for('dashboard') }}">
-        Dashboard
-      </a>
-      <a class="logout item">
-        Logout
       </a>
 
       {% endblock %}

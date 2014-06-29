@@ -2,6 +2,7 @@
 
 {% block head %}
 
+<script src="static/js/sha256.js"></script>
 <script src="static/js/register.js"></script>
 
 {% endblock %}
@@ -25,6 +26,15 @@
 
 {% block content %}
 
+  <div class="ui page dimmer">
+    <div class="content">
+      <div class="center">
+        <h1> Thanks for registering!</h1>
+        <h2> Check your email for a verification. </h2>
+      </div>
+    </div>
+  </div>
+
   <div class="register">
 
     <div class="ui stackable middle aligned three column grid">
@@ -38,14 +48,14 @@
         <div class="column">
           <h1> REGISTER </h1>
           <div class="ui form">
-            <div class="field">
-              <label> Email Address </label>
+            <div class="email field">
+              <label> Email Address (.edu) </label>
               <div class="ui left icon input">
                 <input id="email" type="text" >
                 <i class="mail icon"></i>
               </div>
             </div>
-            <div class="field">
+            <div class="password field">
               <label> Password </label>
               <div class="ui left icon input">
                 <input id="password" type="password" >
