@@ -5,6 +5,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_wtf.csrf import CsrfProtect
 
 app = Flask(__name__,instance_relative_config=True)
+app.config.from_object('config.test.TestingConfig')
 
 # Secure the app with CsrfProtect
 csrf = CsrfProtect(app)
@@ -14,9 +15,7 @@ csrf = CsrfProtect(app)
 def csrf_error(reason):
     return render_template('csrf_error.html', reason=reason), 400
 
-app.config.from_object('config.dev.DevConfig')
 app.secret_key = app.config['SECRET_KEY'] # For Flask
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db' # TODO: Need to change location
 db = SQLAlchemy(app)
 
 class Account(db.Model, UserMixin):

@@ -3,9 +3,9 @@ Registration System
 
 Dependencies
 --------
-- virtualenv, flask, npm, bower 
+- virtualenv, npm 
 
-Install bower (if you haven't already): 
+Install bower (globally) (if you haven't already): 
 ```sh
 $ npm install -g bower
 ```
@@ -24,12 +24,7 @@ $ virtualenv venv
 $ source venv/bin/activate
 ```
 
-- Install flask in your venv
-```sh
-$ pip install flask
-```
-
-- Install dependencies
+- Install dependencies (in the venv/locally)
 ```sh
 $ pip install -r requirements.txt
 $ bower install
@@ -44,7 +39,7 @@ db.create_all()
 Running
 -------
 
+- Make sure to have the venv enabled (see above)
 ```sh
-$ source path/to/venv/bin/activate
 (venv)$  python app.py
 ```

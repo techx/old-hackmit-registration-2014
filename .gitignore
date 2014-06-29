@@ -6,3 +6,4 @@ venv/
 *.iml
 *.DS_Store
 **/bower_components/*
+*.swp
