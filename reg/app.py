@@ -1,8 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify
-from flask.ext.login import LoginManager, login_required, UserMixin, login_user, current_user, logout_user
-from flask.ext.sqlalchemy import SQLAlchemy
-from werkzeug.security import generate_password_hash, check_password_hash
+from flask.ext.login import LoginManager, login_required, login_user, current_user, logout_user
 from flask_wtf.csrf import CsrfProtect
+
+from models import db, Account
 
 app = Flask(__name__,instance_relative_config=True)
 app.config.from_object('config.test.TestingConfig')
@@ -16,18 +16,8 @@ def csrf_error(reason):
     return render_template('csrf_error.html', reason=reason), 400
 
 app.secret_key = app.config['SECRET_KEY'] # For Flask
-db = SQLAlchemy(app)
 
-class Account(db.Model, UserMixin):
-    # TODO: Need to update this to match the SQL
-    id = db.Column(db.Integer, primary_key=True)
-    email_address = db.Column(db.String(320), unique=True)
-    # TODO: Nned to update stored password length, salt size to match output of generate, input password
-    hashed_password = db.Column(db.String(120))
-
-    def __init__(self, email_address, password):
-        self.email_address = email_address
-        self.hashed_password = generate_password_hash(password, method='pbkdf2:sha256:5000', salt_length=8) #Note salt_length is number of characters 
+db.init_app(app)
 
 # TODO: Separate All of these things! Router, Other classes, etc.
 # -------------------------------------------------
@@ -119,8 +109,8 @@ def sessions():
     stored_account = Account.query.filter_by(email_address=email_address).first()
     if stored_account == None:
         raise AuthenticationError("Sorry, it doesn't look like you have an account.", status_code=401)
-    stored_password = stored_account.hashed_password
-    if not check_password_hash(stored_password, hashed_password):
+    
+    if not stored_account.check_password(hashed_password):
         raise AuthenticationError("Your username or password do not match.", status_code=402)
     login_user(stored_account)
     return jsonify({ 'url' : url_for('dashboard')})
