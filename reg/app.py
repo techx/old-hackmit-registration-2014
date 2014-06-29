@@ -83,8 +83,7 @@ def register_user():
 
     if not form.validate_on_submit():
         #Need to generalize this error
-        raise NotImplementedError()
-        raise AuthenticationError('BAD DATA RECEIVED!!')
+        raise AuthenticationError('Your data is bad and you should feel bad.', status_code=403)
 
     if Account.query.filter_by(email_address=email_address).first() != None:
         # Send back an error saying that this account already exists
