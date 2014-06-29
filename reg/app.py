@@ -4,6 +4,7 @@ from flask_wtf.csrf import CsrfProtect
 
 from models import db, Account
 from forms import LoginForm, RegistrationForm, LotteryForm
+from errors import AuthenticationError
 
 app = Flask(__name__,instance_relative_config=True)
 app.config.from_object('config.dev.DevelopmentConfig')
@@ -21,26 +22,6 @@ app.secret_key = app.config['SECRET_KEY'] # For Flask
 db.init_app(app)
 
 # TODO: Separate All of these things! Router, Other classes, etc.
-# -------------------------------------------------
-# Error Handling for Authentication Errors
-# -------------------------------------------------
-class AuthenticationError(Exception):
-    # Status codes and what they mean:
-    # 420: User already exists. What, did you forget?
-
-    status_code = 420
-
-    def __init__(self, message, status_code=None, payload=None):
-        Exception.__init__(self)
-        self.message = message
-        if status_code is not None:
-            self.status_code = status_code
-        self.payload = payload
-
-    def to_dict(self):
-        rv = dict(self.payload or ())
-        rv['message'] = self.message
-        return rv
 
 # Register the error handler so it's not an internal server error
 @app.errorhandler(AuthenticationError)
@@ -48,7 +29,6 @@ def handle_authentication_error(error):
     response = jsonify(error.to_dict())
     response.status_code = error.status_code
     return response
-# ---------------------------------------------------
 
 login_manager = LoginManager()
 login_manager.init_app(app)
