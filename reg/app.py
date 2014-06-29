@@ -3,6 +3,7 @@ from flask.ext.login import LoginManager, login_required, login_user, current_us
 from flask_wtf.csrf import CsrfProtect
 
 from models import db, Account
+from forms import LoginForm
 
 app = Flask(__name__,instance_relative_config=True)
 app.config.from_object('config.dev.DevelopmentConfig')
@@ -103,13 +104,20 @@ def login():
 @app.route('/sessions', methods=['POST'])
 def sessions():
     json = request.json
-    email_address  = json['email']
-    hashed_password = json['hashedPassword']
+    form = LoginForm()
+
+    if not form.validate_on_submit():
+        print "Login form didn't validate"
+        #TODO: Return an error for bad data
+        raise NotImplementedError()    
+    
+    email_address  = form.email.data
+    hashed_password = form.hashedPassword.data
 
     stored_account = Account.query.filter_by(email_address=email_address).first()
     if stored_account == None:
         raise AuthenticationError("Sorry, it doesn't look like you have an account.", status_code=401)
-    
+
     if not stored_account.check_password(hashed_password):
         raise AuthenticationError("Your username or password do not match.", status_code=402)
     login_user(stored_account)
