@@ -20,6 +20,7 @@
   ],
   "dependencies": {
     "semantic-ui": "~0.18.0",
-    "select2": "~3.5.0"
+    "select2": "~3.5.0",
+    "requirejs": "~2.1.14"
   }
 }
