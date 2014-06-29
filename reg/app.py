@@ -3,7 +3,7 @@ from flask.ext.login import LoginManager, login_required, login_user, current_us
 from flask_wtf.csrf import CsrfProtect
 
 from models import db, Account
-from forms import LoginForm, RegistrationForm
+from forms import LoginForm, RegistrationForm, LotteryForm
 
 app = Flask(__name__,instance_relative_config=True)
 app.config.from_object('config.dev.DevelopmentConfig')
@@ -142,7 +142,17 @@ def logout():
     logout_user()
     return redirect(url_for('index'))
 
+@app.route('/hackers', methods=['POST'])
+@login_required
+def hackers():
+    form = LotteryForm()
 
+    print form.name
+    print form.gender
+    print form.school
+    print form.adult
+    print form.location
+    print form.inviteCode
 
 if __name__ == '__main__':
     with app.app_context():
