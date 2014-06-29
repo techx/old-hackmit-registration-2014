@@ -5,6 +5,9 @@ from werkzeug.security import generate_password_hash, check_password_hash
 db = SQLAlchemy()
 
 class Account(db.Model, UserMixin):
+    __bind_key__ = 'local'
+    __tablename__ = 'accounts'
+
     # TODO: Need to update this to match the SQL
     id = db.Column(db.Integer, primary_key=True)
     email_address = db.Column(db.String(320), unique=True)
