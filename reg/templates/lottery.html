@@ -2,7 +2,10 @@
 
 {% block head %}
 
-<script src="static/js/lottery.js"></script>
+<script src="static/bower_components/requirejs/require.js"></script>
+<script src="static/js/lottery.js" xmlns:select="http://www.w3.org/1999/html"></script>
+<script src="static/bower_components/select2/select2.min.js"></script>
+<link href="static/stylesheets/select2.css" type="text/css" rel="stylesheet">
 
 {% endblock %}
 
@@ -45,15 +48,19 @@
 
         <div class="column">
           <div class="ui form basic segment">
+
             <div class="ui error message">
               <div class="header">Action Forbidden</div>
               <p>You can only sign up for an account once with a given e-mail address.</p>
             </div>
+
             <h1>Lottery Application</h1>
+
             <div class="name field">
               <label>Full Legal Name</label>
               <input id="name" type="text">
             </div>
+
             <div class="field">
               <label>Gender</label>
               <div class="ui fluid selection dropdown">
@@ -68,18 +75,35 @@
                 </div>
               </div>
             </div>
+
             <div class="field">
               <label>School</label>
-              <input id="school" type="text">
+              <input type='hidden' id="school" type="hidden" style="width: 100%">
+              </input>
             </div>
+
+            <div class="inline field">
+              <div class="ui checkbox">
+                <input id="otherSchool" type="checkbox">
+                <label>My school isn't on this list.</label>
+              </div>
+            </div>
+
+            <div class="field" style="display:none">
+              <label> School name (not on list) </label>
+              <input id="schoolName" type="text">
+            </div>
+
             <div class="field">
               <label>Traveling from (if not school)</label>
               <input id="travelling" type="text">
             </div>
+
             <div class="field">
               <label>Invite Code (optional) </label>
               <input id="invite" type="text">
             </div>
+
             <div class="inline field">
               <div class="ui checkbox">
                 <input id="adult" type="checkbox">
