@@ -6,9 +6,8 @@ from flask_wtf import Form
 from wtforms import TextField
 
 app = Flask(__name__,instance_relative_config=True)
-app.config.from_object('config.dev.DevConfig')
+app.config.from_object('config.dev.DevelopmentConfig')
 app.secret_key = app.config['SECRET_KEY'] # For Flask
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db' # TODO: Need to change location
 db = SQLAlchemy(app)
 
 class Account(db.Model, UserMixin):
