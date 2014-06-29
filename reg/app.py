@@ -5,7 +5,7 @@ from flask_wtf.csrf import CsrfProtect
 from models import db, Account
 
 app = Flask(__name__,instance_relative_config=True)
-app.config.from_object('config.test.TestingConfig')
+app.config.from_object('config.dev.DevelopmentConfig')
 
 # Secure the app with CsrfProtect
 csrf = CsrfProtect(app)
