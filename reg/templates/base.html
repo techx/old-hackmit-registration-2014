@@ -12,6 +12,17 @@
   <script src="static/bower_components/semantic-ui/build/packaged/javascript/semantic.min.js"></script>
   <link href="static/bower_components/semantic-ui/build/packaged/css/semantic.min.css" rel="stylesheet" type="text/css">
 
+  <script>
+    var csrftoken = "{{ csrf_token() }}";
+    $.ajaxSetup({
+      beforeSend: function(xhr, settings) {
+        if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type)) {
+          xhr.setRequestHeader("X-CSRFToken", csrftoken)
+        }
+      }
+    })
+  </script>
+
   {% block head %}
 
   <script src="static/js/index.js"></script>
@@ -23,22 +34,33 @@
 
 <div class="nav">
   <div class="ui secondary pointing menu">
-    <a class="item" href="{{ url_for('index') }}">
+    <a class="montserrat bold item" href="{{ url_for('index') }}">
       HACKMIT
     </a>
     <div class="right menu">
-      <a class="item" href="{{ url_for('login') }}">
-        Log In
-      </a>
-      <a class="item" href="{{ url_for('get_registration_page') }}">
-        Register
-      </a>
-      <a class="item" href="{{ url_for('dashboard') }}">
-        Dashboard
-      </a>
-      <a class="logout item">
-        Logout
-      </a>
+
+      {% block navItems %}
+
+      {% if current_user.is_authenticated() %}
+
+        <a class="item" href="{{ url_for('dashboard') }}">
+          Dashboard
+        </a>
+
+      {% else %}
+
+        <a class="item" href="{{ url_for('login') }}">
+          Log In
+        </a>
+        <a class="item" href="{{ url_for('get_registration_page') }}">
+          Register
+        </a>
+
+      {% endif %}
+
+
+      {% endblock %}
+
     </div>
   </div>
 </div>

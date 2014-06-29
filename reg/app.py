@@ -1,12 +1,20 @@
-from flask import Flask, render_template, request, redirect, url_for
-from flask.ext.login import LoginManager, login_required, UserMixin, login_user
+from flask import Flask, render_template, request, redirect, url_for, jsonify
+from flask.ext.login import LoginManager, login_required, UserMixin, login_user, current_user, logout_user
 from flask.ext.sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_wtf import Form
-from wtforms import TextField
+from flask_wtf.csrf import CsrfProtect
 
 app = Flask(__name__,instance_relative_config=True)
 app.config.from_object('config.dev.DevelopmentConfig')
+
+# Secure the app with CsrfProtect
+csrf = CsrfProtect(app)
+
+# All pages protected by CSRF, if validation fails, render csrf_error page
+@csrf.error_handler
+def csrf_error(reason):
+    return render_template('csrf_error.html', reason=reason), 400
+
 app.secret_key = app.config['SECRET_KEY'] # For Flask
 db = SQLAlchemy(app)
 
@@ -21,6 +29,36 @@ class Account(db.Model, UserMixin):
         self.email_address = email_address
         self.hashed_password = generate_password_hash(password, method='pbkdf2:sha256:5000', salt_length=8) #Note salt_length is number of characters 
 
+# TODO: Separate All of these things! Router, Other classes, etc.
+# -------------------------------------------------
+# Error Handling for Authentication Errors
+# -------------------------------------------------
+class AuthenticationError(Exception):
+    # Status codes and what they mean:
+    # 420: User already exists. What, did you forget?
+
+    status_code = 420
+
+    def __init__(self, message, status_code=None, payload=None):
+        Exception.__init__(self)
+        self.message = message
+        if status_code is not None:
+            self.status_code = status_code
+        self.payload = payload
+
+    def to_dict(self):
+        rv = dict(self.payload or ())
+        rv['message'] = self.message
+        return rv
+
+# Register the error handler so it's not an internal server error
+@app.errorhandler(AuthenticationError)
+def handle_authentication_error(error):
+    response = jsonify(error.to_dict())
+    response.status_code = error.status_code
+    return response
+# ---------------------------------------------------
+
 login_manager = LoginManager()
 login_manager.init_app(app)
 
@@ -28,11 +66,7 @@ login_manager.init_app(app)
 def load_user(user_id):
     return Account.query.get(int(user_id))
 
-class LoginForm(Form):
-    email = TextField('email')
-    hashedPassword = TextField('hashedPassword')
-
-# TODO: move all staic files to nginx and use uWSGI to hook into Flask
+# TODO: move all static files to nginx and use uWSGI to hook into Flask
 
 @app.route('/')
 def index():
@@ -40,61 +74,66 @@ def index():
 
 @app.route('/sponsor')
 def sponsors():
-	return app.send_static_file('assets/docs/HackMIT2014Sponsorship.pdf')
+    app.send_static_file('assets/docs/HackMIT2014Sponsorship.pdf')
 
 @app.route('/register')
 def get_registration_page():
-	return render_template('register.html')
+    if current_user.is_authenticated():
+        return redirect(url_for('dashboard'))
+    else:
+        return render_template('register.html')
 
 @app.route('/accounts', methods=['POST'])
 def register_user():
-    json = request.get_json()
+    json = request.json
     user_type = json['type']
     email_address  = json['email']
     hashed_password = json['hashedPassword']
+
+    if not email_address.endswith(".edu"):
+        raise AuthenticationError('Nice try, but use your .edu email.')
+
     if Account.query.filter_by(email_address=email_address).first() != None:
-        # Need to tell them that they already exist in db
-        raise NotImplementedError()
+        # Send back an error saying that this account already exists
+        raise AuthenticationError('This account already exists!', status_code=420)
+
     newAccount = Account(email_address, hashed_password)
     db.session.add(newAccount)
     db.session.commit()
-
-#i TODO: Need to add CSRF protection to /login and /sessions 
+    # Return a message of success
+    return jsonify({'message': 'Successfully Registered!'})
 
 @app.route('/login')
 def login():
-    return render_template('login.html')
-    #raise NotImplementedError("csrf token")
+    if current_user.is_authenticated():
+        return redirect(url_for('dashboard'))
+    else:
+        return render_template('login.html')
 
 @app.route('/sessions', methods=['POST'])
 def sessions():
-    form = LoginForm(csrf_enabled=False) # TODO: remove csrf_enabled=False
-    if form.validate_on_submit():
-        email_address = form.email.data
-        stored_account = Account.query.filter_by(email_address=email_address).first() 
-        if stored_account == None:
-            print 'DEBUGGG: Account does not exist'
-            # TODO: Need to tell them that they already exist in db
-            raise NotImplementedError()
-        stored_password = stored_account.hashed_password
-        hashed_password = form.hashedPassword.data
-        if not check_password_hash(stored_password, hashed_password):
-            print 'DEBUGGG: Password does not match'
-            # TODO: need to tell them it's wrong
-            raise NotImplementedError()
-        print 'all good to go!'         
-        login_user(stored_account)
-        # TODO: Do you want to use flash() to show the logged-in notification, use ajax somehow, or just use the redirect?
-        #flash('logged in successfully')
-        return redirect(url_for('dashboard'))
-    else:
-        raise NotImplementedError('invalid login at POST to /sessions')
+    json = request.json
+    email_address  = json['email']
+    hashed_password = json['hashedPassword']
+
+    stored_account = Account.query.filter_by(email_address=email_address).first()
+    if stored_account == None:
+        raise AuthenticationError("Sorry, it doesn't look like you have an account.", status_code=401)
+    stored_password = stored_account.hashed_password
+    if not check_password_hash(stored_password, hashed_password):
+        raise AuthenticationError("Your username or password do not match.", status_code=402)
+    login_user(stored_account)
+    return jsonify({ 'url' : url_for('dashboard')})
 
 @app.route('/dashboard')
 @login_required
 def dashboard():
-    # TODO: show the dashboard
-    return render_template('dashboard.html', csrf_token=None)
+    return render_template('dashboard.html')
+
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
 
 if __name__ == '__main__':
     debug = app.config['DEBUG']
