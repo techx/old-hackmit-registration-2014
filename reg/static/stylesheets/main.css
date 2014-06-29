@@ -1,10 +1,20 @@
 body,
 input,
 .ui.input input,
+button,
 textarea {
   font-family: 'Lato', 'Helvetica Neue', 'Helvetica', sans-serif;
 }
 
-.montserrat {
+.montserrat,
+.montserrat.bold {
   font-family: 'Montserrat', sans-serif;
+}
+
+.montserrat.bold{
+  font-weight: 700;
+}
+
+.ui.message ul.list li:before {
+  content: "" !important;
 }

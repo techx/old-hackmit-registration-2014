@@ -1,18 +1,55 @@
 $(document).ready(function() {
 
+  var $form     = $('.ui.form'),
+      $email    = $('#email'),
+      $password = $('#password');
+
   function register(){
-    // AJAX form submission here
-    console.log("Register!");
+
+    if (!$email.val().match(/.edu/gi)){
+      showError('Please use a .edu email.');
+      return;
+    }
+
+    $.ajax({
+      url:'/accounts',
+      type: 'POST',
+      contentType:'application/json',
+      dataType: 'json',
+      data: JSON.stringify({
+        type: 'hacker',
+        email: $email.val(),
+        hashedPassword: SHA224($password.val())
+      }),
+      success: function(data){
+        $email.val("");
+        $password.val("");
+        $('.ui.page.dimmer')
+          .dimmer('show');
+      },
+      error: function(error) {
+        var msg = JSON.parse(error.responseText).message;
+        showError(msg);
+      }
+    })
   }
 
   $(".register")
     .transition('fade up in');
 
   function showError(error){
-    console.log(error.reason);
+    $form
+      .removeClass('success')
+      .addClass('error')
+      .form('add errors',[
+        error
+      ])
+      .children('.email.field')
+        .addClass('error');
+    $password.val("");
   }
 
-  $('.ui.form')
+  $form
     .form({
       email: {
         identifier: 'email',

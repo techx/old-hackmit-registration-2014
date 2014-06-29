@@ -2,10 +2,21 @@
 
 {% block head %}
 
+<script src="static/js/sha256.js"></script>
 <script src="static/js/login.js"></script>
 
 {% endblock %}
 
+{% block navItems %}
+
+  <a class="active item" href="{{ url_for('login') }}">
+    Log In
+  </a>
+  <a class="item" href="{{ url_for('get_registration_page') }}">
+    Register
+  </a>
+
+{% endblock %}
 
 {% block title %}
 
@@ -34,14 +45,14 @@
 
         <h1> LOGIN </h1>
         <div class="ui form">
-          <div class="field">
+          <div class="email field">
             <label> Email Address </label>
             <div class="ui left icon input">
               <input id="email" type="text">
               <i class="mail icon"></i>
             </div>
           </div>
-          <div class="field">
+          <div class="password field">
             <label> Password </label>
             <div class="ui left icon input">
               <input id="password" type="password">
@@ -51,7 +62,7 @@
           <div class="ui error message">
             <div class="header">We noticed some issues</div>
           </div>
-          <div class="ui fluid purple submit button">LOGIN</div>
+          <button class="ui fluid purple submit button">LOGIN</button>
         </div>
 
       </div>
