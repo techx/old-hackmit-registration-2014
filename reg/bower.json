@@ -19,6 +19,7 @@
     "tests"
   ],
   "dependencies": {
-    "semantic-ui": "~0.18.0"
+    "semantic-ui": "~0.18.0",
+    "select2": "~3.5.0"
   }
 }
