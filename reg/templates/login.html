@@ -6,6 +6,16 @@
 
 {% endblock %}
 
+{% block navItems %}
+
+  <a class="active item" href="{{ url_for('login') }}">
+    Log In
+  </a>
+  <a class="item" href="{{ url_for('get_registration_page') }}">
+    Register
+  </a>
+
+{% endblock %}
 
 {% block title %}
 
@@ -51,7 +61,7 @@
           <div class="ui error message">
             <div class="header">We noticed some issues</div>
           </div>
-          <div class="ui fluid purple submit button">LOGIN</div>
+          <button class="ui fluid purple submit button">LOGIN</button>
         </div>
 
       </div>

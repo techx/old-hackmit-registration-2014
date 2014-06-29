@@ -23,10 +23,13 @@
 
 <div class="nav">
   <div class="ui secondary pointing menu">
-    <a class="item" href="{{ url_for('index') }}">
+    <a class="montserrat bold item" href="{{ url_for('index') }}">
       HACKMIT
     </a>
     <div class="right menu">
+
+      {% block navItems %}
+
       <a class="item" href="{{ url_for('login') }}">
         Log In
       </a>
@@ -39,6 +42,9 @@
       <a class="logout item">
         Logout
       </a>
+
+      {% endblock %}
+
     </div>
   </div>
 </div>
