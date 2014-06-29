@@ -14,3 +14,7 @@ textarea {
 .montserrat.bold{
   font-weight: 700;
 }
+
+.ui.message ul.list li:before {
+  content: "" !important;
+}
