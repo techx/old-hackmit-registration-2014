@@ -28,7 +28,7 @@
 
 {% block title %}
 
-Login
+    Team
 
 {% endblock %}
 
@@ -47,21 +47,19 @@ Login
     </div>
 
     <div class="row">
+
       <div class="column"></div>
 
+      {% if team %}
+
       <div class="column">
-        <div class="ui team name form basic segment">
-          <div class="ui error message">
-            <div class="header">Action Forbidden</div>
-            <p>You can only sign up for an account once with a given e-mail address.</p>
-          </div>
-          <h1>Create a Team</h1>
-          <div class="name field">
-            <label>Team Name</label>
-            <input id="team-name" type="text">
-          </div>
-          <div class="ui purple fluid submit button">Create Team</div>
-        </div>
+        <h1> {{ team.teammates }} </h1>
+        <h1> {{ team.teamInviteCode }} </h1>
+      </div>
+
+      {% else %}
+
+      <div class="column">
 
         <div class="ui team code form basic segment">
           <div class="ui error message">
@@ -73,12 +71,23 @@ Login
             <label>Team Invite Code</label>
             <input id="team-code" type="text">
           </div>
-          <div class="ui purple fluid submit button">Join Team</div>
+          <div id="join" class="ui purple fluid submit button">Join Team</div>
         </div>
+
+
+        <div class="ui horizontal divider">
+          Or
+        </div>
+
+        <div class="ui team name basic segment">
+          <div id="create" class="ui purple fluid button">Create Team</div>
+        </div>
+
+      {% endif %}
+
       </div>
 
-      <div class="column">
-      </div>
+      <div class="column"></div>
     </div>
 
     <div class="row"></div>
