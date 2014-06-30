@@ -63,6 +63,7 @@
       <div class="column">
         <div class="ui header">Your Team: </div>
         <div class="ui divider"></div>
+
         {% for member in team.teammates %}
           <h1> {{ member.name }} </h1>
           <h3> {{ member.email }} </h3>
@@ -84,7 +85,7 @@
 
       <div class="column">
 
-        <div class="ui team code form basic segment">
+        <div class="ui join form basic segment">
           <div class="ui error message">
             <div class="header">Action Forbidden</div>
             <p>You can only sign up for an account once with a given e-mail address.</p>
@@ -92,9 +93,9 @@
           <h1>Join a Team</h1>
           <div class="name field">
             <label>Team Invite Code</label>
-            <input id="team-code" type="text">
+            <input id="teamInviteCode" type="text">
           </div>
-          <div id="join" class="ui purple fluid submit button">Join Team</div>
+          <div class="ui purple fluid submit button">Join Team</div>
         </div>
 
 
