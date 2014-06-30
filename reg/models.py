@@ -13,6 +13,7 @@ class Account(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     email_address = db.Column(db.String(320), unique=True)
     hashed_password = db.Column(db.String(146)) # Total length of hashed, salted password
+    verified = db.Column(db.Boolean)
 
     def __init__(self, email_address, password):
         self.email_address = email_address
@@ -60,7 +61,7 @@ class Team(db.Model):
     __tablename__ = 'teams'
 
     id = db.Column(db.Integer, primary_key=True)
-    inviteCode = db.Column(db.String(20), unique=True)
+    team_invite_code = db.Column(db.String(20), unique=True)
 
     def __init__(self, app):
-        self.inviteCode = '%020x' % randrange(16**20)
+        self.team_invite_code = '%020x' % randrange(16**20)
