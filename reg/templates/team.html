@@ -28,11 +28,19 @@
 
 {% block title %}
 
-Login
+    Team
 
 {% endblock %}
 
 {% block content %}
+
+<div class="ui page dimmer">
+  <div class="content">
+    <div class="center">
+      <h1></h1>
+    </div>
+  </div>
+</div>
 
 <div class="team">
 
@@ -47,21 +55,34 @@ Login
     </div>
 
     <div class="row">
+
       <div class="column"></div>
 
+      {% if team %}
+
       <div class="column">
-        <div class="ui team name form basic segment">
-          <div class="ui error message">
-            <div class="header">Action Forbidden</div>
-            <p>You can only sign up for an account once with a given e-mail address.</p>
-          </div>
-          <h1>Create a Team</h1>
-          <div class="name field">
-            <label>Team Name</label>
-            <input id="team-name" type="text">
-          </div>
-          <div class="ui purple fluid submit button">Create Team</div>
-        </div>
+        <div class="ui header">Your Team: </div>
+        <div class="ui divider"></div>
+        {% for member in team.teammates %}
+          <h1> {{ member.name }} </h1>
+          <h3> {{ member.email }} </h3>
+        {% endfor %}
+
+        <br>
+        <br>
+
+        <h3> Share this invite code to join this team:</h3>
+        <h1> {{ team.teamInviteCode }} </h1>
+
+        <br>
+
+        <div id='leave' class="ui fluid red button"> Leave this team </div>
+
+      </div>
+
+      {% else %}
+
+      <div class="column">
 
         <div class="ui team code form basic segment">
           <div class="ui error message">
@@ -73,12 +94,23 @@ Login
             <label>Team Invite Code</label>
             <input id="team-code" type="text">
           </div>
-          <div class="ui purple fluid submit button">Join Team</div>
+          <div id="join" class="ui purple fluid submit button">Join Team</div>
         </div>
+
+
+        <div class="ui horizontal divider">
+          Or
+        </div>
+
+        <div class="ui team name basic segment">
+          <div id="create" class="ui purple fluid button">Create Team</div>
+        </div>
+
+      {% endif %}
+
       </div>
 
-      <div class="column">
-      </div>
+      <div class="column"></div>
     </div>
 
     <div class="row"></div>

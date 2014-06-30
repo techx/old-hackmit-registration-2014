@@ -81,6 +81,7 @@ def register_user():
     newAccount = Account(email_address, hashed_password)
     db.session.add(newAccount)
     if role=="hacker": #TODO Move away from this hardcoded string and turn into a table lookup
+        db.session.flush()
         newHacker= Hacker(newAccount.id)
         db.session.add(newHacker)
     db.session.commit()
@@ -135,13 +136,31 @@ def team():
         # TODO: Do something for company reps, etc
         return render_template('server_message.html', header="You're not a hacker.", subheader="How did you get here?")
     team_id = hacker.team_id
-    if team_id == None:
-        team = None
-    else:
+    team = None
+
+    if team_id:
         team = {}
-        team.users = [hacker.email for hacker in Hacker.query.filter_by(team_id=team_id).all()]
-        team.inviteCode = Team.query.filter_by(id=team_id).first().invite_code
+        teammateAccounts = [{"id": hacker.account_id, "name": hacker.name} for hacker in Hacker.query.filter_by(team_id=team_id).all()]
+        teammates = [
+            {
+             "name": account["name"],
+             "email": Account.query.filter_by(id=account["id"]).first().email_address
+            }
+            for account in teammateAccounts
+        ]
+        team["teammates"] = teammates
+        team["teamInviteCode"] = Team.query.filter_by(id=team_id).first().team_invite_code
+
     return render_template('team.html', team=team)
+
+@app.route('/team/leave', methods=['POST'])
+@login_required
+def leave_team():
+    hacker = Hacker.query.filter_by(id=current_user.id).first()
+    hacker.team_id = None
+    db.session.commit()
+    return jsonify({"message": "It's been real, see ya!"})
+
 
 @app.route('/teams', methods=['POST'])
 @login_required
@@ -151,12 +170,13 @@ def teams():
         # Not a hacker, return a server message!
         # TODO: Do something for company reps, etc
         return render_template('server_message.html', header="You're not a hacker.", subheader="How did you get here?")
-    team = Team(app)
-    db.session.add(team)
-    hacker.team_id = team.id    
+    team = Team(app) # Create a new team
+    db.session.add(team) # Add the team to the DB
+    db.session.flush()
+    hacker.team_id = team.id #Assign the hacker that team id
+
     db.session.commit()
-    # TODO: Need to return a response
-    return None
+    return jsonify({"message": "Team successfully created"})
 
 @app.route('/logout')
 @login_required
