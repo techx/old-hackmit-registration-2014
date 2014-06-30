@@ -53,7 +53,17 @@
       {% if team %}
 
       <div class="column">
-        <h1> {{ team.teammates }} </h1>
+        <div class="ui header">Your Team: </div>
+        <div class="ui divider"></div>
+        {% for member in team.teammates %}
+          <h1> {{ member.name }} </h1>
+          <h3> {{ member.email }} </h3>
+        {% endfor %}
+
+        <br>
+        <br>
+
+        <h3> Share this invite code to join this team:</h3>
         <h1> {{ team.teamInviteCode }} </h1>
       </div>
 
