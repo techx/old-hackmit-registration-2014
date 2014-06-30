@@ -14,6 +14,7 @@ class LoginForm(Form):
 class LotteryForm(Form):
     name = TextField(validators=[DataRequired()])
     gender = TextField(validators=[DataRequired()])
+    school_id = TextField(validators=[DataRequired()])
     school = TextField(validators=[DataRequired()])
     adult = TextField(validators=[DataRequired()])
     location = TextField(validators=[Optional()])

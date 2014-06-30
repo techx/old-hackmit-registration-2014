@@ -157,12 +157,14 @@ def logout():
 def hackers():
     form = LotteryForm()
 
-    print form.name
-    print form.gender
-    print form.school
-    print form.adult
-    print form.location
-    print form.inviteCode
+    print "name", form.name.data
+    print "gender", form.gender.data
+    print "schoolid", form.school_id.data
+    print "school", form.school.data
+    print "adult", form.adult.data
+    print "location", form.location.data
+    print "inviteCode", form.inviteCode.data
+    return jsonify({'message': "Hacker Post!"})
 
 if __name__ == '__main__':
     with app.app_context():
