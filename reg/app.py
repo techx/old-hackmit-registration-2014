@@ -153,6 +153,15 @@ def team():
 
     return render_template('team.html', team=team)
 
+@app.route('/team/leave', methods=['POST'])
+@login_required
+def leave_team():
+    hacker = Hacker.query.filter_by(id=current_user.id).first()
+    hacker.team_id = None
+    db.session.commit()
+    return jsonify({"message": "It's been real, see ya!"})
+
+
 @app.route('/teams', methods=['POST'])
 @login_required
 def teams():
@@ -167,7 +176,6 @@ def teams():
     hacker.team_id = team.id #Assign the hacker that team id
 
     db.session.commit()
-    # TODO: Need to return a response
     return jsonify({"message": "Team successfully created"})
 
 @app.route('/logout')

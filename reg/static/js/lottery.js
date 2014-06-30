@@ -82,7 +82,12 @@ $(document).ready(function(){
       data: formData,
       success: function(data){
         // Redirect to dashboard on success
-        location.href="/dashboard";
+        var dimmer = $('.ui.page.dimmer')
+          .dimmer('show')
+        setTimeout(function(){
+          dimmer.dimmer('hide')
+          location.href="/dashboard";
+        }, 1500)
       },
       error: function(error) {
         var msg = JSON.parse(error.responseText).message;
