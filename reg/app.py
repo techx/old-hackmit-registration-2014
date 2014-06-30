@@ -96,18 +96,18 @@ def update(account_id):
 
     form = ResetForm()
     email = form.email.data
-    oldPassword = form.oldPassword.data
-    newPassword = form.newPassword.data
+    old_password = form.oldPassword.data
+    new_password = form.newPassword.data
 
     account = Account.query.filter_by(id=account_id).first()
 
     if account.email_address != email:
         raise AuthenticationError("You email doesn't seem to match our records.")
 
-    if not account.check_password(oldPassword):
+    if not account.check_password(old_password):
         raise AuthenticationError("Your password is wrong!")
 
-    account.update_password(newPassword)
+    account.update_password(new_password)
     db.session.commit()
 
     return jsonify({"message": "Password successfully updated!"})
@@ -256,7 +256,7 @@ def hackers():
     hacker.school = form.school.data
     hacker.adult = form.adult.data
     hacker.location = form.location.data
-    hacker.inviteCode = form.inviteCode.data
+    hacker.invite_code = form.inviteCode.data
 
     db.session.commit()
 

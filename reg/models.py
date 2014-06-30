@@ -39,7 +39,7 @@ class Hacker(db.Model):
     school = db.Column(db.String(120))
     adult = db.Column(db.Boolean)
     location = db.Column(db.String(120))
-    inviteCode = db.Column(db.String(8))
+    invite_code = db.Column(db.String(8))
 
     def __init__(self, account_id):
         self.account_id = account_id
@@ -54,7 +54,7 @@ class Hacker(db.Model):
         details["school_id"] = self.school_id
         details["adult"] = self.adult
         details["location"] = self.location
-        details["inviteCode"] = self.inviteCode
+        details["invite_code"] = self.invite_code
 
         return details
 
