@@ -18,4 +18,4 @@ class LotteryForm(Form):
     school = TextField(validators=[InputRequired(), Length(max=120)])
     adult = TextField(validators=[InputRequired(), AnyOf(['true', 'false'])])
     location = TextField(validators=[Optional(), Length(max=120)])
-    inviteCode = TextField(validators=[Optional(), Length(max=8), Regexp("^[a-z0-5]+$")])
+    inviteCode = TextField(validators=[Optional()])
