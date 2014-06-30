@@ -38,6 +38,10 @@ login_manager.init_app(app)
 def load_user(user_id):
     return Account.query.get(int(user_id))
 
+@login_manager.unauthorized_handler
+def unauthorized():
+    return redirect(url_for('login'))
+
 # TODO: move all static files to nginx and use uWSGI to hook into Flask
 
 @app.route('/')
@@ -105,6 +109,7 @@ def sessions():
         raise AuthenticationError("Your username or password do not match.", status_code=402)
     login_user(stored_account)
     return jsonify({ 'url' : url_for('dashboard')})
+
 
 @app.route('/dashboard')
 @login_required
