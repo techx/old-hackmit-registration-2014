@@ -24,12 +24,14 @@ $(document).ready(function() {
       success: function(data){
         $email.val("");
         $password.val("");
-        var dimmer = $('.ui.page.dimmer')
-          .dimmer('show');
-        setTimeout(function(){
-          dimmer.dimmer('hide');
-          location.href = "/login";
-        }, 3000)
+
+        dimmerMessage(
+          "Thanks for registering!",
+          "Check your email for verification.",
+          function(){
+            location.href= "/login"
+          }, 3000
+        );
       },
       error: function(error) {
         var msg = JSON.parse(error.responseText).message;

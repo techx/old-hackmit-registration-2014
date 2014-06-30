@@ -75,13 +75,13 @@ $(document).ready(function(){
       dataType: 'json',
       data: formData,
       success: function(data){
-        // Redirect to dashboard on success
-        var dimmer = $('.ui.page.dimmer')
-          .dimmer('show')
-        setTimeout(function(){
-          dimmer.dimmer('hide')
-          location.href="/dashboard";
-        }, 1500)
+        dimmerMessage(
+          "Your application has been saved!",
+          "And now we wait...",
+          function(){
+            location.href="/dashboard"
+          }, 1500
+        );
       },
       error: function(error) {
         var msg = JSON.parse(error.responseText).message;

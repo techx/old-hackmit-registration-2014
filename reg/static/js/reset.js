@@ -19,7 +19,13 @@ $(document).ready(function(){
         newPassword: SHA224($new.val())
       }),
       success: function(data){
-        dimmerMessage(data.message)
+        dimmerMessage(
+          data.message,
+          "",
+          function(){
+            location.href= "/dashboard"
+          }, 1500
+        );
       },
       error: function(error) {
         var msg = JSON.parse(error.responseText).message;
@@ -40,16 +46,6 @@ $(document).ready(function(){
     $old.val("");
     $new.val("");
     $confirm.val("");
-  }
-
-  function dimmerMessage(message){
-    var dimmer = $('.ui.page.dimmer')
-      .dimmer('show');
-    dimmer.find('h1').html(message);
-    setTimeout(function(){
-      dimmer.dimmer('hide');
-      location.href = '/dashboard';
-    },1500);
   }
 
   $form
