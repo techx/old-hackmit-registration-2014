@@ -27,7 +27,8 @@ $(document).ready(function() {
         var dimmer = $('.ui.page.dimmer')
           .dimmer('show');
         setTimeout(function(){
-          dimmer.dimmer('hide')
+          dimmer.dimmer('hide');
+          location.href = "/login";
         }, 3000)
       },
       error: function(error) {
