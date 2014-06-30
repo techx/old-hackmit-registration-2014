@@ -7,4 +7,5 @@ venv/
 **/bower_components/*
 *.swp
 *.py~
-reg/development.db
+reg/dev*.db
+
