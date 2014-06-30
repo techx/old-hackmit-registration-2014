@@ -72,7 +72,11 @@ def register_user():
 
     newAccount = Account(email_address, hashed_password)
     db.session.add(newAccount)
+    if role=="hacker": #TODO Move away from this hardcoded string and turn into a table lookup
+        newHacker= Hacker(newAccount.id)
+        db.session.add(newHacker)
     db.session.commit()
+    
     # Return a message of success
     return jsonify({'message': 'Successfully Registered!'})
 

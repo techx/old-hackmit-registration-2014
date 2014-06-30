@@ -25,11 +25,12 @@ class Hacker(db.Model):
     __bind_key__ = 'local'
     __tablename__ = 'hackers'
     
-    id = db.Column(db.Integer, db.ForeignKey('accounts.id'), primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
+    account_id = db.Column(db.Integer, db.ForeignKey('accounts.id'))
     team_id = db.Column(db.Integer, db.ForeignKey('teams.id')) # Need to add lottery fields.
 
-    def __init__(self):
-        pass
+    def __init__(self, account_id):
+        self.account_id = account_id
 
 class Team(db.Model):
    __bind_key__ = 'local'
