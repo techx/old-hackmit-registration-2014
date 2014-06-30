@@ -6,6 +6,7 @@ from models import db, Account, Hacker, Team
 from forms import LoginForm, RegistrationForm, LotteryForm
 from errors import AuthenticationError
 
+MAX_TEAM_SIZE = 4
 
 app = Flask(__name__,instance_relative_config=True)
 app.config.from_object('config.dev.DevelopmentConfig')
@@ -187,11 +188,17 @@ def teams():
 @app.route('/teams/<team_invite_code>', methods=['POST'])
 @login_required
 def join_team(team_invite_code):
+
     # Find the team associated with the invite code
     team = Team.query.filter_by(team_invite_code=team_invite_code).first()
 
     if team is None:
         raise AuthenticationError("Aww. That doesn't seem to be a valid invite code.")
+
+    members = Hacker.query.filter_by(team_id=team.id).all()
+
+    if len(members) >= MAX_TEAM_SIZE:
+        raise AuthenticationError("Aww. There are too many people on this team!")
 
     # Get the current hacker
     hacker = Hacker.query.filter_by(account_id=current_user.id).first()
