@@ -39,8 +39,5 @@ class Team(db.Model):
    inviteCode = db.Column(db.String(100), unique=True)
    #TODO: need to figure out max size of digest for inviteCode
 
-   def __init__(self, inviteCode):
-       self.inviteCode = inviteCode
-
-   def get_invite_code(app, id):
-       return URLSafeSerializer(app['SECRET_KEY']).dumps(id)
+   def __init__(self, app):
+       self.inviteCode = URLSafeSerializer(app.config['SECRET_KEY']).dumps(self.id)

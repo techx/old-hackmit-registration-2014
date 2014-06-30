@@ -117,7 +117,7 @@ def lottery():
 def team():
     hacker = Hacker.query.filter_by(id=current_user.id).first()
     if hacker == None:
-        # This account isn't a hacker! Maybe a company rep or something?
+        # TODO: This account isn't a hacker! Maybe a company rep or something?
         raise NotImplementedError()
     team_id = hacker.team_id
     if team_id == None:
@@ -127,6 +127,20 @@ def team():
         team.users = [hacker.email for hacker in Hacker.query.filter_by(team_id=team_id).all()]
         team.inviteCode = Team.query.filter_by(id=team_id).first().invite_code
     return render_template('team.html', team=team)
+
+@app.route('/teams', methods=['POST'])
+@login_required
+def teams():
+    hacker = Hacker.query.filter_by(id=current_user.id).first()
+    if hacker == None:
+        # TODO: This account isn't a hacker! Maybe a company rep or something?
+        raise NotImplementedError()
+    team = Team(app)
+    db.session.add(team)
+    hacker.team_id = team.id    
+    db.session.commit()
+    # TODO: Need to return a response
+    return None
 
 @app.route('/logout')
 @login_required
