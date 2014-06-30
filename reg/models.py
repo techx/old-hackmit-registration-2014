@@ -29,8 +29,31 @@ class Hacker(db.Model):
     account_id = db.Column(db.Integer, db.ForeignKey('accounts.id'))
     team_id = db.Column(db.Integer, db.ForeignKey('teams.id')) # Need to add lottery fields.
 
+    name = db.Column(db.String(50))
+    gender = db.Column(db.String(8))
+    school_id = db.Column(db.Integer)
+    school = db.Column(db.String(120))
+    adult = db.Column(db.Boolean)
+    location = db.Column(db.String(120))
+    inviteCode = db.Column(db.String(8))
+
     def __init__(self, account_id):
         self.account_id = account_id
+
+    def get_hacker_details(self):
+        details = {}
+
+        details["name"] = self.name
+        details["gender"] = self.gender
+        details["account_id"] = self.account_id
+        details["school"] = self.school
+        details["school_id"] = self.school_id
+        details["adult"] = self.adult
+        details["location"] = self.location
+        details["inviteCode"] = self.inviteCode
+
+        return details
+
 
 class Team(db.Model):
    __bind_key__ = 'local'

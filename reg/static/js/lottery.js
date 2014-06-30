@@ -5,10 +5,6 @@ $(document).ready(function(){
   $('.ui.dropdown')
     .dropdown();
 
-  $('.ui.checkbox')
-    .checkbox();
-
-
   var $form = $('.ui.form'),
       $name = $('#name'),
       $school = $('#school'),
@@ -18,6 +14,7 @@ $(document).ready(function(){
       $travelling = $('#travelling'),
       $adult = $('#adult'),
       $inviteCode = $('#invite');
+
 
   $school
     .select2({
@@ -30,15 +27,16 @@ $(document).ready(function(){
     $schoolName.val($school.select2("data").text);
   });
 
-  $otherSchool.change(function(){
-    if($(this).is(':checked')){
+  $otherSchool.change(updateCheckbox);
+
+  function updateCheckbox(){
+    if($otherSchool.is(':checked')){
       $school.select2("enable", false);
       $school.select2("data",{
         id: 0,
         text: "Other"
       });
       $schoolName
-        .val("")
         .parent('.field').slideDown();
     } else {
       $school.select2("enable", true);
@@ -47,7 +45,12 @@ $(document).ready(function(){
         .val("")
         .parent('.field').slideUp();
     }
-  });
+  };
+
+  // For when we get that data back
+  $otherSchool.prop('checked', $otherSchool.val() === "True");
+  $adult.prop('checked', $adult.val() === "True");
+  updateCheckbox();
 
   function validate(){
 

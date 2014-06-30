@@ -114,7 +114,8 @@ def dashboard():
 @app.route('/lottery')
 @login_required
 def lottery():
-    return render_template('lottery.html')
+    hacker = Hacker.query.filter_by(id=current_user.id).first().get_hacker_details()
+    return render_template('lottery.html', hacker=hacker)
 
 @app.route('/team')
 @login_required
@@ -156,15 +157,20 @@ def logout():
 @login_required
 def hackers():
     form = LotteryForm()
+    # First find the hacker if they already exist
+    hacker = Hacker.query.filter_by(id=current_user.id).first()
 
-    print "name", form.name.data
-    print "gender", form.gender.data
-    print "schoolid", form.school_id.data
-    print "school", form.school.data
-    print "adult", form.adult.data
-    print "location", form.location.data
-    print "inviteCode", form.inviteCode.data
-    return jsonify({'message': "Hacker Post!"})
+    hacker.name = form.name.data
+    hacker.gender = form.gender.data
+    hacker.school_id = form.school_id.data
+    hacker.school = form.school.data
+    hacker.adult = form.adult.data
+    hacker.location = form.location.data
+    hacker.inviteCode = form.inviteCode.data
+
+    db.session.commit()
+
+    return jsonify({'message': "Successfully Updated!"})
 
 if __name__ == '__main__':
     with app.app_context():
