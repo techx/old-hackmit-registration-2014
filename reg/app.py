@@ -2,9 +2,10 @@ from flask import Flask, render_template, request, redirect, url_for, jsonify
 from flask.ext.login import LoginManager, login_required, login_user, current_user, logout_user
 from flask_wtf.csrf import CsrfProtect
 
-from models import db, Account
+from models import db, Account, Hacker, Team
 from forms import LoginForm, RegistrationForm, LotteryForm
 from errors import AuthenticationError
+
 
 app = Flask(__name__,instance_relative_config=True)
 app.config.from_object('config.dev.DevelopmentConfig')
@@ -114,7 +115,18 @@ def lottery():
 @app.route('/team')
 @login_required
 def team():
-    return render_template('team.html')
+    hacker = Hacker.query.filter_by(id=current_user.id).first()
+    if hacker == None:
+        # This account isn't a hacker! Maybe a company rep or something?
+        raise NotImplementedError()
+    team_id = hacker.team_id
+    if team_id == None:
+        team = None
+    else:
+        team = {}
+        team.users = [hacker.email for hacker in Hacker.query.filter_by(team_id=team_id).all()]
+        team.inviteCode = Team.query.filter_by(id=team_id).first().invite_code
+    return render_template('team.html', team=team)
 
 @app.route('/logout')
 @login_required
