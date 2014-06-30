@@ -28,9 +28,6 @@ $(document).ready(function() {
     })
   }
 
-  $(".login")
-    .transition('fade up in');
-
   function showError(error){
     $form
       .removeClass('success')

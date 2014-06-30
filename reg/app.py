@@ -3,7 +3,7 @@ from flask.ext.login import LoginManager, login_required, login_user, current_us
 from flask_wtf.csrf import CsrfProtect
 
 from models import db, Account, Hacker, Team
-from forms import LoginForm, RegistrationForm, LotteryForm
+from forms import LoginForm, RegistrationForm, LotteryForm, ResetForm
 from errors import AuthenticationError
 
 MAX_TEAM_SIZE = 4
@@ -89,6 +89,28 @@ def register_user():
     
     # Return a message of success
     return jsonify({'message': 'Successfully Registered!'})
+
+@app.route('/accounts/<account_id>', methods=['PUT'])
+@login_required
+def update(account_id):
+
+    form = ResetForm()
+    email = form.email.data
+    oldPassword = form.oldPassword.data
+    newPassword = form.newPassword.data
+
+    account = Account.query.filter_by(id=account_id).first()
+
+    if account.email_address != email:
+        raise AuthenticationError("You email doesn't seem to match our records.")
+
+    if not account.check_password(oldPassword):
+        raise AuthenticationError("Your password is wrong!")
+
+    account.update_password(newPassword)
+    db.session.commit()
+
+    return jsonify({"message": "Password successfully updated!"})
 
 @app.route('/login')
 def login():
@@ -214,6 +236,12 @@ def join_team(team_invite_code):
 def logout():
     logout_user()
     return redirect(url_for('index'))
+
+@app.route('/reset')
+@login_required
+def reset():
+    email = Account.query.filter_by(id=current_user.id).first().email_address
+    return render_template('reset.html', email=email)
 
 @app.route('/hackers', methods=['POST'])
 @login_required

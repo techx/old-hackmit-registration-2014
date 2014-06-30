@@ -22,6 +22,9 @@ class Account(db.Model, UserMixin):
     def check_password(self, password):
         return check_password_hash(self.hashed_password, password)
 
+    def update_password(self, password):
+        self.hashed_password = generate_password_hash(password, method='pbkdf2:sha256:5000', salt_length=62) #Note salt_length is number of characters, 62 matches the length of the password
+
 class Hacker(db.Model):
     __bind_key__ = 'local'
     __tablename__ = 'hackers'

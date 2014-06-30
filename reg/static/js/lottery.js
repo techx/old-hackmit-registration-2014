@@ -1,10 +1,4 @@
 $(document).ready(function(){
-  $('.lottery')
-    .transition('fade in');
-
-  $('.ui.dropdown')
-    .dropdown();
-
   var $form = $('.ui.form'),
       $name = $('#name'),
       $school = $('#school'),

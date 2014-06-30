@@ -38,9 +38,6 @@ $(document).ready(function() {
     })
   }
 
-  $(".register")
-    .transition('fade up in');
-
   function showError(error){
     $form
       .removeClass('success')

@@ -1,6 +1,4 @@
 $(document).ready(function(){
-  $('.team')
-    .transition('fade in');
 
   function createTeam(){
 
