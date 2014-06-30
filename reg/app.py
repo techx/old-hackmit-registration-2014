@@ -44,6 +44,10 @@ def unauthorized():
 
 # TODO: move all static files to nginx and use uWSGI to hook into Flask
 
+@app.errorhandler(404)
+def not_found(error):
+    return render_template('server_message.html', header="404", subheader="Whoa, you must be lost.")
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -127,8 +131,9 @@ def lottery():
 def team():
     hacker = Hacker.query.filter_by(id=current_user.id).first()
     if hacker == None:
-        # TODO: This account isn't a hacker! Maybe a company rep or something?
-        raise NotImplementedError()
+        # Not a hacker, return a server message!
+        # TODO: Do something for company reps, etc
+        return render_template('server_message.html', header="You're not a hacker.", subheader="How did you get here?")
     team_id = hacker.team_id
     if team_id == None:
         team = None
@@ -143,8 +148,9 @@ def team():
 def teams():
     hacker = Hacker.query.filter_by(id=current_user.id).first()
     if hacker == None:
-        # TODO: This account isn't a hacker! Maybe a company rep or something?
-        raise NotImplementedError()
+        # Not a hacker, return a server message!
+        # TODO: Do something for company reps, etc
+        return render_template('server_message.html', header="You're not a hacker.", subheader="How did you get here?")
     team = Team(app)
     db.session.add(team)
     hacker.team_id = team.id    
