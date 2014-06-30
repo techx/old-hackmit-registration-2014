@@ -24,8 +24,11 @@ $(document).ready(function() {
       success: function(data){
         $email.val("");
         $password.val("");
-        $('.ui.page.dimmer')
+        var dimmer = $('.ui.page.dimmer')
           .dimmer('show');
+        setTimeout(function(){
+          dimmer.dimmer('hide')
+        }, 3000)
       },
       error: function(error) {
         var msg = JSON.parse(error.responseText).message;
