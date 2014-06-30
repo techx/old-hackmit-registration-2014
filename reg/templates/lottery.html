@@ -2,7 +2,6 @@
 
 {% block head %}
 
-<script src="static/bower_components/requirejs/require.js"></script>
 <script src="static/js/lottery.js" xmlns:select="http://www.w3.org/1999/html"></script>
 <script src="static/bower_components/select2/select2.min.js"></script>
 <link href="static/stylesheets/select2.css" type="text/css" rel="stylesheet">
@@ -58,7 +57,7 @@
 
             <div class="name field">
               <label>Full Legal Name</label>
-              <input id="name" type="text" value="{{ hacker.name }}">
+              <input id="name" type="text" value="{{ hacker.name if hacker.name !=None }}">
             </div>
 
             <div class="field">
@@ -66,7 +65,7 @@
               <div class="ui fluid selection dropdown">
                 <div class="text">Select</div>
                 <i class="dropdown icon"></i>
-                <input id="gender" type="hidden" value="{{ hacker.gender }}">
+                <input id="gender" type="hidden" value="{{ hacker.gender if hacker.gender !=None }}">
                 <div class="menu">
                   <div class="item" data-value="male">Male</div>
                   <div class="item" data-value="female">Female</div>
@@ -78,36 +77,36 @@
 
             <div class="field">
               <label>School</label>
-              <input type='hidden' id="school" type="hidden" style="width: 100%" value="{{ hacker.school_id }}">
+              <input type='hidden' id="school" type="hidden" style="width: 100%" value="{{ hacker.school_id if hacker.school_id != None}}">
               </input>
             </div>
 
             <div class="inline field">
               <div class="ui checkbox">
                 <input id="otherSchool" type="checkbox"
-                value="{{ hacker.school_id == 0 }}">
+                value="{{ (hacker.school_id == 0) if hacker.school_id != None }}">
                 <label for="otherSchool">My school isn't on this list.</label>
               </div>
             </div>
 
             <div class="field" style="display:none">
               <label> School name (not on list) </label>
-              <input id="schoolName" type="text" value="{{ hacker.school }}">
+              <input id="schoolName" type="text" value="{{ hacker.school if hacker.school != None}}">
             </div>
 
             <div class="field">
               <label>Traveling from (if not school)</label>
-              <input id="travelling" type="text" value="{{ hacker.location }}">
+              <input id="travelling" type="text" value="{{ hacker.location if hacker.location != None}}">
             </div>
 
             <div class="field">
               <label>Invite Code (optional) </label>
-              <input id="invite" type="text" value="{{ hacker.inviteCode }}">
+              <input id="invite" type="text" value="{{ hacker.inviteCode if hacker.inviteCode != None}}">
             </div>
 
             <div class="inline field">
               <div class="ui checkbox">
-                <input id="adult" type="checkbox" value="{{ hacker.adult }}">
+                <input id="adult" type="checkbox" value="{{ hacker.adult if hacker.inviteCode != None}}">
                 <label for="adult">I am 18+ years old.</label>
               </div>
             </div>

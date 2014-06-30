@@ -15,7 +15,6 @@ $(document).ready(function(){
       $adult = $('#adult'),
       $inviteCode = $('#invite');
 
-
   $school
     .select2({
       placeholder: "Select a School",
@@ -27,9 +26,7 @@ $(document).ready(function(){
     $schoolName.val($school.select2("data").text);
   });
 
-  $otherSchool.change(updateCheckbox);
-
-  function updateCheckbox(){
+  $otherSchool.change(function(){
     if($otherSchool.is(':checked')){
       $school.select2("enable", false);
       $school.select2("data",{
@@ -37,6 +34,7 @@ $(document).ready(function(){
         text: "Other"
       });
       $schoolName
+        .val("")
         .parent('.field').slideDown();
     } else {
       $school.select2("enable", true);
@@ -45,12 +43,14 @@ $(document).ready(function(){
         .val("")
         .parent('.field').slideUp();
     }
-  };
+  });
 
   // For when we get that data back
   $otherSchool.prop('checked', $otherSchool.val() === "True");
+  if ($otherSchool.val() === "True"){
+    $schoolName.parent('.field').slideDown();
+  }
   $adult.prop('checked', $adult.val() === "True");
-  updateCheckbox();
 
   function validate(){
 
@@ -59,7 +59,6 @@ $(document).ready(function(){
       showError("You must be 18+ to participate!");
       return
     }
-
     submitLotteryApplication();
   }
   
