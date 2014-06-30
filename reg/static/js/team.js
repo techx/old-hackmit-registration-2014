@@ -21,7 +21,13 @@ $(document).ready(function(){
       contentType:'application/json',
       dataType: 'json',
       success: function(message){
-        dimmerMessage(message.message)
+        dimmerMessage(
+          message.message,
+          "",
+          function(){
+            location.reload();
+          }, 1500
+        )
       }
     })
   }
