@@ -1,7 +1,6 @@
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
-from itsdangerous import URLSafeSerializer
 from random import randrange
 
 db = SQLAlchemy()
@@ -25,10 +24,10 @@ class Account(db.Model, UserMixin):
 class Hacker(db.Model):
     __bind_key__ = 'local'
     __tablename__ = 'hackers'
-    
+
     id = db.Column(db.Integer, primary_key=True)
     account_id = db.Column(db.Integer, db.ForeignKey('accounts.id'))
-    team_id = db.Column(db.Integer, db.ForeignKey('teams.id')) # Need to add lottery fields.
+    team_id = db.Column(db.Integer, db.ForeignKey('teams.id'))
 
     name = db.Column(db.String(50))
     gender = db.Column(db.String(8))
@@ -57,12 +56,11 @@ class Hacker(db.Model):
 
 
 class Team(db.Model):
-   __bind_key__ = 'local'
-   __tablename__ = 'teams'
+    __bind_key__ = 'local'
+    __tablename__ = 'teams'
 
-   id = db.Column(db.Integer, primary_key=True)
-   inviteCode = db.Column(db.String(20), unique=True)
-   #TODO: need to figure out max size of digest for inviteCode
+    id = db.Column(db.Integer, primary_key=True)
+    inviteCode = db.Column(db.String(20), unique=True)
 
-   def __init__(self, app):
-       self.inviteCode = '%030x' % randrange(16**20)
+    def __init__(self, app):
+        self.inviteCode = '%020x' % randrange(16**20)
