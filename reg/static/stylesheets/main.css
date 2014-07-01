@@ -36,3 +36,36 @@ textarea {
   height: 1em;
   width: 1em;
 }
+
+#header{
+  background: url(../assets/images/background.jpg) no-repeat;
+  height: 120px;
+  margin-top: 8px;
+  text-align: center;
+  background-position: -154px -314px;
+  border-radius: 2px;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+}
+
+  #header .title{
+    color: white;
+    font-size: 3em;
+    padding-top: 30px;
+  }
+
+.ui.hack.button {
+  box-shadow: none;
+  border: 2px solid rgb(35,177,150);
+  color: rgb(35,177,150);
+  background: none;
+}
+
+.ui.hack.button:hover {
+  background: rgb(35, 177, 150);
+  color: white;
+}
+
+
+
+

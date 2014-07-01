@@ -115,6 +115,15 @@
   </div>
 </div>
 
+{% block header %}
+<div id="header">
+  <div class="title">
+    {% block headerTitle %}
+    {% endblock %}
+  </div>
+</div>
+{% endblock %}
+
 <div class="main">
   {% block content %}
   {% endblock %}

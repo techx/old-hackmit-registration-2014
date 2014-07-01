@@ -13,6 +13,11 @@
 
 {% endblock %}
 
+{% block headerTitle %}
+
+    RESET
+{% endblock %}
+
 {% block content %}
 <div class="reset">
 
@@ -25,7 +30,6 @@
       </div>
       <div class="column">
 
-        <h1> Reset Password </h1>
         <div class="ui form">
           <div class="field">
             <input id="id" value="{{ current_user.id }}" type="hidden">
@@ -57,7 +61,7 @@
           <div class="ui error message">
             <div class="header">We noticed some issues</div>
           </div>
-          <button class="ui fluid purple submit button">RESET</button>
+          <button class="ui fluid hack submit button">RESET</button>
         </div>
 
       </div>
