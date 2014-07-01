@@ -1,1 +1,10 @@
-Hello! This is plain text!
+Thanks for entering the registration lottery for HackMIT!
+
+Please confirm your email by clicking the following link: {confirmation_link}. 
+
+Expect to hear back from us soon after July 15th. If you are admitted, we will send out more details on how to complete your registration. Please email team@hackmit.org if you have any questions.
+
+Also, if you haven't already, try to crack the HackMIT admissions puzzle! The starting point is located somewhere on our website.
+
+Sincerely,
+The HackMIT Team
