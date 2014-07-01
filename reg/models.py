@@ -13,7 +13,7 @@ class Account(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     email_address = db.Column(db.String(320), unique=True)
     hashed_password = db.Column(db.String(146)) # Total length of hashed, salted password
-    verified = db.Column(db.Boolean)
+    confirmed = db.Column(db.Boolean, default = False)
 
     def __init__(self, email_address, password):
         self.email_address = email_address
@@ -24,6 +24,12 @@ class Account(db.Model, UserMixin):
 
     def update_password(self, password):
         self.hashed_password = generate_password_hash(password, method='pbkdf2:sha256:5000', salt_length=62) #Note salt_length is number of characters, 62 matches the length of the password
+
+    def email_confirmed(self):
+        return self.confirmed
+
+    def confirm_email(self):
+        self.confirmed = True
 
 class Hacker(db.Model):
     __bind_key__ = 'local'
@@ -58,6 +64,8 @@ class Hacker(db.Model):
 
         return details
 
+    def lottery_submitted(self):
+        return self.name is not None and self.name!= ""
 
 class Team(db.Model):
     __bind_key__ = 'local'

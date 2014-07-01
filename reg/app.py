@@ -1,3 +1,5 @@
+from functools import wraps
+
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 from flask.ext.login import LoginManager, login_required, login_user, current_user, logout_user
 from flask_wtf.csrf import CsrfProtect
@@ -26,6 +28,18 @@ app.secret_key = app.config['SECRET_KEY'] # For Flask
 db.init_app(app)
 mail.init_app(app)
 
+# Must be used in conjunction with the @login_required decorator.
+def email_confirmed(function):
+    @wraps(function)
+    def wrapped_email_confirmed_function(*args):
+        account = Account.query.filter_by(id=current_user.id).first()
+        if not account.email_confirmed():
+            # TODO: Need to have this turn the link into an actual link.
+            raise AuthenticationError('You need to confirm your email to do that! Visit ' + url_for('dashboard', _external = True) + ' to resend the confirmation email.')
+        else:
+            return function(*args)
+    return wrapped_email_confirmed_function
+         
 # Register the error handler so it's not an internal server error
 @app.errorhandler(AuthenticationError)
 def handle_authentication_error(error):
@@ -88,9 +102,9 @@ def register_user():
     db.session.commit()
     
     s = URLSafeSerializer(app.config['SECRET_KEY'])
-    invite_code = s.dumps(new_account.id)
+    confirm = s.dumps(new_account.id)
 
-    send_account_confirmation_email(email_address, invite_code=invite_code)
+    send_account_confirmation_email(email_address, confirm=confirm)
     
     # Return a message of success
     return jsonify({'message': 'Successfully Registered!'})
@@ -148,20 +162,55 @@ def sessions():
     login_user(stored_account)
     return jsonify({ 'url' : url_for('dashboard')})
 
-
 @app.route('/dashboard')
 @login_required
 def dashboard():
-    return render_template('dashboard.html')
+    print 'hello!'   
+    just_confirmed = False # Confirm code submitted in the request is valid (email has been confirmed, show a popup)
+    email_confirmed = False # Email is confirmed, show lottery
+    lottery_complete = False # Lottery is complete, also show teams
+    print 'after vars'
+    print current_user.id
+    account = load_user(current_user.id)
+    print account.email_address
+    print account.hashed_password
+    print account.confirmed
+    if account.email_confirmed():
+        email_confirmed = True
+        hacker = Hacker.query.filter_by(account_id=current_user.id).first()
+        print hacker
+        if hacker.lottery_submitted():
+            lottery_complete = True
+    else:
+        print 'makde it this far'
+        confirm = request.args.get('confirm')
+        print confirm
+        if confirm != None:
+            s = URLSafeSerializer()
+            try:
+                confirm_user_id = s.loads(confirm)
+                if confirm_user_id == current_user.id:
+                    account.confirm_email()
+                    db.session.commit()
+                    just_confirmed = True
+                    email_confirmed = True
+            except BadSignatureError:
+                pass
+
+    return render_template('dashboard.html', just_confirmed=just_confirmed, email_confirmed=email_confirmed, lottery_complete=lottery_complete)
 
 @app.route('/lottery')
 @login_required
+@email_confirmed
 def lottery():
     hacker = Hacker.query.filter_by(account_id=current_user.id).first().get_hacker_details()
+    if hacker == None:
+        return render_template('server_message.html', header="You're not a hacker.", subheader="How did you get here?")
     return render_template('lottery.html', hacker=hacker)
 
 @app.route('/team')
 @login_required
+@email_confirmed
 def team():
     hacker = Hacker.query.filter_by(account_id=current_user.id).first()
     if hacker == None:
@@ -194,6 +243,7 @@ def team():
 
 @app.route('/team/leave', methods=['POST'])
 @login_required
+@email_confirmed
 def leave_team():
     hacker = Hacker.query.filter_by(account_id=current_user.id).first()
     hacker.team_id = None
@@ -203,6 +253,7 @@ def leave_team():
 
 @app.route('/teams', methods=['POST'])
 @login_required
+@email_confirmed
 def teams():
     hacker = Hacker.query.filter_by(account_id=current_user.id).first()
     if hacker == None:
@@ -219,6 +270,7 @@ def teams():
 
 @app.route('/teams/<team_invite_code>', methods=['POST'])
 @login_required
+@email_confirmed
 def join_team(team_invite_code):
 
     # Find the team associated with the invite code
@@ -255,6 +307,7 @@ def reset():
 
 @app.route('/hackers', methods=['POST'])
 @login_required
+@email_confirmed
 def hackers():
     form = LotteryForm()
     # First find the hacker if they already exist
