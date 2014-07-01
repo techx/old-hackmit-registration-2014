@@ -15,6 +15,24 @@ textarea {
   font-weight: 700;
 }
 
+.lato {
+  font-family: 'Lato', 'Helvetica Neue Light', 'Helvetica', sans-serif !important;
+}
+
 .ui.message ul.list li:before {
   content: "" !important;
+}
+
+.ui.menu .logo.item {
+  float: left;
+}
+
+.hacksquare {
+  outline: 2px solid black;
+  outline-offset: 2px;
+  float: left;
+  display: inline-block !important;
+  margin-right: .5em !important ;
+  height: 1em;
+  width: 1em;
 }

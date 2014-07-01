@@ -1,0 +1,132 @@
+html,
+body {
+  height: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  background: url(../assets/images/bw-bg.jpg) no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  color: white;
+  font-size: 16px;
+}
+
+.bg-overlay {
+  content:'';
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-image: linear-gradient(to bottom right,#0099CC ,#669900 );
+  opacity: .8;
+}
+
+section {
+  position: relative;
+  height: 100vh;
+  min-height: 500px;
+}
+
+section.content {
+  height: 100%;
+}
+
+/* Main Panel */
+
+.logo {
+  height: 5em;
+  width: 5em;
+  outline: solid white 3px;
+  outline-offset: 6px;
+}
+
+.title {
+  margin-top: 30px;
+  font-weight: 700;
+  font-size: 4em;
+  letter-spacing: 8px;
+}
+
+.tagline {
+  margin-top: 0;
+  text-transform: uppercase;
+  font-size: 1.05em;
+  letter-spacing: 1.7px;
+}
+
+.date,
+.location {
+  font-size: 1.05em;
+  letter-spacing: 1.7px;
+  margin-top:2px;
+  text-transform: uppercase;
+  display: inline-block;
+}
+
+.description {
+  margin-top: 35px;
+  font-size: 1.05em;
+  letter-spacing: 1.7px;
+  text-transform: uppercase;
+}
+
+button.outline{
+  font-size: 20px;
+  width: 320px;
+  border-radius:3px;
+  padding: 8px;
+  margin-top: 18px;
+  color: white;
+  background: transparent;
+  border: solid white 2px;
+  opacity:.75;
+  -webkit-transition: color 500ms, background 500ms;
+  -moz-transition: color 500ms, background 500ms;
+  -o-transition: color 500ms, background 500ms;
+  -ms-transition: color 500ms, background 500ms;
+  transition: color 500ms, background 500ms;
+}
+
+button.outline:hover {
+  background: white;
+  cursor: pointer;
+}
+
+button.outline.green:hover{
+  color: #1fdd8f;
+}
+
+button.outline.red:hover{
+  color: rgb(106,60,57)
+}
+button.outline:focus {
+  outline: 0;
+}
+
+/* INFO PANEL */
+
+section#info {
+  background: rgba(255,255,255,.85);
+  height: 50vh;
+}
+
+section#faq {
+}
+
+section#sponsor {
+  background: rgba(255, 255, 255, .8);
+}
+
+section#register {
+  background: transparent;
+}
+
+footer#footer {
+
+  background: white;
+}
