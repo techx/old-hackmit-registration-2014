@@ -3,6 +3,16 @@
 {% block head %}
 
 <script src="static/js/index.js"></script>
+<script src="static/bower_components/skrollr/dist/skrollr.min.js"></script>
+<link rel="stylesheet" href="static/stylesheets/index.css" type="text/css">
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    skrollr.init({
+      forceHeight: false
+    });
+  })
+</script>
 
 {% endblock %}
 
@@ -12,13 +22,107 @@
 
 {% endblock %}
 
-{% block content %}
+{% block nav %}
 
-    <h1> INDEX OF HACKMIT </h1>
-    <h2> COOL STUFF TO APPEAR HERE SHORTLY </h2>
-    <div class="ui button">
-      Hello
+{% endblock %}
+
+{% block body %}
+<body id="#skrollr-body">
+
+<div class="bg-overlay"
+     data-0="background-image:linear-gradient(315deg, hsl(208, 99%, 56%), hsl(119, 86%, 62%));"
+     data-end="background-image:linear-gradient(315deg, hsl(202,100%, 15%),hsl(10, 72%, 50%));">
+</div>
+
+<section id="main" class="montserrat">
+  <div class="ui page grid">
+    <div class="row"></div>
+    <div class="row"></div>
+    <div class="row"></div>
+
+    <div class="row">
+      <div class="center aligned column">
+
+        <div class="content">
+          <img src="static/assets/images/hack-logo-white.svg"
+               onerror="this.onerror=null; this.src='static/assets/images/hack-logo-white.png'" class="logo">
+          <div class="title">
+            HACKMIT
+          </div>
+          <div class="tagline">
+            Get ready for a hackathon like none other.
+          </div>
+          <div class="date">
+            Oct 4 - 5, 2014,
+          </div>
+          <div class="location">
+            MIT CAMPUS
+          </div>
+          <div class="description">
+            Open to all undergraduates from all universities.
+          </div>
+          <br>
+          <button class="montserrat green outline button" onclick="location.href='/register'">REGISTER</button>
+          <br>
+          <button class="montserrat green outline button" onclick="location.href='/login'">LOGIN</button>
+
+        </div>
+      </div>
     </div>
 
+  </div>
+
+</section>
+
+<section id="info">
+
+</section>
+
+<section id="faq">
+
+</section>
+
+<section id="sponsor">
+
+</section>
+
+<section id="register" class="montserrat">
+
+  <div class="ui page grid">
+    <div class="row"></div>
+    <div class="row"></div>
+    <div class="row"></div>
+    <div class="row"></div>
+    <div class="row"></div>
+
+    <div class="row">
+      <div class="center aligned column">
+
+        <div class="content">
+          <img src="static/assets/images/hack-logo-white.svg"
+               onerror="this.onerror=null; this.src='static/assets/images/hack-logo-white.png'" class="logo">
+          <div class="title">
+            HACKMIT
+          </div>
+          <div class="tagline">
+            What are you waiting for?
+          </div>
+          <button class="montserrat red outline button" onclick="location.href='/register'">REGISTER</button>
+          <br>
+          <button class="montserrat red outline button" onclick="location.href='/login'">LOGIN</button>
+
+        </div>
+      </div>
+    </div>
+
+  </div></section>
+
+<footer id="footer">
+  <div class="content">
+
+  </div>
+</footer>
+
+</body>
 {% endblock %}
 
