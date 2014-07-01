@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 from flask.ext.login import LoginManager, login_required, login_user, current_user, logout_user
 from flask_wtf.csrf import CsrfProtect
+from itsdangerous import URLSafeSerializer
 
 from models import db, Account, Hacker, Team
 from forms import LoginForm, RegistrationForm, LotteryForm, ResetForm
@@ -78,15 +79,18 @@ def register_user():
         # Send back an error saying that this account already exists
         raise AuthenticationError('This account already exists!', status_code=420)
 
-    newAccount = Account(email_address, hashed_password)
-    db.session.add(newAccount)
+    new_account = Account(email_address, hashed_password)
+    db.session.add(new_account)
     if role=="hacker": #TODO Move away from this hardcoded string and turn into a table lookup
         db.session.flush()
-        newHacker= Hacker(newAccount.id)
-        db.session.add(newHacker)
+        new_hacker= Hacker(new_account.id)
+        db.session.add(new_hacker)
     db.session.commit()
-   
-    send_account_confirmation_email(email_address)
+    
+    s = URLSafeSerializer(app.config['SECRET_KEY'])
+    invite_code = s.dumps(new_account.id)
+
+    send_account_confirmation_email(email_address, invite_code=invite_code)
     
     # Return a message of success
     return jsonify({'message': 'Successfully Registered!'})

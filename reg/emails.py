@@ -3,7 +3,6 @@ from flask.ext.mail import Mail, Message
 
 mail = Mail()
 
-
 # Nifty decorator to do 90% of the work
 def send_email(template_name):
     def wrap(subject_func):
@@ -18,5 +17,5 @@ def send_email(template_name):
     return wrap
 
 @send_email('account_confirmation')
-def send_account_confirmation_email(email_address):
-    return ("Welcome to HackMIT!", {'invite_code':"invite Code"})
+def send_account_confirmation_email(email_address, **kwargs):
+    return ("Welcome to HackMIT!", kwargs)
