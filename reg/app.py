@@ -106,6 +106,10 @@ def update(account_id):
     if not account.check_password(old_password):
         raise AuthenticationError("Your password is wrong!")
 
+    if old_password == new_password:
+        #Needs to be a new password!
+        raise NotImplementedError()
+
     account.update_password(new_password)
     db.session.commit()
 
