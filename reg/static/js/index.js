@@ -13,4 +13,9 @@ $(document).ready(function() {
     }, 1000);
   });
 
+  $('#c')
+    .click(function(){
+      location.href = '/6361746d6974'
+    })
+
 });
