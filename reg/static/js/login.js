@@ -6,6 +6,8 @@ $(document).ready(function() {
 
   function login(){
 
+    var $dimmable = $('.ui.dimmable').dimmer('show');
+
     $.ajax({
       url:'/sessions',
       type: 'POST',
@@ -17,11 +19,13 @@ $(document).ready(function() {
         hashedPassword: SHA224($password.val())
       }),
       success: function(data){
+        $dimmable.dimmer('hide');
         if (data.url){
           location.href = data.url
         }
       },
       error: function(error) {
+        $dimmable.dimmer('hide');
         var msg = JSON.parse(error.responseText).message;
         showError(msg);
       }

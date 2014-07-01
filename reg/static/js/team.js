@@ -8,6 +8,7 @@ $(document).ready(function(){
       contentType:'application/json',
       dataType: 'json',
       success: function(){
+
         location.reload();
       }
     })
@@ -34,12 +35,15 @@ $(document).ready(function(){
 
   function joinTeam(){
 
+    var $dimmable = $('.ui.dimmable').dimmer('show');
+
     $.ajax({
       url:'/teams/' + $('#teamInviteCode').val(),
       type: 'POST',
       contentType:'application/json',
       dataType: 'json',
       success: function(message){
+        $dimmable.dimmer('hide');
         dimmerMessage(
           message.message,
           "",
@@ -50,6 +54,7 @@ $(document).ready(function(){
 
       },
       error: function(error) {
+        $dimmable.dimmer('hide');
         var msg = JSON.parse(error.responseText).message;
         $('.ui.form')
           .addClass('error')

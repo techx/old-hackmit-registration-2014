@@ -11,6 +11,8 @@ $(document).ready(function() {
       return;
     }
 
+    var $dimmable = $('.ui.dimmable').dimmer('show');
+
     $.ajax({
       url:'/accounts',
       type: 'POST',
@@ -25,6 +27,8 @@ $(document).ready(function() {
         $email.val("");
         $password.val("");
 
+        $dimmable.dimmer('hide');
+
         dimmerMessage(
           "Thanks for registering!",
           "Check your email for verification.",
@@ -34,6 +38,7 @@ $(document).ready(function() {
         );
       },
       error: function(error) {
+        $dimmable.dimmer('hide');
         var msg = JSON.parse(error.responseText).message;
         showError(msg);
       }
