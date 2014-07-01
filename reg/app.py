@@ -109,6 +109,8 @@ def update(account_id):
     account.update_password(new_password)
     db.session.commit()
 
+    logout_user()
+
     return jsonify({"message": "Password successfully updated!"})
 
 @app.route('/login')

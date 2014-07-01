@@ -23,7 +23,7 @@ $(document).ready(function(){
           data.message,
           "",
           function(){
-            location.href= "/dashboard"
+            location.href= "/logout"
           }, 1500
         );
       },
