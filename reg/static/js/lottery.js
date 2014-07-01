@@ -7622,6 +7622,6 @@ var schools =
   { "id": 480523, "text": "Ross Medical Education Center (Ohio)" },
   { "id": 480532, "text": "Ross Medical Education Center (Ohio)" },
   { "id": 480550, "text": "Ross Medical Education Center (Kentucky)" },
-  { "id": 480569, "text": "Florida Institute of Technology-Florida Tech Online (Florida)" },
+  { "id": 480569, "text": "Florida Institute of Technology-Florida Tech Online (Florida)" }
 ]
-}
+};
