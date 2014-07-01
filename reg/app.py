@@ -11,7 +11,6 @@ MAX_TEAM_SIZE = 4
 
 app = Flask(__name__,instance_relative_config=True)
 app.config.from_object('config.dev.DevelopmentConfig')
-app.config['DEBUG'] = True
 
 # Secure the app with CsrfProtect
 csrf = CsrfProtect(app)
@@ -71,7 +70,7 @@ def register_user():
     role = form.role.data
     email_address = form.email.data
     hashed_password = form.hashedPassword.data
-
+    
     if not form.validate_on_submit():
         raise AuthenticationError('Your data is bad and you should feel bad.', status_code=403)
 
