@@ -31,12 +31,12 @@ mail.init_app(app)
 # Must be used in conjunction with the @login_required decorator.
 def email_confirmed(function):
     @wraps(function)
-    def wrapped_email_confirmed_function(*args):
+    def wrapped_email_confirmed_function(**kwargs):
         account = Account.query.filter_by(id=current_user.id).first()
         if not account.email_confirmed():
             return render_template('server_message.html', header="You need to verify your email to get here!", subheader="You can resend the confirmation email from the dashboard.")
         else:
-            return function(*args)
+            return function(**kwargs)
     return wrapped_email_confirmed_function
 
 # Register the error handler so it's not an internal server error
