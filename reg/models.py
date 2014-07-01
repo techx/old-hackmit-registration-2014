@@ -22,6 +22,9 @@ class Account(db.Model, UserMixin):
     def check_password(self, password):
         return check_password_hash(self.hashed_password, password)
 
+    def update_password(self, password):
+        self.hashed_password = generate_password_hash(password, method='pbkdf2:sha256:5000', salt_length=62) #Note salt_length is number of characters, 62 matches the length of the password
+
 class Hacker(db.Model):
     __bind_key__ = 'local'
     __tablename__ = 'hackers'
@@ -36,7 +39,7 @@ class Hacker(db.Model):
     school = db.Column(db.String(120))
     adult = db.Column(db.Boolean)
     location = db.Column(db.String(120))
-    inviteCode = db.Column(db.String(8))
+    invite_code = db.Column(db.String(8))
 
     def __init__(self, account_id):
         self.account_id = account_id
@@ -51,7 +54,7 @@ class Hacker(db.Model):
         details["school_id"] = self.school_id
         details["adult"] = self.adult
         details["location"] = self.location
-        details["inviteCode"] = self.inviteCode
+        details["invite_code"] = self.invite_code
 
         return details
 

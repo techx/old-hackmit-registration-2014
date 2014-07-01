@@ -8,26 +8,6 @@
 
 {% endblock %}
 
-{% block navItems %}
-
-<a class="active item">
-  Apply
-</a>
-
-<a class="item" href="{{ url_for('team') }}">
-  Team
-</a>
-
-<a class="item" href="{{ url_for('dashboard') }}">
-  Dashboard
-</a>
-
-<a class="item" href="{{ url_for('logout') }}">
-  Logout
-</a>
-
-{% endblock %}
-
 {% block title %}
 
     Apply
@@ -35,15 +15,6 @@
 {% endblock %}
 
 {% block content %}
-
-  <div class="ui page dimmer">
-    <div class="content">
-      <div class="center">
-        <h1> Your application has been saved! </h1>
-        <h2> And now we wait... </h2>
-      </div>
-    </div>
-  </div>
 
   <div class="lottery">
 
@@ -109,8 +80,8 @@
             </div>
 
             <div class="field">
-              <label>Invite Code (optional) </label>
-              <input id="invite" type="text" value="{{ hacker.inviteCode if hacker.inviteCode != None}}">
+              <label>Secrete Code (optional) </label>
+              <input id="invite" type="text" value="{{ hacker.invite_code if hacker.invite_code != None}}">
             </div>
 
             <div class="inline field">
