@@ -119,7 +119,7 @@ button.outline:focus {
 
 section#info {
   background: rgba(255,255,255,.85);
-  min-height: 380px;
+  min-height: 240px;
   height: 25vh;
   text-align: center;
   color: black;
