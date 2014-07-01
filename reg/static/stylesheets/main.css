@@ -6,11 +6,6 @@ textarea {
   font-family: 'Lato', 'Helvetica Neue', 'Helvetica', sans-serif;
 }
 
-a.button {
-  text-decoration: none !important;
-  color: transparent !important;
-}
-
 .montserrat,
 .montserrat.bold {
   font-family: 'Montserrat', sans-serif;
