@@ -34,8 +34,7 @@ def email_confirmed(function):
     def wrapped_email_confirmed_function(*args):
         account = Account.query.filter_by(id=current_user.id).first()
         if not account.email_confirmed():
-            # TODO: Need to have this turn the link into an actual link.
-            raise AuthenticationError('You need to confirm your email to do that! Visit ' + url_for('dashboard', _external = True) + ' to resend the confirmation email.')
+            return render_template('server_message.html', header="You need to verify your email to get here!", subheader="You can resend the confirmation email from the dashboard.")
         else:
             return function(*args)
     return wrapped_email_confirmed_function
@@ -66,6 +65,8 @@ def not_found(error):
 
 @app.route('/')
 def index():
+    if current_user.is_authenticated():
+        return redirect( url_for('dashboard'))
     return render_template('index.html')
 
 @app.route('/sponsor')
@@ -177,26 +178,17 @@ def sessions():
 @app.route('/dashboard')
 @login_required
 def dashboard():
-    print 'hello!'   
-    just_confirmed = False # Confirm code submitted in the request is valid (email has been confirmed, show a popup)
     email_confirmed = False # Email is confirmed, show lottery
     lottery_complete = False # Lottery is complete, also show teams
-    print 'after vars'
-    print current_user.id
     account = load_user(current_user.id)
-    print account.email_address
-    print account.hashed_password
-    print account.confirmed
+    hacker = None
     if account.email_confirmed():
         email_confirmed = True
         hacker = Hacker.query.filter_by(account_id=current_user.id).first()
-        print hacker
         if hacker.lottery_submitted():
             lottery_complete = True
     else:
-        print 'makde it this far'
         confirm = request.args.get('confirm')
-        print confirm
         if confirm != None:
             s = URLSafeSerializer()
             try:
@@ -204,12 +196,11 @@ def dashboard():
                 if confirm_user_id == current_user.id:
                     account.confirm_email()
                     db.session.commit()
-                    just_confirmed = True
                     email_confirmed = True
             except BadSignatureError:
                 pass
 
-    return render_template('dashboard.html', just_confirmed=just_confirmed, email_confirmed=email_confirmed, lottery_complete=lottery_complete)
+    return render_template('dashboard.html', hacker=hacker, email_confirmed=email_confirmed, lottery_complete=lottery_complete)
 
 @app.route('/lottery')
 @login_required

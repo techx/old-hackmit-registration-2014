@@ -64,14 +64,6 @@
 
       {% if current_user.is_authenticated() %}
 
-        <a class="item {{ 'active' if request.path == '/lottery' }}" href="{{ url_for('lottery') }}">
-          Apply
-        </a>
-
-        <a class="item {{ 'active' if request.path == '/team' }}" href="{{ url_for('team') }}">
-          Team
-        </a>
-
         <div class="ui dropdown item">
           Account <i class="icon dropdown"></i>
           <div class="menu">

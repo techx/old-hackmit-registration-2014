@@ -2,7 +2,7 @@
 
 {% block head %}
 
-<script src="static/js/lottery.js"></script>
+<script src="static/js/dashboard.js"></script>
 
 {% endblock %}
 
@@ -24,43 +24,62 @@ Apply
 
 <div class="lottery">
 
-  <div class="ui stackable aligned three column page grid">
+  <div class="ui stackable aligned one column page grid">
 
     <div class="row"></div>
 
     <div class="row">
-      <div class="column"></div>
 
       <div class="center aligned column">
         <h1>
-          Welcome back, Hacker!
+          {% if hacker.name %}
+            Welcome back, {{ hacker.name }}!
+          {% endif %}
         </h1>
 
+          {% if email_confirmed %}
+
+          <h2> Your email is confirmed! </h2>
+
+            {% if lottery_complete %}
+
+              <h3> You're all set. Feel free to change any information
+              in the lottery application. </h3>
+
+              <h3> You can also now create
+              and join teams! </h3>
+
+            {% else %}
+
+              <h3> Looks like you haven't filled out the lottery application. You should do that!</h3>
+
+            {% endif %}
+
+          {% else %}
+
+          <h2> Your email is not yet confirmed. </h2>
+
+          {% endif %}
+
         <br>
 
-        <h2>
-          Your Info here:
-        </h2>
-        <h3>
-          blah blah blah
-        </h3>
-        <br>
-
-        <button class="ui fluid green button">
+        {% if email_confirmed %}
+        <button class="ui hack button" onclick="location.href='/lottery'">
           Lottery Application
         </button>
+        <br>
+        {% endif %}
 
         <br>
 
-        <button class="ui fluid blue button">
-          Teams
-        </button>
+        {% if lottery_complete %}
+          <button class="ui hack button" onclick="location.href='/team'">
+            Teams
+          </button>
+        {% endif %}
 
       </div>
 
-
-
-      <div class="column"></div>
 
     </div>
 
