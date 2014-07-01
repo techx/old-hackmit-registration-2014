@@ -5,11 +5,13 @@ from flask_wtf.csrf import CsrfProtect
 from models import db, Account, Hacker, Team
 from forms import LoginForm, RegistrationForm, LotteryForm, ResetForm
 from errors import AuthenticationError
+from emails import mail, send_account_confirmation_email
 
 MAX_TEAM_SIZE = 4
 
 app = Flask(__name__,instance_relative_config=True)
 app.config.from_object('config.dev.DevelopmentConfig')
+app.config['DEBUG'] = True
 
 # Secure the app with CsrfProtect
 csrf = CsrfProtect(app)
@@ -22,8 +24,7 @@ def csrf_error(reason):
 app.secret_key = app.config['SECRET_KEY'] # For Flask
 
 db.init_app(app)
-
-# TODO: Separate All of these things! Router, Other classes, etc.
+mail.init_app(app)
 
 # Register the error handler so it's not an internal server error
 @app.errorhandler(AuthenticationError)
@@ -85,6 +86,8 @@ def register_user():
         newHacker= Hacker(newAccount.id)
         db.session.add(newHacker)
     db.session.commit()
+   
+    send_account_confirmation_email(email_address)
     
     # Return a message of success
     return jsonify({'message': 'Successfully Registered!'})

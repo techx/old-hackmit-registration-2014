@@ -8,4 +8,5 @@ venv/
 *.swp
 *.py~
 reg/dev*.db
-
+central.db
+local.db
