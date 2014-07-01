@@ -28,15 +28,22 @@ body {
 
 section {
   position: relative;
-  height: 100vh;
-  min-height: 500px;
+  min-height: 100vh;
+  height: 100%;
+  padding: 80px 0;
 }
+
 
 section.content {
   height: 100%;
 }
 
 /* Main Panel */
+
+section#main{
+  padding: 100px 0;
+  min-height: 75vh;
+}
 
 .logo {
   height: 5em;
@@ -112,21 +119,100 @@ button.outline:focus {
 
 section#info {
   background: rgba(255,255,255,.85);
-  height: 50vh;
+  min-height: 380px;
+  height: 25vh;
+  text-align: center;
+  color: black;
+  padding: 100px 16px;
 }
 
+  #info .info-title{
+    font-family: 'Montserrat', 'Helvetica Neue','Helvetica', 'Arial', sans-serif;
+    font-weight: 700;
+    letter-spacing: 1.7px;
+    font-size: 4.5vw;
+    color: rgb(56,153,179);
+  }
+
+  #info .info-description{
+    width: 70%;
+    margin: 30px auto;
+    font-size: 1.3em;
+  }
+
+/* FAQ PANEL */
 section#faq {
+  padding: 80px 0;
 }
 
+  #faq .faq-title {
+    text-align: center;
+    font-family: 'Montserrat', 'Helvetica Neue','Helvetica', 'Arial', sans-serif;
+    font-weight: 700;
+    font-size: 4em;
+    margin-bottom: 80px;
+  }
+
+  #faq .question {
+    font-family: 'Montserrat', 'Helvetica Neue','Helvetica', 'Arial', sans-serif;
+    font-size: 1.4em;
+  }
+
+  #faq .answer {
+
+  }
+
+/* SPONSOR PANEL */
 section#sponsor {
   background: rgba(255, 255, 255, .8);
+  min-height: 120px;
+  height: 20vh;
+  text-align: center;
+  color: rgb(56,153,179);
 }
 
+  #sponsor .sponsor-title {
+    font-family: 'Montserrat', 'Helvetica Neue','Helvetica', 'Arial', sans-serif;
+    font-weight: 700;
+    font-size: 3.2em;
+    margin-bottom: 40px;
+  }
+
+  #sponsor .sponsor-message {
+    font-size: 1.2em;
+    color: black;
+  }
+
+  #sponsor .sponsor-message a{
+    text-decoration: none;
+    color: rgb(56,153,179);
+  }
+
+/* REGISTER PANEL */
 section#register {
+  padding: 160px 0;
+  min-height: 60vh;
   background: transparent;
 }
 
-footer#footer {
+section#footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 24px 0;
+  background: rgba(0,0,0,.7);
+  min-height: 3em;
+  height: 60px;
+  text-align: center;
+}
 
-  background: white;
+section#footer a.social {
+  text-decoration: none;
+  color: white;
+  margin: 0 8px;
+}
+
+section#footer .icon:hover {
+  text-shadow: 0 0 3px white;
+  cursor: pointer;
 }
