@@ -39,7 +39,7 @@ def email_confirmed(function):
         else:
             return function(*args)
     return wrapped_email_confirmed_function
-         
+
 # Register the error handler so it's not an internal server error
 @app.errorhandler(AuthenticationError)
 def handle_authentication_error(error):
@@ -108,6 +108,18 @@ def register_user():
     
     # Return a message of success
     return jsonify({'message': 'Successfully Registered!'})
+
+@app.route('/account/resend')
+@login_required
+def resendEmail():
+   if current_user.email_confirmed():
+       #TODO: Handle gracefully
+       raise AuthorizationError("Your email has already been confirmed.")
+   account_id = current_user.id
+   s = URLSafeSerializer(app.config['SECRET_KEY'])
+   confirm = s.dumps(account_id)
+   email_address = current_user.email_address
+   send_account_confirmation_email(email_address, confirm=confirm) 
 
 @app.route('/accounts/<account_id>', methods=['PUT'])
 @login_required

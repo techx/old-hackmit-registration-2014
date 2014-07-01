@@ -6,8 +6,8 @@ mail = Mail()
 # Nifty decorator to do 90% of the work
 def send_email(template_name):
     def wrap(subject_func):
-        def wrapped_send_email_function(email_address, **kwargs):        
-            #if not(current_app.config['DEBUG']):
+        def wrapped_send_email_function(email_address, **kwargs):
+            #if not(current_app.config['DEBUG']):                
                 subject, render_kwargs = subject_func(email_address, **kwargs)
                 msg = Message(subject, recipients = [email_address], sender=current_app.config['DEFAULT_MAIL_SENDER'])
                 msg.body = render_template(template_name + '.email.txt', **render_kwargs)
