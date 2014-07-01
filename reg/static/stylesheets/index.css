@@ -209,9 +209,10 @@ section#footer {
 section#footer a.social {
   text-decoration: none;
   color: white;
+  margin: 0 8px;
 }
 
-section#footer .fa:hover {
+section#footer .icon:hover {
   text-shadow: 0 0 3px white;
   cursor: pointer;
 }
