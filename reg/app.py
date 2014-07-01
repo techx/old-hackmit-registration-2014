@@ -114,13 +114,13 @@ def register_user():
 @login_required
 def resendEmail():
    if current_user.email_confirmed():
-       #TODO: Handle gracefully
-       raise AuthorizationError("Your email has already been confirmed.")
+       render_template('server_message.html', header="You're already confirmed!", subheader="We do, however, appreciate your enthusiasm.")
    account_id = current_user.id
    s = URLSafeSerializer(app.config['SECRET_KEY'])
    confirm = s.dumps(account_id)
    email_address = current_user.email_address
-   send_account_confirmation_email(email_address, confirm=confirm) 
+   send_account_confirmation_email(email_address, confirm=confirm)
+   return jsonify({'message': 'Successfully send email!'})
 
 @app.route('/accounts/<account_id>', methods=['PUT'])
 @login_required
