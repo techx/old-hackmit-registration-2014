@@ -6,6 +6,10 @@ textarea {
   font-family: 'Lato', 'Helvetica Neue', 'Helvetica', sans-serif;
 }
 
+a {
+  text-decoration: none !important;
+}
+
 .montserrat,
 .montserrat.bold {
   font-family: 'Montserrat', sans-serif;
