@@ -6,14 +6,6 @@
 <script src="static/bower_components/skrollr/dist/skrollr.min.js"></script>
 <link rel="stylesheet" href="static/stylesheets/index.css" type="text/css">
 
-<script type="text/javascript">
-  $(document).ready(function(){
-    skrollr.init({
-      forceHeight: false
-    });
-  })
-</script>
-
 {% endblock %}
 
 {% block title %}
@@ -27,101 +19,288 @@
 {% endblock %}
 
 {% block body %}
-<body id="#skrollr-body">
+
+<body>
 
 <div class="bg-overlay"
      data-0="background-image:linear-gradient(315deg, hsl(208, 99%, 56%), hsl(119, 86%, 62%));"
      data-end="background-image:linear-gradient(315deg, hsl(202,100%, 15%),hsl(10, 72%, 50%));">
 </div>
 
-<section id="main" class="montserrat">
-  <div class="ui page grid">
-    <div class="row"></div>
-    <div class="row"></div>
-    <div class="row"></div>
+<div id="#skrollr-body" class="content">
+  <section id="main" class="montserrat">
+    <div class="ui page grid">
 
-    <div class="row">
-      <div class="center aligned column">
+      <div class="row">
+        <div class="center aligned column">
 
-        <div class="content">
-          <img src="static/assets/images/hack-logo-white.svg"
-               onerror="this.onerror=null; this.src='static/assets/images/hack-logo-white.png'" class="logo">
-          <div class="title">
-            HACKMIT
-          </div>
-          <div class="tagline">
-            Get ready for a hackathon like none other.
-          </div>
-          <div class="date">
-            Oct 4 - 5, 2014,
-          </div>
-          <div class="location">
-            MIT CAMPUS
-          </div>
-          <div class="description">
-            Open to all undergraduates from all universities.
-          </div>
-          <br>
-          <button class="montserrat green outline button" onclick="location.href='/register'">REGISTER</button>
-          <br>
-          <button class="montserrat green outline button" onclick="location.href='/login'">LOGIN</button>
+          <div class="content">
+            <img src="static/assets/images/hack-logo-white.svg"
+                 onerror="this.onerror=null; this.src='static/assets/images/hack-logo-white.png'" class="logo">
+            <div class="title">
+              HACKMIT
+            </div>
+            <div class="tagline">
+              Get ready for a hackathon like none other.
+            </div>
+            <div class="date">
+              Oct 4 - 5, 2014,
+            </div>
+            <div class="location">
+              MIT CAMPUS
+            </div>
+            <div class="description">
+              Open to all undergraduates from all universities.
+            </div>
+            <br>
+            <button class="montserrat green outline button" onclick="location.href='/register'">REGISTER</button>
+            <br>
+            <button class="montserrat green outline button" onclick="location.href='/login'">LOGIN</button>
 
+          </div>
         </div>
+      </div>
+
+    </div>
+
+  </section>
+
+  <section id="info">
+
+    <div class="info-title">
+      WHAT IS HACKMIT?
+    </div>
+
+    <div class="info-description">
+      HackMIT is MIT’s premier hackathon. On October 4-5, over 1,000 students will
+      come to the school’s Johnson Center to create, innovate, and build software and
+      hardware projects over a 24-hour period. Our focus on cutting-edge
+      technologies—including Bitcoin, emerging hardware interfaces, and new software
+      languages—makes HackMIT truly unique.
+    </div>
+
+  </section>
+
+  <section id="faq">
+
+    <div class="faq-title">
+      FAQ
+    </div>
+
+    <div class="ui three column stackable page grid">
+
+      <div class="row">
+
+        <div class="column">
+          <div class="question">
+            Who can attend?
+          </div>
+          <div class="answer">
+            All undergraduate students from any university are welcome.
+            Non-MIT students must be 18 or older. Unfortunately, high school
+            students and graduate students cannot attend.
+          </div>
+        </div>
+
+        <div class="column">
+          <div class="question">
+            Who can attend?
+          </div>
+          <div class="answer">
+            All undergraduate students from any university are welcome.
+            Non-MIT students must be 18 or older. Unfortunately, high school
+            students and graduate students cannot attend.
+          </div>
+        </div>
+
+        <div class="column">
+          <div class="question">
+            Who can attend?
+          </div>
+          <div class="answer">
+            All undergraduate students from any university are welcome.
+            Non-MIT students must be 18 or older. Unfortunately, high school
+            students and graduate students cannot attend.
+          </div>
+        </div>
+
+      </div>
+
+      <div class="row">
+
+        <div class="column">
+          <div class="question">
+            Who can attend?
+          </div>
+          <div class="answer">
+            All undergraduate students from any university are welcome.
+            Non-MIT students must be 18 or older. Unfortunately, high school
+            students and graduate students cannot attend.
+          </div>
+        </div>
+
+        <div class="column">
+          <div class="question">
+            Who can attend?
+          </div>
+          <div class="answer">
+            All undergraduate students from any university are welcome.
+            Non-MIT students must be 18 or older. Unfortunately, high school
+            students and graduate students cannot attend.
+          </div>
+        </div>
+
+        <div class="column">
+          <div class="question">
+            Who can attend?
+          </div>
+          <div class="answer">
+            All undergraduate students from any university are welcome.
+            Non-MIT students must be 18 or older. Unfortunately, high school
+            students and graduate students cannot attend.
+          </div>
+        </div>
+
+      </div>
+
+      <div class="row">
+
+        <div class="column">
+          <div class="question">
+            Who can attend?
+          </div>
+          <div class="answer">
+            All undergraduate students from any university are welcome.
+            Non-MIT students must be 18 or older. Unfortunately, high school
+            students and graduate students cannot attend.
+          </div>
+        </div>
+
+        <div class="column">
+          <div class="question">
+            Who can attend?
+          </div>
+          <div class="answer">
+            All undergraduate students from any university are welcome.
+            Non-MIT students must be 18 or older. Unfortunately, high school
+            students and graduate students cannot attend.
+          </div>
+        </div>
+
+        <div class="column">
+          <div class="question">
+            Who can attend?
+          </div>
+          <div class="answer">
+            All undergraduate students from any university are welcome.
+            Non-MIT students must be 18 or older. Unfortunately, high school
+            students and graduate students cannot attend.
+          </div>
+        </div>
+
+      </div>
+
+
+      <div class="row">
+
+        <div class="column">
+          <div class="question">
+            Who can attend?
+          </div>
+          <div class="answer">
+            All undergraduate students from any university are welcome.
+            Non-MIT students must be 18 or older. Unfortunately, high school
+            students and graduate students cannot attend.
+          </div>
+        </div>
+
+        <div class="column">
+          <div class="question">
+            Who can attend?
+          </div>
+          <div class="answer">
+            All undergraduate students from any university are welcome.
+            Non-MIT students must be 18 or older. Unfortunately, high school
+            students and graduate students cannot attend.
+          </div>
+        </div>
+
+        <div class="column">
+          <div class="question">
+            Who can attend?
+          </div>
+          <div class="answer">
+            All undergraduate students from any university are welcome.
+            Non-MIT students must be 18 or older. Unfortunately, high school
+            students and graduate students cannot attend.
+          </div>
+        </div>
+
       </div>
     </div>
 
-  </div>
 
-</section>
+  </section>
 
-<section id="info">
+  <section id="sponsor">
+    <div class="sponsor-title">
+      SPONSORS
+    </div>
+    <div class="sponsor-message">
+      INTERESTED IN SPONSORING? EMAIL US AT
+      <a href="mailto:team@hackmit.org">
+        TEAM@HACKMIT.ORG
+      </a>
+    </div>
+  </section>
 
-</section>
+  <section id="register" class="montserrat">
 
-<section id="faq">
+    <div class="ui page grid">
 
-</section>
+      <div class="row">
+        <div class="center aligned column">
 
-<section id="sponsor">
+          <div class="content">
+            <img src="static/assets/images/hack-logo-white.svg"
+                 onerror="this.onerror=null; this.src='static/assets/images/hack-logo-white.png'" class="logo">
+            <div class="title">
+              HACKMIT
+            </div>
+            <div class="tagline">
+              What are you waiting for?
+            </div>
+            <button class="montserrat red outline button" onclick="location.href='/register'">REGISTER</button>
+            <br>
+            <button class="montserrat red outline button" onclick="location.href='/login'">LOGIN</button>
 
-</section>
-
-<section id="register" class="montserrat">
-
-  <div class="ui page grid">
-    <div class="row"></div>
-    <div class="row"></div>
-    <div class="row"></div>
-    <div class="row"></div>
-    <div class="row"></div>
-
-    <div class="row">
-      <div class="center aligned column">
-
-        <div class="content">
-          <img src="static/assets/images/hack-logo-white.svg"
-               onerror="this.onerror=null; this.src='static/assets/images/hack-logo-white.png'" class="logo">
-          <div class="title">
-            HACKMIT
           </div>
-          <div class="tagline">
-            What are you waiting for?
-          </div>
-          <button class="montserrat red outline button" onclick="location.href='/register'">REGISTER</button>
-          <br>
-          <button class="montserrat red outline button" onclick="location.href='/login'">LOGIN</button>
-
         </div>
       </div>
+
     </div>
 
-  </div></section>
+    <section id="footer" class="lato">
+      <div class="content">
+        Built with <i class="ui red heart icon"></i> by the HACKMIT Team 2014
+      </div>
+      <br>
+      <a href="mailto:team@hackmit.org" class="social">
+        <i class="ui icon mail"></i>
+      </a>
+      <a href="https://twitter.com/hackmit" class="social">
+        <i class="ui icon twitter"></i>
+      </a>
+      <a href="https://www.facebook.com/HackMIT" class="social">
+        <i class="ui icon facebook"></i>
+      </a>
+    </section>
 
-<footer id="footer">
-  <div class="content">
+  </section>
 
-  </div>
-</footer>
+
+
+</div>
 
 </body>
 {% endblock %}
