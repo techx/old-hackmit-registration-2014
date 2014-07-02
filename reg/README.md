@@ -28,6 +28,7 @@ $ source venv/bin/activate
 ```sh
 $ pip install -r requirements.txt
 $ bower install
+$ bower install viewport-units-buggyfill
 ```
 
 Running
