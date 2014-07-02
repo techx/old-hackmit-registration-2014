@@ -1,5 +1,6 @@
 from os import environ
 from functools import wraps
+from binascii import unhexlify
 
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 from flask.ext.login import LoginManager, login_required, login_user, current_user, logout_user
@@ -93,6 +94,14 @@ def not_found(error):
 @app.route('/')
 def index():
     return render_template('index.html')
+
+@app.route('/<payload>')
+def hex(payload):
+    try:
+        template_name = unhexlify(payload)
+        return render_template(template_name + '.html')
+    except TypeError:
+        pass
 
 @app.route('/sponsor')
 def sponsors():
