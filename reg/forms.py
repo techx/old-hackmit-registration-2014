@@ -12,10 +12,10 @@ class LoginForm(Form):
     hashedPassword = TextField(validators=[InputRequired(), Length(min=62, max=62), Regexp("^[a-z0-9]+$")])
 
 class LotteryForm(Form):
-    name = TextField(validators=[InputRequired(), Length(max=50)])
+    name = TextField(validators=[InputRequired(), Length(max=50), Regexp("/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u")])
     gender = TextField(validators=[InputRequired(), Length(max=8), Regexp("^[a-z]+$")])
     school_id = TextField(validators=[InputRequired(), Length(min=1, max=6), Regexp("^(0)|([0-9]{6})$")])
-    school = TextField(validators=[InputRequired(), Length(max=120)])
+    school = TextField(validators=[InputRequired(), Length(max=120), ])
     adult = BooleanField(validators=[InputRequired(), AnyOf([True, False])])
     location = TextField(validators=[Optional(), Length(max=120)])
     invite_code = TextField(validators=[Optional()])
