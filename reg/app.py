@@ -44,6 +44,17 @@ def email_confirmed(function):
             return function(**kwargs)
     return wrapped_email_confirmed_function
 
+# Must be used in conjunction with the @login_required and @email_confirmed decorators
+def hackers_only(function):
+    @wraps(function)
+    def wrapped_hackers_only_function(*args, **kwargs):
+        hacker = Hacker.query.filter_by(account_id=current_user.id).first()
+        if not hacker:
+            return render_template('server_message.html', header="You need to be a hacker to access this!", subheader="This ain't a UNIX file system.")
+        else:
+            return function(*args, **kwargs)
+    return wrapped_hackers_only_function
+
 # Register the error handler so it's not an internal server error
 @app.errorhandler(AuthenticationError)
 def handle_authentication_error(error):
@@ -209,6 +220,7 @@ def dashboard():
 @app.route('/lottery')
 @login_required
 @email_confirmed
+@hackers_only
 def lottery():
     hacker = Hacker.query.filter_by(account_id=current_user.id).first().get_hacker_details()
     if hacker == None:
@@ -218,6 +230,7 @@ def lottery():
 @app.route('/team')
 @login_required
 @email_confirmed
+@hackers_only
 def team():
     hacker = Hacker.query.filter_by(account_id=current_user.id).first()
     if hacker == None:
@@ -251,6 +264,7 @@ def team():
 @app.route('/team/leave', methods=['POST'])
 @login_required
 @email_confirmed
+@hackers_only
 def leave_team():
     hacker = Hacker.query.filter_by(account_id=current_user.id).first()
     hacker.team_id = None
@@ -261,6 +275,7 @@ def leave_team():
 @app.route('/teams', methods=['POST'])
 @login_required
 @email_confirmed
+@hackers_only
 def teams():
     hacker = Hacker.query.filter_by(account_id=current_user.id).first()
     if hacker == None:
@@ -278,6 +293,7 @@ def teams():
 @app.route('/teams/<team_invite_code>', methods=['POST'])
 @login_required
 @email_confirmed
+@hackers_only
 def join_team(team_invite_code):
 
     # Find the team associated with the invite code
@@ -315,6 +331,7 @@ def reset():
 @app.route('/hackers', methods=['POST'])
 @login_required
 @email_confirmed
+@hackers_only
 def hackers():
     form = LotteryForm()
     # First find the hacker if they already exist
