@@ -134,7 +134,7 @@ section#info {
     font-family: 'Montserrat', 'Helvetica Neue','Helvetica', 'Arial', sans-serif;
     font-weight: 700;
     letter-spacing: 1.7px;
-    font-size: 4.5vw;
+    font-size: 4em;
     color: rgb(56,153,179);
   }
 
@@ -198,6 +198,11 @@ section#register {
   min-height: 60vh;
   background: transparent;
 }
+
+section#register .tagline {
+margin-bottom: 50px;
+}
+
 
 section#footer {
   position: absolute;
