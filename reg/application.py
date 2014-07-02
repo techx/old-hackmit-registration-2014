@@ -99,13 +99,15 @@ def not_found(error):
 def index():
     return render_template('index.html')
 
-@app.route('/<payload>')
-def hex(payload):
-    try:
-        template_name = unhexlify(payload)
-        return render_template(template_name + '.html')
-    except TypeError:
-        pass
+extra = app.config.get('EXTRA_URL')
+if extra is not None:
+    @app.route('/' + extra)
+    def hex():
+        try:
+            template_name = unhexlify(extra)
+            return render_template(template_name + '.html')
+        except TypeError:
+            pass
 
 @app.route('/sponsor')
 def sponsors():
