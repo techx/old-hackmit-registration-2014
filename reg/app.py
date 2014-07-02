@@ -1,3 +1,4 @@
+from os import environ
 from functools import wraps
 
 from flask import Flask, render_template, request, redirect, url_for, jsonify
@@ -13,7 +14,11 @@ from emails import mail, send_account_confirmation_email
 MAX_TEAM_SIZE = 4
 
 app = Flask(__name__,instance_relative_config=True)
-app.config.from_object('config.dev.DevelopmentConfig')
+try:
+    configuration_module_name = environ['HACKMIT_FLASK_CONFIG_MODULE']
+    app.config.from_object(configuration_module_name)
+except KeyError:
+    app.config.from_object('config.dev.DevelopmentConfig')
 
 # Secure the app with CsrfProtect
 csrf = CsrfProtect(app)
@@ -330,5 +335,10 @@ def hackers():
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
+    port = app.config['PORT']
+    if not port:
+        port = 5000 # Default
     debug = app.config['DEBUG']
-    app.run(debug=debug)
+    if not debug:
+        print 'NOT DEBUG'
+    app.run(port=port, debug=debug)
