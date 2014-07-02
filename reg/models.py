@@ -63,6 +63,16 @@ class Hacker(db.Model):
         details["invite_code"] = self.invite_code
 
         return details
+    
+    def update_lottery_info(self, name, gender, school_id, school, adult, location, invite_code):
+        self.name=name
+        self.gender=gender
+        self.school_id=school_id
+        self.school=school
+        self.location=location
+        self.invite_code=invite_code
+        self.adult=adult
+        
 
     def lottery_submitted(self):
         return self.name is not None and self.name!= ""

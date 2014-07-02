@@ -318,15 +318,13 @@ def reset():
 def hackers():
     form = LotteryForm()
     # First find the hacker if they already exist
+    if not form.validate_on_submit():
+        # TODO make this nicer
+        raise AuthenticationError("That's not valid data!")
+    
     hacker = Hacker.query.filter_by(account_id=current_user.id).first()
-
-    hacker.name = form.name.data
-    hacker.gender = form.gender.data
-    hacker.school_id = form.school_id.data
-    hacker.school = form.school.data
-    hacker.adult = form.adult.data
-    hacker.location = form.location.data
-    hacker.invite_code = form.inviteCode.data
+    # TODO: inviteCode
+    hacker.update_lottery_info(form.name.data, form.gender.data, form.school_id.data, form.school.data, form.adult.data, form.location.data, form.inviteCode.data)
 
     db.session.commit()
 

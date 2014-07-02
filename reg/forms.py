@@ -1,5 +1,5 @@
 from flask_wtf import Form
-from wtforms import TextField
+from wtforms import TextField, BooleanField
 from wtforms.validators import InputRequired, Optional, Length, Email, Regexp, AnyOf
 
 class RegistrationForm(Form):
@@ -16,7 +16,7 @@ class LotteryForm(Form):
     gender = TextField(validators=[InputRequired(), Length(max=8), Regexp("^[a-z]+$")])
     school_id = TextField(validators=[InputRequired(), Length(min=1, max=6), Regexp("^(0)|([0-9]{6})$")])
     school = TextField(validators=[InputRequired(), Length(max=120)])
-    adult = TextField(validators=[InputRequired(), AnyOf(['true', 'false'])])
+    adult = BooleanField(validators=[InputRequired(), AnyOf([True, False])])
     location = TextField(validators=[Optional(), Length(max=120)])
     inviteCode = TextField(validators=[Optional()])
 
