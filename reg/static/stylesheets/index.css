@@ -172,6 +172,10 @@ section#faq {
 
   }
 
+  #faq .hyperlink {
+    color: rgba(255,255,255,0);
+  }
+
 /* SPONSOR PANEL */
 section#sponsor {
   background: rgba(255, 255, 255, .8);
