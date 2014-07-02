@@ -55,6 +55,17 @@ def hackers_only(function):
             return function(*args, **kwargs)
     return wrapped_hackers_only_function
 
+# Must be used in conjunction with the @login_required, @email_confirmed, and @hackers_only decorators
+def lottery_submitted(function):
+    @wraps(function)
+    def wrapped_lottery_submitted_function(*args, **kwargs):
+        hacker = Hacker.query.filter_by(account_id=current_user.id).first()
+        if not hacker.lottery_submitted():
+            return render_template('server_message.html', header="You need to submit the lottery form to do that!", subheader="Hope you're feeling lucky.")
+        else:
+            return function(*args, **kwargs)
+    return wrapped_lottery_submitted_function
+
 # Register the error handler so it's not an internal server error
 @app.errorhandler(AuthenticationError)
 def handle_authentication_error(error):
@@ -229,6 +240,7 @@ def lottery():
 @login_required
 @email_confirmed
 @hackers_only
+@lottery_submitted
 def team():
     hacker = Hacker.query.filter_by(account_id=current_user.id).first()
     team_id = hacker.team_id
@@ -259,6 +271,7 @@ def team():
 @login_required
 @email_confirmed
 @hackers_only
+@lottery_submitted
 def leave_team():
     hacker = Hacker.query.filter_by(account_id=current_user.id).first()
     hacker.team_id = None
@@ -270,6 +283,7 @@ def leave_team():
 @login_required
 @email_confirmed
 @hackers_only
+@lottery_submitted
 def teams():
     hacker = Hacker.query.filter_by(account_id=current_user.id).first()
     team = Team(app) # Create a new team
@@ -284,6 +298,7 @@ def teams():
 @login_required
 @email_confirmed
 @hackers_only
+@lottery_submitted
 def join_team(team_invite_code):
 
     # Find the team associated with the invite code
