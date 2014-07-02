@@ -71,9 +71,6 @@
         <div class="ui dropdown item">
           Account <i class="icon dropdown"></i>
           <div class="menu">
-            <a class="item {{ 'active' if request.path == '/dashboard' }}" href="{{ url_for('dashboard') }}">
-              Dashboard
-            </a>
             <a class="item {{ 'active' if request.path == '/reset' }}" href="{{ url_for('reset') }}">
               Reset Password
             </a>
