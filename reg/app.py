@@ -118,7 +118,8 @@ def resendEmail():
    confirm = s.dumps(account_id)
    email_address = current_user.email_address
    send_account_confirmation_email(email_address, confirm=confirm)
-   return jsonify({'message': 'Successfully send email!'})
+   #return jsonify({'message': 'Successfully send email!'})
+   return redirect(url_for('dashboard'))
 
 @app.route('/accounts/<account_id>', methods=['PUT'])
 @login_required
@@ -188,7 +189,7 @@ def dashboard():
     else:
         confirm = request.args.get('confirm')
         if confirm != None:
-            s = URLSafeSerializer()
+            s = URLSafeSerializer(app.config['SECRET_KEY'])
             try:
                 confirm_user_id = s.loads(confirm)
                 if confirm_user_id == current_user.id:
