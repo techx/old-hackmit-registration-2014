@@ -73,7 +73,6 @@ class Hacker(db.Model):
         self.invite_code=invite_code
         self.adult=adult
         
-
     def lottery_submitted(self):
         return self.name is not None and self.name!= ""
 

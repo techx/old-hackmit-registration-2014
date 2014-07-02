@@ -323,8 +323,8 @@ def hackers():
         raise AuthenticationError("That's not valid data!")
     
     hacker = Hacker.query.filter_by(account_id=current_user.id).first()
-    # TODO: inviteCode
-    hacker.update_lottery_info(form.name.data, form.gender.data, form.school_id.data, form.school.data, form.adult.data, form.location.data, form.inviteCode.data)
+    # TODO: invite_code validation and hookup
+    hacker.update_lottery_info(form.name.data, form.gender.data, form.school_id.data, form.school.data, form.adult.data, form.location.data, form.invite_code.data)
 
     db.session.commit()
 
