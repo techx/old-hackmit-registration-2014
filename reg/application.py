@@ -359,7 +359,7 @@ def hackers():
     
     hacker = Hacker.query.filter_by(account_id=current_user.id).first()
     # TODO: invite_code validation and hookup
-    hacker.update_lottery_info(form.name.data, form.gender.data, form.school_id.data, form.school.data, form.adult.data, form.location.data, form.invite_code.data)
+    hacker.update_lottery_info(form.name.data, form.gender.data, form.school_id.data, form.school.data, form.adult.data, form.location.data, form.invite_code.data, form.interests.data)
 
     db.session.commit()
 
