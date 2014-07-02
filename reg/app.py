@@ -223,8 +223,6 @@ def dashboard():
 @hackers_only
 def lottery():
     hacker = Hacker.query.filter_by(account_id=current_user.id).first().get_hacker_details()
-    if hacker == None:
-        return render_template('server_message.html', header="You're not a hacker.", subheader="How did you get here?")
     return render_template('lottery.html', hacker=hacker)
 
 @app.route('/team')
@@ -233,10 +231,6 @@ def lottery():
 @hackers_only
 def team():
     hacker = Hacker.query.filter_by(account_id=current_user.id).first()
-    if hacker == None:
-        # Not a hacker, return a server message!
-        # TODO: Do something for company reps, etc
-        return render_template('server_message.html', header="You're not a hacker.", subheader="How did you get here?")
     team_id = hacker.team_id
     team = None
 
@@ -278,10 +272,6 @@ def leave_team():
 @hackers_only
 def teams():
     hacker = Hacker.query.filter_by(account_id=current_user.id).first()
-    if hacker == None:
-        # Not a hacker, return a server message!
-        # TODO: Do something for company reps, etc
-        return render_template('server_message.html', header="You're not a hacker.", subheader="How did you get here?")
     team = Team(app) # Create a new team
     db.session.add(team) # Add the team to the DB
     db.session.flush()
