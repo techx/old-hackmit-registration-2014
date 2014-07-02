@@ -41,25 +41,31 @@ Apply
 
             {% if lottery_complete %}
 
-              <h3> You're all set. Feel free to change any information
-              in the lottery application. </h3>
+              <h3> You're all set! Feel free to change any information
+              in your lottery application until midnight on July 20th -
+              that's when we'll let you know if you're guaranteed a spot at this year's HackMIT. </h3>
 
-              <h3> Lottery decisions will be made on July 20th. We'll
-              send you more information then! </h3>
+              <h3> We'll reach out with more details and instructions in a few weeks, including
+                information about travel reimbursement. If you don't make the first wave, don't worry - we'll let hackers in as spots open up! </h3>
 
-              <h3> You can also now create
-              and join teams! </h3>
+              <h3> Already have a team in mind? Make a team and invite your friends or
+              enter your friend's team code. You'll be entered in the lottery together! </h3>
 
             {% else %}
 
               <h2> Your email is confirmed! </h2>
+
               <h3> Looks like you haven't filled out the lottery application. You should do that!</h3>
+
+              <h3> Lottery applications close on July 20th at midnight, so make sure you submit yours before then! </h3>
 
             {% endif %}
 
           {% else %}
 
           <h2> Your email is not yet confirmed. </h2>
+
+          <h2> Once you confirm your email, make sure to enter the lottery by filling out the lottery application. At that point, you'll also be able to create and join teams. The deadline is July 20th at midnight - don't miss it! </h2>
 
           <button class="ui hack button" onclick="location.href='/account/resend'">
             RESEND CONFIRMATION EMAIL

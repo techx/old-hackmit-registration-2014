@@ -30,8 +30,8 @@ $(document).ready(function() {
         $dimmable.dimmer('hide');
 
         dimmerMessage(
-          "Thanks for registering!",
-          "Check your email for verification.",
+          "You're not done yet! Check your email for verification.",
+          "Then, complete your registration to enter the lottery.",
           function(){
             location.href= "/login"
           }, 3000
