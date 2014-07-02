@@ -92,6 +92,11 @@
             </div>
 
             <div class="field">
+              <label>What do you want to learn?</label>
+              <textarea id="interests" style="height:120px" type="text">{{ hacker.interests if hacker.interests != None}}</textarea>
+            </div>
+
+            <div class="field">
               <label>Secret Code (optional) </label>
               <input id="invite" type="text" value="{{ hacker.invite_code if hacker.invite_code != None}}">
             </div>

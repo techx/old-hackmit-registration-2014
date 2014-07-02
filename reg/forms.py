@@ -19,6 +19,7 @@ class LotteryForm(Form):
     adult = BooleanField(validators=[InputRequired(), AnyOf([True, False])])
     location = TextField(validators=[Optional(), Length(max=120)])
     invite_code = TextField(validators=[Optional()])
+    interests = TextField(validators=[InputRequired(), Length(max=1000)])
 
 class ResetForm(Form):
     email = TextField(validators=[InputRequired(), Email(), Regexp("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.+-]+\.edu$")])

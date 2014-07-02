@@ -46,6 +46,7 @@ class Hacker(db.Model):
     adult = db.Column(db.Boolean)
     location = db.Column(db.String(120))
     invite_code = db.Column(db.String(8))
+    interests = db.Column(db.String(1000))
 
     def __init__(self, account_id):
         self.account_id = account_id
@@ -61,10 +62,11 @@ class Hacker(db.Model):
         details["adult"] = self.adult
         details["location"] = self.location
         details["invite_code"] = self.invite_code
+        details["interests"] = self.interests
 
         return details
     
-    def update_lottery_info(self, name, gender, school_id, school, adult, location, invite_code):
+    def update_lottery_info(self, name, gender, school_id, school, adult, location, invite_code, interests):
         self.name=name
         self.gender=gender
         self.school_id=school_id
@@ -72,6 +74,7 @@ class Hacker(db.Model):
         self.location=location
         self.invite_code=invite_code
         self.adult=adult
+        self.interests=interests
         
     def lottery_submitted(self):
         return self.name is not None and self.name!= ""

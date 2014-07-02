@@ -7,7 +7,8 @@ $(document).ready(function(){
       $gender = $('#gender'),
       $travelling = $('#travelling'),
       $adult = $('#adult'),
-      $inviteCode = $('#invite');
+      $inviteCode = $('#invite'),
+      $interests = $('#interests');
 
   $school
     .select2({
@@ -65,7 +66,8 @@ $(document).ready(function(){
         school: $schoolName.val(),
         adult: $adult.is(':checked'),
         location: $travelling.val(),
-        inviteCode: $inviteCode.val()
+        inviteCode: $inviteCode.val(),
+        interests: $interests.val()
       });
 
     $.ajax({
@@ -125,6 +127,15 @@ $(document).ready(function(){
           {
             type: 'empty',
             prompt: "Please enter your school name!"
+          }
+        ]
+      },
+      interests: {
+        identifier: 'interests',
+        rules: [
+          {
+            type: 'empty',
+            prompt: "Please enter your interests!"
           }
         ]
       }
