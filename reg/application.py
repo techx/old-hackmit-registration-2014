@@ -14,7 +14,11 @@ from emails import mail, send_account_confirmation_email
 
 MAX_TEAM_SIZE = 4
 
-app = Flask(__name__,instance_relative_config=True)
+application = Flask(__name__,instance_relative_config=True)
+
+# For AWS
+app = application
+
 try:
     configuration_module_name = environ['HACKMIT_FLASK_CONFIG_MODULE']
     app.config.from_object(configuration_module_name)
