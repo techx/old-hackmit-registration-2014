@@ -64,7 +64,7 @@ textarea {
   border: 2px solid rgb(35,177,150);
   color: rgb(35,177,150);
   background: none;
-  min-width: 300px;
+  min-width: 288px;
 }
 
 .ui.hack.button:hover {
@@ -73,28 +73,16 @@ textarea {
 }
 
 
-/* Large Devices, Wide Screens */
-@media only screen and (max-width : 1200px) {
-
-}
-
-/* Medium Devices, Desktops */
-@media only screen and (max-width : 992px) {
-
-}
-
-/* Small Devices, Tablets */
-@media only screen and (max-width : 768px) {
-
-}
-
-/* Extra Small Devices, Phones */
 @media only screen and (max-width : 480px) {
 
+  .ui.button {
+    min-width: 0 !important;
+    width: 100% !important;
+  }
+  .ui.page.grid {
+    min-width: 300px !important;
+  }
 }
 
-/* Custom, iPhone Retina */
-@media only screen and (max-width : 320px) {
 
-}
 
