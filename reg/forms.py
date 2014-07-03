@@ -18,7 +18,7 @@ class LotteryForm(Form):
     school = TextField(validators=[InputRequired(), Length(max=120)])
     adult = TextField()
     location = TextField(validators=[Optional(), Length(max=120)])
-    invite_code = TextField(validators=[Optional()])
+    inviteCode = TextField(validators=[Optional()])
     interests = TextField(validators=[InputRequired(), Length(max=1000)])
 
 class ResetForm(Form):

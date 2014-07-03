@@ -371,8 +371,15 @@ def hackers():
     if form.school_id.data != "166683" and form.adult.data is not True:
         raise AuthenticationError("Sorry, you need to be 18+ at the time of HackMIT to attend. Maybe next year?")
     
-    hacker = Hacker.query.filter_by(account_id=current_user.id).first()
-    hacker.update_lottery_info(form.name.data, form.gender.data, form.school_id.data, form.school.data, form.adult.data, form.location.data, form.invite_code.data, form.interests.data)
+    previous_hacker_with_code = Hacker.query.filter_by(invite_code=form.inviteCode.data).first()
+
+    if form.inviteCode.data != "" and previous_hacker_with_code is not None and previous_hacker_with_code.account_id != current_user.id:
+        raise AuthenticationError("Somebody beat you to it! That code has already been used. Try again or submit without a code to save your data.")
+   
+    hacker = Hacker.query.filter_by(account_id=current_user.id).first() 
+    print '[' + form.inviteCode.data + ']'
+    print type(form.inviteCode.data) 
+    hacker.update_lottery_info(form.name.data, form.gender.data, form.school_id.data, form.school.data, form.adult.data, form.location.data, form.inviteCode.data, form.interests.data)
 
     db.session.commit()
 
