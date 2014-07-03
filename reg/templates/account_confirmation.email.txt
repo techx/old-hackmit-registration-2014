@@ -1,10 +1,8 @@
-Thanks for entering the registration lottery for HackMIT!
-
 Please confirm your email by clicking the following link: {confirmation_link}. 
 
-Expect to hear back from us soon after July 20th. If you are accepted, we will send out more details on how to complete your registration. Please email team@hackmit.org if you have any questions.
+After you confirm your email, make sure to fill out lottery application! You can continue to update your application until midnight on July 20th, at which time we'll run the lottery. If you are accepted, we will send out more details on how to complete your registration. Please email team@hackmit.org if you have any questions.
 
-Also, if you haven't already, try to crack the HackMIT admissions puzzle! The starting point is located somewhere on our website. If you quick enough to solve it, you'll guarantee yourself at this year's HackMIT!
+Also, if you haven't already, try to crack the HackMIT admissions puzzle! The starting point is located somewhere on our website. If you quick enough to solve it, you'll guarantee yourself (and your team) a spot at this year's HackMIT!
 
 Sincerely,
 The HackMIT Team

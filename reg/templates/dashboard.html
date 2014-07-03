@@ -2,8 +2,6 @@
 
 {% block head %}
 
-<script src="static/js/dashboard.js"></script>
-
 {% endblock %}
 
 {% block title %}
@@ -30,7 +28,7 @@ Apply
 
     <div class="row">
 
-      <div class="center aligned column">
+      <div class="left aligned column">
         <h1>
           {% if hacker.name %}
             Welcome back, {{ hacker.name }}!
@@ -73,7 +71,15 @@ Apply
 
           {% endif %}
 
-        <br>
+
+      </div>
+
+
+    </div>
+
+    <div class="row">
+
+      <div class="center aligned column">
 
         {% if email_confirmed %}
         <button class="ui hack button" onclick="location.href='/lottery'">
@@ -89,9 +95,7 @@ Apply
             Teams
           </button>
         {% endif %}
-
       </div>
-
 
     </div>
 

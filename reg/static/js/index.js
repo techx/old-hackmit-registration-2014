@@ -6,19 +6,6 @@ $(document).ready(function() {
     });
   }
 
-  var iOS = navigator.userAgent.match(/(iPod|iPhone|iPad)/);
-  if(iOS){
-
-    function iosVhHeightBug() {
-      var height = $(window).height();
-      $("header").css('min-height', height);
-    }
-
-    iosVhHeightBug();
-    $(window).bind('resize', iosVhHeightBug);
-
-  }
-
   $('#main')
     .transition('fade up in', 2000);
 
