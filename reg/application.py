@@ -359,8 +359,11 @@ def hackers():
         # TODO make this nicer
         raise AuthenticationError("That's not valid data!")
     
-    hacker = Hacker.query.filter_by(account_id=current_user.id).first()
     # TODO: invite_code validation and hookup
+    if form.school_id.data != "166683" and (form.adult.data is None or form.adult.data is False):
+        raise AuthenticationError("Sorry, you need to be 18+ at the time of HackMIT to attend. Maybe next year?")
+    
+    hacker = Hacker.query.filter_by(account_id=current_user.id).first()
     hacker.update_lottery_info(form.name.data, form.gender.data, form.school_id.data, form.school.data, form.adult.data, form.location.data, form.invite_code.data, form.interests.data)
 
     db.session.commit()
