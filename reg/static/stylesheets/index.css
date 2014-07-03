@@ -59,7 +59,7 @@ section#main{
   min-height: 75vh;
 }
 
-section#main ui.page.grid {
+section#main .ui.page.grid {
   position:absolute;
   width:100%;
   height:50%;

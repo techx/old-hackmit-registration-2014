@@ -5,21 +5,21 @@
   <title> HACKMIT - {% block title %} | Oct 4-5 {% endblock %}</title>
   <link rel="icon"
         type="image/png"
-        href="static/assets/images/hack-logo-favicon.png">
+        href="{{ url_for('static', filename='assets/images/hack-logo-favicon.png') }}">
   <link href='//fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
   <link href='//fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  <link href="static/stylesheets/main.css" rel="stylesheet" type="text/css">
+  <link href="{{ url_for('static', filename='stylesheets/main.css') }}" rel="stylesheet" type="text/css">
   <!--<script src="static/bower_components/jquery/dist/jquery.min.js"></script>-->
 
   <!-- Include Semantic-UI -->
-  <script src="static/bower_components/semantic-ui/build/packaged/javascript/semantic.min.js"></script>
-  <link href="static/bower_components/semantic-ui/build/packaged/css/semantic.min.css" rel="stylesheet" type="text/css">
+  <script src="{{ url_for('static', filename='bower_components/semantic-ui/build/packaged/javascript/semantic.min.js') }}"></script>
+  <link href="{{ url_for('static', filename='bower_components/semantic-ui/build/packaged/css/semantic.min.css') }}" rel="stylesheet" type="text/css">
 
   <!-- for Facebook -->
   <meta property="og:title" content="HACKMIT 2014"/>
   <meta property="og:type" content="website"/>
-  <meta property="og:image" content="http://www.hackmit.org/static/assets/hack-logo-fb.png"/>
+  <meta property="og:image" content="http://www.hackmit.org/static/assets/images/hack-logo-fb.png"/>
   <meta property="og:url" content="http://hackmit.org"/>
   <meta property="og:description" content="Get ready for a hackathon like none other. Oct 4-5, MIT."/>
 
@@ -28,7 +28,7 @@
   <meta name="twitter:site" content="@hackmit">
   <meta name="twitter:title" content="HACKMIT 2014">
   <meta name="twitter:description" content="Get ready for a hackathon like none other. Oct 4-5, MIT.">
-  <meta name="twitter:image:src" content="http://www.hackmit.org/static/assets/hack-logo-fb.png">
+  <meta name="twitter:image:src" content="http://www.hackmit.org/static/assets/images/hack-logo-fb.png">
 
   <script>
     var csrftoken = "{{ csrf_token() }}";
@@ -56,7 +56,7 @@
 <div class="nav">
   <div class="ui secondary pointing menu">
     <a class="logo montserrat bold item" href="{{ url_for('index') }}">
-      <img class="hacksquare" src="static/assets/images/hack-logo-black.png"> HACKMIT
+      <img class="hacksquare" src="{{ url_for('static', filename='assets/images/hack-logo-black.png') }}"> HACKMIT
     </a>
     <div class="right menu">
 
