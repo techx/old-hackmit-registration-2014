@@ -246,6 +246,20 @@ section#footer .icon:hover {
   cursor: pointer;
 }
 
+/* Tablets */
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) {
+   section {
+    position: relative !important;
+    height: 100% !important;
+    min-height: 100% !important;
+  }
+
+  .ui.page.grid{
+    position: relative !important;
+    padding: 50px 0 !important;
+  }
+}
+
 /* Extra Small Devices, Phones */
 @media only screen and (max-width : 480px) {
 
