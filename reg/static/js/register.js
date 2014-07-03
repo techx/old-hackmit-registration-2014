@@ -2,7 +2,8 @@ $(document).ready(function() {
 
   var $form     = $('.ui.form'),
       $email    = $('#email'),
-      $password = $('#password');
+      $password = $('#password'),
+      $confirm  = $('#confirm');
 
   function register(){
 
@@ -21,6 +22,7 @@ $(document).ready(function() {
       success: function(data){
         $email.val("");
         $password.val("");
+        $confirm.val("");
 
         $dimmable.dimmer('hide');
 
@@ -50,6 +52,7 @@ $(document).ready(function() {
       .children('.email.field')
         .addClass('error');
     $password.val("");
+    $confirm.val("");
   }
 
   $form
@@ -75,7 +78,17 @@ $(document).ready(function() {
             prompt: "Please enter a password!"
           }
         ]
+      },
+      confirm: {
+        identifier: 'confirm',
+        rules: [
+          {
+            type: 'match[password]',
+            prompt: "Your passwords don't match!"
+          }
+        ]
       }
+
     },{
       onSuccess: register
     })
