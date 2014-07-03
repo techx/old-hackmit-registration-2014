@@ -15,6 +15,16 @@ body {
   font-size: 16px;
 }
 
+::selection {
+  color:rgba(255,255,255,1);
+  background:rgba(57,61,66,.7);
+}
+
+::-moz-selection {
+  color:rgba(255,255,255,1);
+  background:rgba(57,61,66,.7);
+}
+
 .bg-overlay {
   content:'';
   position: fixed;
@@ -49,7 +59,7 @@ section#main{
   min-height: 75vh;
 }
 
-section#main ui.page.grid {
+section#main .ui.page.grid {
   position:absolute;
   width:100%;
   height:50%;
@@ -148,6 +158,7 @@ section#info {
     width: 70%;
     margin: 30px auto;
     font-size: 1.3em;
+    line-height: 1.5em;
   }
 
 /* FAQ PANEL */
@@ -169,7 +180,7 @@ section#faq {
   }
 
   #faq .answer {
-
+    line-height:1.4em;
   }
 
   #faq .hyperlink {

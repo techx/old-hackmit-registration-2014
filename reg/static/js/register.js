@@ -6,11 +6,6 @@ $(document).ready(function() {
 
   function register(){
 
-    if (!$email.val().match(/.edu/gi)){
-      showError('Please use a .edu email.');
-      return;
-    }
-
     var $dimmable = $('.ui.dimmable').dimmer('show');
 
     $.ajax({
