@@ -360,7 +360,7 @@ def hackers():
         raise AuthenticationError("That's not valid data!")
     
     # TODO: invite_code validation and hookup
-    if form.school_id.data != "166683" and (form.adult.data is None or form.adult.data is False):
+    if form.school_id.data != "166683" and form.adult.data is not True:
         raise AuthenticationError("Sorry, you need to be 18+ at the time of HackMIT to attend. Maybe next year?")
     
     hacker = Hacker.query.filter_by(account_id=current_user.id).first()

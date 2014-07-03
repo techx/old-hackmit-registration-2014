@@ -16,7 +16,7 @@ class LotteryForm(Form):
     gender = TextField(validators=[InputRequired(), Length(max=8), Regexp("^[a-z]+$")])
     school_id = TextField(validators=[InputRequired(), Length(min=1, max=6), Regexp("^(0)|([0-9]{6})$")])
     school = TextField(validators=[InputRequired(), Length(max=120)])
-    adult = BooleanField(validators=[InputRequired(), AnyOf([True, False])])
+    adult = TextField()
     location = TextField(validators=[Optional(), Length(max=120)])
     invite_code = TextField(validators=[Optional()])
     interests = TextField(validators=[InputRequired(), Length(max=1000)])
