@@ -5,7 +5,7 @@ from binascii import unhexlify
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 from flask.ext.login import LoginManager, login_required, login_user, current_user, logout_user
 from flask_wtf.csrf import CsrfProtect
-from itsdangerous import URLSafeSerializer
+from itsdangerous import URLSafeSerializer, BadSignature
 
 from models import db, Account, Hacker, Team
 from forms import LoginForm, RegistrationForm, LotteryForm, ResetForm
@@ -228,20 +228,28 @@ def dashboard():
         hacker = Hacker.query.filter_by(account_id=current_user.id).first()
         if hacker.lottery_submitted():
             lottery_complete = True
-    else:
-        confirm = request.args.get('confirm')
-        if confirm != None:
-            s = URLSafeSerializer(app.config['SECRET_KEY'])
-            try:
-                confirm_user_id = s.loads(confirm)
-                if confirm_user_id == current_user.id:
-                    account.confirm_email()
-                    db.session.commit()
-                    email_confirmed = True
-            except BadSignatureError:
-                pass
 
     return render_template('dashboard.html', hacker=hacker, email_confirmed=email_confirmed, lottery_complete=lottery_complete)
+
+@app.route('/confirm')
+def confirm():
+    confirm = request.args.get('confirm')
+    if confirm != None:
+        s = URLSafeSerializer(app.config['SECRET_KEY'])
+        try:
+            confirm_user_id = s.loads(confirm)
+            account = Account.query.get(int(confirm_user_id))
+            if account is None:
+                return render_template('server_message.html', header="You don't seem to have an account.", subheader="What are you waiting for? Go register!")
+            account.confirm_email()
+            db.session.commit()
+            email_confirmed = True
+
+            return redirect(url_for('login'))
+        except BadSignature:
+            pass
+    
+    return render_template('server_message.html', header="That's not a valid confirmation code!", subheader="Check for typos in the link, or login and resend the confirmation email.")
 
 @app.route('/lottery')
 @login_required
