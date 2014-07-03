@@ -6,7 +6,6 @@ Flask-SSLify==0.1.4
 Flask-WTF==0.9.5
 Jinja2==2.7.3
 MarkupSafe==0.23
-MySQL-python==1.2.5
 SQLAlchemy==0.9.6
 WTForms==1.0.5
 Werkzeug==0.9.6
