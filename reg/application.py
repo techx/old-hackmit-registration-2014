@@ -5,6 +5,7 @@ from binascii import unhexlify
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 from flask.ext.login import LoginManager, login_required, login_user, current_user, logout_user
 from flask_wtf.csrf import CsrfProtect
+from flask_sslify import SSLify
 from itsdangerous import URLSafeSerializer, BadSignature
 
 from models import db, Account, Hacker, Team
@@ -24,6 +25,9 @@ try:
     app.config.from_object(configuration_module_name)
 except KeyError:
     app.config.from_object('config.dev.DevelopmentConfig')
+
+# Redirect all requests to HTTPS
+sslify = SSLify(app, subdomains=True, permanent=True)
 
 # Secure the app with CsrfProtect
 csrf = CsrfProtect(app)
