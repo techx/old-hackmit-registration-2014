@@ -9,7 +9,7 @@ from flask_sslify import SSLify
 from itsdangerous import URLSafeSerializer, BadSignature
 
 from models import db, Account, Hacker, Team
-from forms import LoginForm, RegistrationForm, LotteryForm, ResetForm
+from forms import LoginForm, RegistrationForm, LotteryForm, ResetForm, ForgotForm
 from errors import AuthenticationError
 from emails import mail, send_account_confirmation_email
 
@@ -102,6 +102,23 @@ def not_found(error):
 @app.route('/')
 def index():
     return render_template('index.html')
+
+@app.route('/forgot', methods=['GET', 'POST'])
+def forgot():
+    if request.method == 'GET':
+        if current_user.is_authenticated():
+            return redirect(url_for('dashboard'))
+        else:
+            return render_template('forgot.html')
+    if request.method == 'POST':
+        form = ForgotForm()
+        email = form.email.data
+        if Account.query.filter_by(email_address=email).first() != None:
+            # Send like an email to that email to reset
+            # TODO: @Aneesh
+            return jsonify({"message": "Email sent! Check your email for a link to reset your password."})
+        else:
+            raise AuthenticationError("This account doesn't exist!", status_code=420)
 
 extra = app.config.get('EXTRA_URL')
 if extra is not None:

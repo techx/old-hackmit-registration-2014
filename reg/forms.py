@@ -25,3 +25,6 @@ class ResetForm(Form):
     email = TextField(validators=[InputRequired(), Email(), Regexp("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.+-]+\.edu$")])
     oldPassword = TextField(validators=[InputRequired(), Length(min=62, max=62), Regexp("^[a-z0-9]+$")])
     newPassword = TextField(validators=[InputRequired(), Length(min=62, max=62), Regexp("^[a-z0-9]+$")])
+
+class ForgotForm(Form):
+    email = TextField(validators=[InputRequired(), Email(), Regexp("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.+-]+\.edu$")])

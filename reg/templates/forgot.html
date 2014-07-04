@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block head %}
+
+<script src="{{ url_for('static', filename='js/forgot.js') }}"></script>
+
+{% endblock %}
+
+{% block title %}
+
+Reset Password
+
+{% endblock %}
+
+{% block headerTitle %}
+
+    I FORGOT :(
+
+{% endblock %}
+
+{% block content %}
+<div class="reset">
+
+  <div class="ui stackable middle aligned three column page grid">
+
+    <div class="row"></div>
+
+    <div class="row">
+      <div class="column">
+      </div>
+      <div class="column">
+
+        <div class="ui dimmable form">
+
+          <div class="fluid field">
+            <label>Email Address</label>
+            <input id="email" value="{{ email }}" type="email">
+          </div>
+          <div class="ui error message">
+            <div class="header">We noticed some issues</div>
+          </div>
+          <button class="ui fluid hack submit button">SAVE ME</button>
+        </div>
+
+      </div>
+      <div class="column">
+      </div>
+    </div>
+
+    <div class="row"></div>
+
+  </div>
+
+</div>
+
+{% endblock %}
