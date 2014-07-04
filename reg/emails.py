@@ -10,8 +10,8 @@ def send_email(template_name):
             #if not(current_app.config['DEBUG']):                
                 subject, render_kwargs = subject_func(email_address, **kwargs)
                 msg = Message(subject, recipients = [email_address], sender=current_app.config['DEFAULT_MAIL_SENDER'])
-                msg.body = render_template(template_name + '.email.txt', **render_kwargs)
-                msg.html = render_template(template_name + '.email.html', **render_kwargs)
+                msg.body = render_template('emails/' + template_name + '.email.txt', **render_kwargs)
+                msg.html = render_template('emails/' + template_name + '.email.html', **render_kwargs)
                 mail.send(msg)
         return wrapped_send_email_function
     return wrap
@@ -19,3 +19,7 @@ def send_email(template_name):
 @send_email('account_confirmation')
 def send_account_confirmation_email(email_address, **kwargs):
     return ("Welcome to HackMIT!", kwargs)
+
+@send_email('forgot_password')
+def send_forgot_password_email(email_address, **kwargs):
+    return ("Password Recovery!", kwargs)
