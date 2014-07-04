@@ -8,6 +8,7 @@ $(document).ready(function(){
 
   function reset(){
 
+    var $dimmable = $('.ui.dimmable').dimmer('show');
     $.ajax({
       url:'/accounts/' + $id.val(),
       type: 'PUT',
@@ -19,6 +20,7 @@ $(document).ready(function(){
         newPassword: SHA224($new.val())
       }),
       success: function(data){
+        $dimmable.dimmer('hide');
         dimmerMessage(
           data.message,
           "",
@@ -28,6 +30,7 @@ $(document).ready(function(){
         );
       },
       error: function(error) {
+        $dimmable.dimmer('hide');
         var msg = JSON.parse(error.responseText).message;
         showError(msg);
       }
