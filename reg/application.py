@@ -6,7 +6,7 @@ from flask import Flask, render_template, request, redirect, url_for, jsonify
 from flask.ext.login import LoginManager, login_required, login_user, current_user, logout_user
 from flask_wtf.csrf import CsrfProtect
 from flask_sslify import SSLify
-from itsdangerous import URLSafeSerializer, BadSignature, TimedSerializer, SignatureExpired
+from itsdangerous import URLSafeSerializer, BadSignature, URLSafeTimedSerializer, SignatureExpired
 
 from models import db, Account, Hacker, Team
 from forms import LoginForm, RegistrationForm, LotteryForm, ResetForm, ForgotForm, ForgotResetForm
@@ -261,8 +261,10 @@ def forgot():
         token = request.args.get('token')
         if current_user.is_authenticated():
             return redirect(url_for('dashboard'))
+        elif token != None:
+            return render_template('forgot_set_password.html', token=token)
         else:
-            return render_template('forgot.html', token=token)
+            return render_template('forgot.html')
 
     if request.method == 'POST':
         form = ForgotForm()
@@ -270,7 +272,7 @@ def forgot():
         account = Account.query.filter_by(email_address=email).first()
         if account != None:
             # Send an email to reset
-            s = TimedSerializer(app.config['SECRET_KEY'])
+            s = URLSafeTimedSerializer(app.config['SECRET_KEY'])
             token = s.dumps(account.id)
 
             send_forgot_password_email(email, token=token)
@@ -284,7 +286,7 @@ def forgot_reset():
     token = request.args.get('token')
     form = ForgotResetForm()
     new_password = form.newPassword.data
-    s = TimedSerializer(app.config['SECRET_KEY'])
+    s = URLSafeTimedSerializer(app.config['SECRET_KEY'])
     try:
         confirm_user_id = s.loads(token, max_age=86400) # Max age of 24 hours
         account = load_user(confirm_user_id)
@@ -305,7 +307,7 @@ def forgot_reset():
         return render_template('server_message.html', header="Oops. Your token has expired.", subheader="You should probably try again!")
 
     except BadSignature:
-        pass
+        return render_template('server_message.html', header="Oops. Your token is invalid.")
 
 
 @app.route('/lottery')
