@@ -115,7 +115,7 @@ if extra is not None:
 
 @app.route('/sponsor')
 def sponsors():
-    app.send_static_file('assets/docs/HackMIT2014Sponsorship.pdf')
+    return app.send_static_file('assets/docs/HackMIT2014Sponsorship.pdf')
 
 @app.route('/register')
 def get_registration_page():
