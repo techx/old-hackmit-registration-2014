@@ -284,6 +284,8 @@ def forgot():
 @app.route('/accounts/reset', methods=['POST'])
 def forgot_reset():
     token = request.args.get('token')
+    if token is None:
+        return render_template('server_message', header="You can't forgot the password for an account that doesn't exist!", subheader="Go register for a real account now!")
     form = ForgotResetForm()
     new_password = form.newPassword.data
     s = URLSafeTimedSerializer(app.config['SECRET_KEY'])
