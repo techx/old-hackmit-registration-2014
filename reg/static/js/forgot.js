@@ -3,11 +3,12 @@ $(document).ready(function(){
   var $form = $('.ui.form'),
       $email= $('#email'),
       $token = $('#token'),
-      $newPassword = $('#password');
+      $newPassword = $('#password'),
+      $dimmable = $('.ui.dimmable');
 
   function forgot(){
 
-    var $dimmable = $('.ui.dimmable').dimmer('show');
+    $dimmable.dimmer('show');
 
     if($token.val()){
       $.ajax({
