@@ -7,6 +7,7 @@ from flask.ext.login import LoginManager, login_required, login_user, current_us
 from flask_wtf.csrf import CsrfProtect
 from flask_sslify import SSLify
 from itsdangerous import URLSafeSerializer, BadSignature, URLSafeTimedSerializer, SignatureExpired
+from sqlalchemy import func
 
 from models import db, Account, Hacker, Team
 from forms import LoginForm, RegistrationForm, LotteryForm, ResetForm, ForgotForm, ForgotResetForm
@@ -134,7 +135,7 @@ def register_user():
     if not form.validate_on_submit():
         raise AuthenticationError('Your data is bad and you should feel bad.', status_code=403)
 
-    if Account.query.filter_by(email_address=email_address).first() != None:
+    if Account.query.filter(func.lower(Account.email_address)==func.lower(email_address)).first() != None:
         # Send back an error saying that this account already exists
         raise AuthenticationError('This account already exists!', status_code=420)
 
@@ -211,7 +212,7 @@ def sessions():
     email_address  = form.email.data
     hashed_password = form.hashedPassword.data
 
-    stored_account = Account.query.filter_by(email_address=email_address).first()
+    stored_account = Account.query.filter(func.lower(Account.email_address)==func.lower(email_address)).first()
     if stored_account == None:
         raise AuthenticationError("Sorry, it doesn't look like you have an account.", status_code=401)
 
@@ -279,7 +280,7 @@ def forgot():
     if request.method == 'POST':
         form = ForgotForm()
         email = form.email.data
-        account = Account.query.filter_by(email_address=email).first()
+        account = Account.query.filter(func.lower(Account.email_address)==func.lower(email)).first()
         if account != None:
             # Send an email to reset
             s = URLSafeTimedSerializer(app.config['SECRET_KEY'])
