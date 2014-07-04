@@ -70,6 +70,8 @@ $(document).ready(function(){
         interests: $interests.val()
       });
 
+    var $dimmable = $('.ui.dimmable').dimmer('show');
+
     $.ajax({
       url:'/hackers',
       type: 'POST',
@@ -77,6 +79,7 @@ $(document).ready(function(){
       dataType: 'json',
       data: formData,
       success: function(data){
+        $dimmable.dimmer('hide');
         dimmerMessage(
           "Your application has been saved!",
           "And now we wait...",
@@ -86,6 +89,7 @@ $(document).ready(function(){
         );
       },
       error: function(error) {
+        $dimmable.dimmer('hide');
         var msg = JSON.parse(error.responseText).message;
         showError(msg);
       }
