@@ -2,6 +2,7 @@
 
 {% block head %}
 
+<script src="{{ url_for('static', filename='js/SHA256.js') }}"></script>
 <script src="{{ url_for('static', filename='js/forgot.js') }}"></script>
 
 {% endblock %}
@@ -32,14 +33,40 @@ Reset Password
 
         <div class="ui dimmable form">
 
-          <div class="fluid field">
-            <label>Email Address</label>
-            <input id="email" value="{{ email }}" type="email">
-          </div>
           <div class="ui error message">
             <div class="header">We noticed some issues</div>
           </div>
+
+          {% if token == None %}
+
+            <div class="fluid field">
+              <label>Email Address</label>
+              <input id="email" value="{{ email }}" type="email">
+            </div>
+
           <button class="ui fluid hack submit button">SAVE ME</button>
+
+          {% else %}
+
+            <input id="token" value="{{ token }}" type="hidden">
+            <div class="new password field">
+              <label> New Password </label>
+              <div class="ui left icon input">
+                <input id="password" type="password">
+                <i class="lock icon"></i>
+              </div>
+            </div>
+            <div class="confirm field">
+              <label> Confirm Password </label>
+              <div class="ui left icon input">
+                <input id="confirm" type="password">
+                <i class="lock icon"></i>
+              </div>
+            </div>
+            <button class="ui fluid hack submit button">SAVE</button>
+
+          {% endif %}
+
         </div>
 
       </div>

@@ -6,12 +6,12 @@ from flask import Flask, render_template, request, redirect, url_for, jsonify
 from flask.ext.login import LoginManager, login_required, login_user, current_user, logout_user
 from flask_wtf.csrf import CsrfProtect
 from flask_sslify import SSLify
-from itsdangerous import URLSafeSerializer, BadSignature
+from itsdangerous import URLSafeSerializer, BadSignature, TimedSerializer, SignatureExpired
 
 from models import db, Account, Hacker, Team
-from forms import LoginForm, RegistrationForm, LotteryForm, ResetForm, ForgotForm
+from forms import LoginForm, RegistrationForm, LotteryForm, ResetForm, ForgotForm, ForgotResetForm
 from errors import AuthenticationError
-from emails import mail, send_account_confirmation_email
+from emails import mail, send_account_confirmation_email, send_forgot_password_email, send_password_reset_email
 
 MAX_TEAM_SIZE = 4
 
@@ -24,7 +24,7 @@ try:
     configuration_module_name = environ['HACKMIT_FLASK_CONFIG_MODULE']
     app.config.from_object(configuration_module_name)
 except KeyError:
-    app.config.from_object('config.dev.DevelopmentConfig')
+    app.config.from_object('config.prod.ProductionConfig')
 
 # Redirect all requests to HTTPS
 sslify = SSLify(app, subdomains=True, permanent=True)
@@ -102,23 +102,6 @@ def not_found(error):
 @app.route('/')
 def index():
     return render_template('index.html')
-
-@app.route('/forgot', methods=['GET', 'POST'])
-def forgot():
-    if request.method == 'GET':
-        if current_user.is_authenticated():
-            return redirect(url_for('dashboard'))
-        else:
-            return render_template('forgot.html')
-    if request.method == 'POST':
-        form = ForgotForm()
-        email = form.email.data
-        if Account.query.filter_by(email_address=email).first() != None:
-            # Send like an email to that email to reset
-            # TODO: @Aneesh
-            return jsonify({"message": "Email sent! Check your email for a link to reset your password."})
-        else:
-            raise AuthenticationError("This account doesn't exist!", status_code=420)
 
 extra = app.config.get('EXTRA_URL')
 if extra is not None:
@@ -271,6 +254,59 @@ def confirm():
             pass
     
     return render_template('server_message.html', header="That's not a valid confirmation code!", subheader="Check for typos in the link, or login and resend the confirmation email.")
+
+@app.route('/forgot', methods=['GET', 'POST'])
+def forgot():
+    if request.method == 'GET':
+        token = request.args.get('token')
+        if current_user.is_authenticated():
+            return redirect(url_for('dashboard'))
+        else:
+            return render_template('forgot.html', token=token)
+
+    if request.method == 'POST':
+        form = ForgotForm()
+        email = form.email.data
+        account = Account.query.filter_by(email_address=email).first()
+        if account != None:
+            # Send an email to reset
+            s = TimedSerializer(app.config['SECRET_KEY'])
+            token = s.dumps(account.id)
+
+            send_forgot_password_email(email, token=token)
+
+            return jsonify({"message": "Email sent! Check your email for a link to reset your password."})
+        else:
+            raise AuthenticationError("This account doesn't exist!", status_code=420)
+
+@app.route('/accounts/reset', methods=['POST'])
+def forgot_reset():
+    token = request.args.get('token')
+    form = ForgotResetForm()
+    new_password = form.newPassword.data
+    s = TimedSerializer(app.config['SECRET_KEY'])
+    try:
+        confirm_user_id = s.loads(token, max_age=86400) # Max age of 24 hours
+        account = load_user(confirm_user_id)
+        if account is None:
+            return render_template('server_message.html', header="You don't seem to have an account.", subheader="What are you waiting for? Go register!")
+
+        # In case the user hasn't already been confirmed.
+        account.confirm_email()
+        account.update_password(new_password)
+        db.session.commit()
+
+        # Notify the user that their password has been reset
+        send_password_reset_email(account.email_address)
+
+        return jsonify({"message": "You have successfully reset your password!"})
+
+    except SignatureExpired:
+        return render_template('server_message.html', header="Oops. Your token has expired.", subheader="You should probably try again!")
+
+    except BadSignature:
+        pass
+
 
 @app.route('/lottery')
 @login_required
