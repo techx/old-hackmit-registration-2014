@@ -55,11 +55,20 @@ $(document).ready(function() {
     $confirm.val("");
   }
 
+  // ONLY FOR USC TEMPORARILY, TODO: REMOVE
+  $.fn.form.settings.rules.usc = function(value){
+    return !value.match("usc.edu$")
+  };
+
   $form
     .form({
       email: {
         identifier: 'email',
         rules: [
+          {
+            type: 'usc', // ONLY FOR USC TEMPORARILY, TODO: REMOVE
+            prompt: "Issues have been reported with using usc.edu emails. We suggest you try another email (ex. gmail) instead!"
+          },
           {
             type: 'empty',
             prompt: "Please enter an email!"
@@ -68,6 +77,7 @@ $(document).ready(function() {
             type: 'email',
             prompt: "That's not a valid email address :("
           }
+
         ]
       },
       password: {
