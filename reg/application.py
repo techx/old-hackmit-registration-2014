@@ -24,7 +24,7 @@ try:
     configuration_module_name = environ['HACKMIT_FLASK_CONFIG_MODULE']
     app.config.from_object(configuration_module_name)
 except KeyError:
-    app.config.from_object('config.prod.ProductionConfig')
+    app.config.from_object('config.dev.DevelopmentConfig')
 
 # Redirect all requests to HTTPS
 sslify = SSLify(app, subdomains=True, permanent=True)
@@ -288,7 +288,7 @@ def forgot_reset():
     new_password = form.newPassword.data
     s = URLSafeTimedSerializer(app.config['SECRET_KEY'])
     try:
-        confirm_user_id = s.loads(token, max_age=86400) # Max age of 24 hours
+        confirm_user_id = s.loads(token, max_age=1800) # Max age of 30 minutes
         account = load_user(confirm_user_id)
         if account is None:
             return render_template('server_message.html', header="You don't seem to have an account.", subheader="What are you waiting for? Go register!")
