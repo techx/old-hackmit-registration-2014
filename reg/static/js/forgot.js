@@ -7,7 +7,7 @@ $(document).ready(function(){
 
   function forgot(){
 
-    debugger;
+    var $dimmable = $('.ui.dimmable').dimmer('show');
 
     if($token.val()){
       $.ajax({
@@ -19,6 +19,7 @@ $(document).ready(function(){
           newPassword: SHA224($newPassword.val())
         }),
         success: function(data){
+          $dimmable.dimmer('hide');
           dimmerMessage(
             data.message,
             "",
@@ -39,6 +40,7 @@ $(document).ready(function(){
           email: $email.val()
         }),
         success: function(data){
+          $dimmable.dimmer('hide');
           dimmerMessage(
             data.message,
             "",
@@ -53,7 +55,7 @@ $(document).ready(function(){
   }
 
   function showError(msg){
-
+    $dimmable.dimmer('hide');
     var error = JSON.parse(msg.responseText).message;
     $form
       .removeClass('success')
