@@ -264,16 +264,16 @@ def forgot():
             return redirect(url_for('dashboard'))
         elif token != None:
             s = URLSafeTimedSerializer(app.config['SECRET_KEY'])
-        try:
-            confirm_user_id = s.loads(token, max_age=1800) # Max age of 30 minutes
-            account = load_user(confirm_user_id)
-            if account is None:
-                return render_template('server_message.html', header="You don't seem to have an account.", subheader="What are you waiting for? Go register!")
-            return render_template('forgot_set_password.html', token=token)
-        except SignatureExpired:
-            return render_template('server_message.html', header="Oops. Your token has expired.", subheader="You should probably try again!")
-        except BadSignature:
-            return render_template('server_message.html', header="Oops. Your token is invalid.")
+            try:
+                confirm_user_id = s.loads(token, max_age=1800) # Max age of 30 minutes
+                account = load_user(confirm_user_id)
+                if account is None:
+                    return render_template('server_message.html', header="You don't seem to have an account.", subheader="What are you waiting for? Go register!")
+                return render_template('forgot_set_password.html', token=token)
+            except SignatureExpired:
+                return render_template('server_message.html', header="Oops. Your token has expired.", subheader="You should probably try again!")
+            except BadSignature:
+                return render_template('server_message.html', header="Oops. Your token is invalid.")
         else:
             return render_template('forgot.html')
 
