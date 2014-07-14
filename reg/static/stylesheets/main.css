@@ -65,6 +65,7 @@ textarea {
   color: rgb(35,177,150);
   background: none;
   min-width: 288px;
+  width: 30%;
 }
 
 .ui.hack.button:hover {
