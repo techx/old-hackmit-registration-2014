@@ -16,7 +16,7 @@ from emails import mail, send_account_confirmation_email, send_forgot_password_e
 
 MAX_TEAM_SIZE = 4
 
-application = Flask(__name__,instance_relative_config=True)
+application = Flask(__name__, instance_relative_config=True)
 
 # For AWS
 app = application
@@ -131,42 +131,41 @@ def register_user():
     role = form.role.data
     email_address = form.email.data
     hashed_password = form.hashedPassword.data
-    
+
     if not form.validate_on_submit():
         raise AuthenticationError('Your data is bad and you should feel bad.', status_code=403)
 
-    if Account.query.filter(func.lower(Account.email_address)==func.lower(email_address)).first() != None:
+    if Account.query.filter(func.lower(Account.email_address) == func.lower(email_address)).first() != None:
         # Send back an error saying that this account already exists
         raise AuthenticationError('This account already exists!', status_code=420)
 
     new_account = Account(email_address, hashed_password)
     db.session.add(new_account)
-    if role=="hacker": #TODO Move away from this hardcoded string and turn into a table lookup
+    if role =="hacker": #TODO Move away from this hardcoded string and turn into a table lookup
         db.session.flush()
-        new_hacker= Hacker(new_account.id)
+        new_hacker = Hacker(new_account.id)
         db.session.add(new_hacker)
     db.session.commit()
-    
+
     s = URLSafeSerializer(app.config['SECRET_KEY'])
     confirm = s.dumps(new_account.id)
 
     send_account_confirmation_email(email_address, confirm=confirm)
-    
+
     # Return a message of success
     return jsonify({'message': 'Successfully Registered!'})
 
 @app.route('/account/resend')
 @login_required
 def resendEmail():
-   if current_user.email_confirmed():
-       render_template('server_message.html', header="You're already confirmed!", subheader="We do, however, appreciate your enthusiasm.")
-   account_id = current_user.id
-   s = URLSafeSerializer(app.config['SECRET_KEY'])
-   confirm = s.dumps(account_id)
-   email_address = current_user.email_address
-   send_account_confirmation_email(email_address, confirm=confirm)
-   #return jsonify({'message': 'Successfully send email!'})
-   return redirect(url_for('dashboard'))
+    if current_user.email_confirmed():
+        render_template('server_message.html', header="You're already confirmed!", subheader="We do, however, appreciate your enthusiasm.")
+    account_id = current_user.id
+    s = URLSafeSerializer(app.config['SECRET_KEY'])
+    confirm = s.dumps(account_id)
+    email_address = current_user.email_address
+    send_account_confirmation_email(email_address, confirm=confirm)
+    return redirect(url_for('dashboard'))
 
 @app.route('/accounts/<account_id>', methods=['PUT'])
 @login_required
@@ -208,18 +207,18 @@ def sessions():
 
     if not form.validate_on_submit():
         raise AuthenticationError("Your data is bad and you should feel bad. What did you do?", status_code=403)
-    
-    email_address  = form.email.data
+
+    email_address = form.email.data
     hashed_password = form.hashedPassword.data
 
-    stored_account = Account.query.filter(func.lower(Account.email_address)==func.lower(email_address)).first()
+    stored_account = Account.query.filter(func.lower(Account.email_address) == func.lower(email_address)).first()
     if stored_account == None:
         raise AuthenticationError("Sorry, it doesn't look like you have an account.", status_code=401)
 
     if not stored_account.check_password(hashed_password):
         raise AuthenticationError("Your username or password do not match.", status_code=402)
     login_user(stored_account)
-    return jsonify({ 'url' : url_for('dashboard')})
+    return jsonify({'url': url_for('dashboard')})
 
 @app.route('/dashboard')
 @login_required
@@ -253,7 +252,7 @@ def confirm():
             return redirect(url_for('login'))
         except BadSignature:
             pass
-    
+
     return render_template('server_message.html', header="That's not a valid confirmation code!", subheader="Check for typos in the link, or login and resend the confirmation email.")
 
 @app.route('/forgot', methods=['GET', 'POST'])
@@ -280,7 +279,7 @@ def forgot():
     if request.method == 'POST':
         form = ForgotForm()
         email = form.email.data
-        account = Account.query.filter(func.lower(Account.email_address)==func.lower(email)).first()
+        account = Account.query.filter(func.lower(Account.email_address) == func.lower(email)).first()
         if account != None:
             # Send an email to reset
             s = URLSafeTimedSerializer(app.config['SECRET_KEY'])
@@ -381,7 +380,7 @@ def leave_team():
 @lottery_submitted
 def teams():
     hacker = Hacker.query.filter_by(account_id=current_user.id).first()
-    team = Team(app) # Create a new team
+    team = Team() # Create a new team
     db.session.add(team) # Add the team to the DB
     db.session.flush()
     hacker.team_id = team.id #Assign the hacker that team id
@@ -438,23 +437,21 @@ def hackers():
     if not form.validate_on_submit():
         # TODO make this nicer
         raise AuthenticationError("That's not valid data!")
-    
+
     # TODO: invite_code validation and hookup
     if form.school_id.data != "166683" and form.adult.data is not True:
         raise AuthenticationError("Sorry, you need to be 18+ at the time of HackMIT to attend. Maybe next year?")
-   
+
     shortened_invite_code = form.inviteCode.data[:8]
-    
     previous_hacker_with_code = Hacker.query.filter_by(invite_code=shortened_invite_code).first()
 
     if form.inviteCode.data != "" and previous_hacker_with_code is not None and previous_hacker_with_code.account_id != current_user.id:
         raise AuthenticationError("Somebody beat you to it! That code has already been used. Try again or submit without a code to save your data.")
-   
-    hacker = Hacker.query.filter_by(account_id=current_user.id).first() 
+
+    hacker = Hacker.query.filter_by(account_id=current_user.id).first()
     hacker.update_lottery_info(form.name.data, form.gender.data, form.school_id.data, form.school.data, form.adult.data, form.location.data, shortened_invite_code, form.interests.data)
 
     db.session.commit()
-
     return jsonify({'message': "Successfully Updated!"})
 
 if __name__ == '__main__':

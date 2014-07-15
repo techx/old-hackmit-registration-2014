@@ -1,6 +1,6 @@
 from flask_wtf import Form
-from wtforms import TextField, BooleanField
-from wtforms.validators import InputRequired, Optional, Length, Email, Regexp, AnyOf
+from wtforms import TextField
+from wtforms.validators import InputRequired, Optional, Length, Email, Regexp
 
 class RegistrationForm(Form):
     role = TextField(validators=[InputRequired(), Regexp("^[a-z]+$")])

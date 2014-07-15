@@ -13,7 +13,7 @@ class Account(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     email_address = db.Column(db.String(320), unique=True)
     hashed_password = db.Column(db.String(146)) # Total length of hashed, salted password
-    confirmed = db.Column(db.Boolean, default = False)
+    confirmed = db.Column(db.Boolean, default=False)
 
     def __init__(self, email_address, password):
         self.email_address = email_address
@@ -65,19 +65,19 @@ class Hacker(db.Model):
         details["interests"] = self.interests
 
         return details
-    
+
     def update_lottery_info(self, name, gender, school_id, school, adult, location, invite_code, interests):
-        self.name=name
-        self.gender=gender
-        self.school_id=school_id
-        self.school=school
-        self.location=location
-        self.invite_code=invite_code
-        self.adult=adult
-        self.interests=interests
-        
+        self.name = name
+        self.gender = gender
+        self.school_id = school_id
+        self.school = school
+        self.location = location
+        self.invite_code = invite_code
+        self.adult = adult
+        self.interests = interests
+
     def lottery_submitted(self):
-        return self.name is not None and self.name!= ""
+        return self.name is not None and self.name != ""
 
 class Team(db.Model):
     __bind_key__ = 'local'
@@ -86,5 +86,5 @@ class Team(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     team_invite_code = db.Column(db.String(20), unique=True)
 
-    def __init__(self, app):
+    def __init__(self):
         self.team_invite_code = '%020x' % randrange(16**20)
