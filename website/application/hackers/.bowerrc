@@ -1,0 +1,6 @@
+{
+  "directory": "static/bower_components",
+  "scripts": {
+      "postinstall": "rm -r static/bower_components/jquery"
+  }
+}

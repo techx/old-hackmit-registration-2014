@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block title %}
+
+Dashboard
+
+{% endblock %}
+
+
+{% block headerTitle %}
+
+  DASHBOARD
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="lottery">
+
+  <div class="ui stackable aligned one column page grid">
+
+    <div class="row"></div>
+
+    <div class="row">
+
+      <div class="left aligned column">
+      {% for role in dashboard_roles %}
+          {% from dashboard_roles[role]['name'] import name with context %}
+          {{ name(dashboard_roles[role]['context']) }}
+      {% endfor %}
+
+          {% if email_confirmed %}
+
+          {% for role in dashboard_roles %}
+              {% from dashboard_roles[role]['name'] import body_text with context %}
+              {{ body_text(dashboard_roles[role]['context']) }}
+          {% endfor %}
+
+          {% else %}
+
+          <h2> Your email is not yet confirmed. </h2>
+
+          <h2> Once you confirm your email, make sure to enter the lottery by filling out the lottery application. At that point, you'll also be able to create and join teams. The deadline is July 20th at midnight - don't miss it! </h2>
+
+          <button class="ui hack button" onclick="location.href='{{ url_for('.resend_email') }}'">
+            RESEND CONFIRMATION EMAIL
+          </button>
+
+          {% endif %}
+
+
+      </div>
+
+
+    </div>
+
+    <div class="row">
+
+      <div class="center aligned column">
+
+      {% for role in dashboard_roles %}
+          {% from dashboard_roles[role]['name'] import buttons with context %}
+          {{ buttons(dashboard_roles[role]['context']) }}
+      {% endfor %}
+
+      </div>
+
+    </div>
+
+    <div class="row"></div>
+
+  </div>
+</div>
+
+{% endblock %}
