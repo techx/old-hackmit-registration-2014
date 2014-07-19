@@ -50,7 +50,7 @@ class Hacker(db.Model, Role):
         details['school_id'] = self.school_id
         details['adult'] = self.adult
         details['location'] = self.location
-        details['invite_code'] = self.invite_code[:8]
+        details['invite_code'] = self.invite_code[:8] if self.invite_code is not None else None
         details['interests'] = self.interests
 
         return details
