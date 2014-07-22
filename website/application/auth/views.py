@@ -12,6 +12,18 @@ from .errors import AuthenticationError
 from .forms import LoginForm, RegistrationForm, ResetForm, ForgotForm, ForgotResetForm
 from .models import Account
 
+def roles_with_context(view_name):
+    dashboard_roles = {}
+
+    for role in roles:
+        if roles[role]['model'].lookup_from_account_id(current_user.id) is not None:
+            dashboard_roles[role] = None
+
+    for role in dashboard_roles:
+        dashboard_roles[role] = roles[role]['dashboard']()
+
+    return dashboard_roles
+
 # Implies the @login_required decorator
 def email_confirmed(function):
     @login_required
@@ -143,21 +155,13 @@ def sessions():
 @login_required
 def dashboard():
     email_confirmed = False # Email is confirmed
-    dashboard_roles = {}
 
     account = load_user(current_user.id)
 
     if account.email_confirmed():
         email_confirmed = True
 
-        for role in roles:
-            if roles[role]['model'].lookup_from_account_id(current_user.id) is not None:
-                dashboard_roles[role] = None
-
-        for role in dashboard_roles:
-            dashboard_roles[role] = roles[role]['dashboard']()
-
-    return render_template('dashboard.html', email_confirmed=email_confirmed, dashboard_roles=dashboard_roles)
+    return render_template('dashboard.html', email_confirmed=email_confirmed, dashboard_roles=roles_with_context('dashboard'))
 
 @bp.route('/confirm')
 def confirm():
