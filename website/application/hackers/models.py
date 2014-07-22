@@ -1,5 +1,7 @@
 from random import randrange
 
+from flask.ext.login import current_user # For migration
+
 from ..models import db
 
 from ..auth.models import Role
@@ -43,7 +45,6 @@ class Hacker(db.Model, Role):
     def get_hacker_details(self):
         details = {}
 
-        details['name'] = self.name
         details['gender'] = self.gender
         details['account_id'] = self.account_id
         details['school'] = self.school
@@ -59,8 +60,7 @@ class Hacker(db.Model, Role):
     def create(session, account_id):
         session.add(Hacker(account_id))
 
-    def update_lottery_info(self, session, name, gender, school_id, school, adult, location, invite_code, interests):
-        self.name = name
+    def update_lottery_info(self, session, gender, school_id, school, adult, location, invite_code, interests):
         self.gender = gender
         self.school_id = school_id
         self.school = school

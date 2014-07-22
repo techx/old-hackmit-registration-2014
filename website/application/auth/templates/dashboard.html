@@ -29,10 +29,11 @@ Dashboard
     <div class="row">
 
       <div class="left aligned column">
-      {% for role in dashboard_roles %}
-          {% from dashboard_roles[role]['name'] import name with context %}
-          {{ name(dashboard_roles[role]['context']) }}
-      {% endfor %}
+      {% if name %}
+          <h1>
+          Welcome back, {{ name }}!
+          </h1>
+      {% endif %}
 
           {% if email_confirmed %}
 

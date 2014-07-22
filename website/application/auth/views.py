@@ -161,7 +161,9 @@ def dashboard():
     if account.email_confirmed():
         email_confirmed = True
 
-    return render_template('dashboard.html', email_confirmed=email_confirmed, dashboard_roles=roles_with_context('dashboard'))
+    name = account.get_name()
+
+    return render_template('dashboard.html', email_confirmed=email_confirmed, name=name, dashboard_roles=roles_with_context('dashboard'))
 
 @bp.route('/confirm')
 def confirm():

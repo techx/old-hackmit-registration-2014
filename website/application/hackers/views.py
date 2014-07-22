@@ -18,10 +18,9 @@ MAX_TEAM_SIZE = 4
 def dashboard():
     lottery_complete = False # Lottery is complete, also show teams
     hacker = Hacker.lookup_from_account_id(current_user.id)
-    name = hacker.name
     if hacker.lottery_submitted():
         lottery_complete = True
-    return {'name':'hacker_dashboard.html', 'context':{'name':name, 'lottery_complete':lottery_complete}}
+    return {'name':'hacker_dashboard.html', 'context':{'lottery_complete':lottery_complete}}
 
 # Implies the @login_required and @email_confirmed decorators
 def hackers_only(function):
@@ -66,18 +65,18 @@ def hackers():
 
     hacker = Hacker.lookup_from_account_id(current_user.id)
     
-    print hacker.id, hacker.account_id
-
     with db_safety() as session:
-        hacker.update_lottery_info(session, form.name.data, form.gender.data, form.school_id.data, form.school.data, form.adult.data, form.location.data, form.inviteCode.data, form.interests.data)
+        current_user.update_name(session, form.name.data)
+        hacker.update_lottery_info(session, form.gender.data, form.school_id.data, form.school.data, form.adult.data, form.location.data, form.inviteCode.data, form.interests.data)
 
     return jsonify({'message': "Successfully Updated!"})
 
 @bp.route('/lottery')
 @hackers_only
 def lottery():
+    name = current_user.get_name()
     hacker = Hacker.lookup_from_account_id(current_user.id).get_hacker_details()
-    return render_template('lottery.html', hacker=hacker)
+    return render_template('lottery.html', name=name, hacker=hacker)
 
 @bp.route('/team')
 @lottery_submitted

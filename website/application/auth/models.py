@@ -26,11 +26,30 @@ class Account(db.Model, UserMixin):
     def email_confirmed(self):
         return self.confirmed
 
+    def get_name(self):
+        name = Name.query.get(int(self.id))
+        if name is None:
+
+            # Name migration code
+            from ..hackers.model import Hacker
+
+            hacker = Hacker.lookup_from_account_id(self.id)
+            if hacker is not None:
+                name = hacker.name
+                with db_safety() as session:
+                    update_name(session, name)
+
+            return name
+
+        else:
+            return name.get_name()
+
     @staticmethod
     def create(session, email_address, hashed_password):
         new_account = Account(email_address, hashed_password)
         session.add(new_account)
         session.flush()
+        Name.create(session, new_account.id)
         return new_account.id
 
     def confirm_email(self, session):
@@ -38,6 +57,16 @@ class Account(db.Model, UserMixin):
 
     def update_password(self, session, password):
         self.hashed_password = generate_password_hash(password)
+
+    def update_name(self, session, new_name):
+        name = Name.query.get(int(self.id))
+       
+        # Name migration code 
+        if name is None:
+            with db_safety() as session:
+               Name.create(session, self.id)
+
+        name.update_name(session, new_name)
 
     def __init__(self, email_address, password):
         self.email_address = email_address
@@ -56,3 +85,24 @@ class Role:
     def lookup_from_account_id(account_id):
         raise NotImplementedError
 
+
+class Name(db.Model):
+    __bind_key__ = 'local'
+    __tablename__ = 'names'
+
+    account_id = db.Column(db.Integer, db.ForeignKey('accounts.id'), primary_key=True)
+    name = db.Column(db.String(100))
+
+    def get_name(self):
+        return self.name
+
+    @staticmethod
+    def create(session, account_id):
+        new_name = Name(account_id)
+        session.add(new_name)
+
+    def update_name(self, session, name):
+        self.name = name
+
+    def __init__(self, account_id):
+        self.account_id = account_id

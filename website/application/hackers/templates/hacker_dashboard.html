@@ -1,11 +1,3 @@
-{% macro name(hacker) -%}
-        <h1>
-          {% if hacker['name'] %}
-            Welcome back, {{ hacker['name'] }}!
-          {% endif %}
-        </h1>
-{% endmacro %}
-
 {% macro body_text(hacker) -%}
             {% if hacker['lottery_complete'] %}
 
