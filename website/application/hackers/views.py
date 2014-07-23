@@ -67,7 +67,7 @@ def hackers():
     
     with db_safety() as session:
         current_user.update_name(session, form.name.data)
-        hacker.update_lottery_info(session, form.gender.data, form.school_id.data, form.school.data, form.adult.data, form.location.data, form.inviteCode.data, form.interests.data)
+        hacker.update_lottery_data(session, form.gender.data, form.school_id.data, form.school.data, form.adult.data, form.location.data, form.inviteCode.data, form.interests.data)
 
     return jsonify({'message': "Successfully Updated!"})
 
@@ -75,7 +75,7 @@ def hackers():
 @hackers_only
 def lottery():
     name = current_user.get_name()
-    hacker = Hacker.lookup_from_account_id(current_user.id).get_hacker_details()
+    hacker = Hacker.lookup_from_account_id(current_user.id).get_hacker_data()
     return render_template('lottery.html', name=name, hacker=hacker)
 
 @bp.route('/team')

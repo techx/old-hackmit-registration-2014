@@ -1,3 +1,4 @@
+from collections import deque
 from sqlalchemy import func
 from flask.ext.login import UserMixin
 from werkzeug.security import generate_password_hash as werkzeug_generate_password_hash, check_password_hash
@@ -45,11 +46,15 @@ class Account(db.Model, UserMixin):
             return name.get_name()
 
     @staticmethod
-    def create(session, email_address, hashed_password):
+    def create(session, email_address, hashed_password, initial_role):
         new_account = Account(email_address, hashed_password)
         session.add(new_account)
         session.flush()
+
         Name.create(session, new_account.id)
+
+        new_account.add_role(session, initial_role)
+
         return new_account.id
 
     def confirm_email(self, session):
@@ -68,6 +73,16 @@ class Account(db.Model, UserMixin):
 
         name.update_name(session, new_name)
 
+    def add_role(self, session, role):
+        from . import roles
+        roles_queue = deque()
+        roles_queue.append(role)
+        while len(roles_queue):
+            role_model = roles[roles_queue.popleft()]['model']
+            role_model.create(session, self.id)
+            session.flush()
+            roles_queue.extend(role_model.implied_roles())
+
     def __init__(self, email_address, password):
         self.email_address = email_address
         self.hashed_password = generate_password_hash(password)
@@ -79,6 +94,10 @@ class Role:
 
     @staticmethod
     def is_registrable():
+        raise NotImplementedError
+
+    @staticmethod
+    def implied_roles():
         raise NotImplementedError
 
     @staticmethod

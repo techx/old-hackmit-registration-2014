@@ -53,7 +53,9 @@ def handle_database_error(error):
 from .core import bp as core
 from .auth import bp as auth
 from .hackers import bp as hackers
+from .util import bp as util
 
 app.register_blueprint(core)
 app.register_blueprint(auth)
 app.register_blueprint(hackers)
+app.register_blueprint(util)

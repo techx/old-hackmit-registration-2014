@@ -17,11 +17,9 @@ def roles_with_context(view_name):
 
     for role in roles:
         if roles[role]['model'].lookup_from_account_id(current_user.id) is not None:
-            dashboard_roles[role] = None
-
-    for role in dashboard_roles:
-        dashboard_roles[role] = roles[role]['dashboard']()
-
+            if roles[role][view_name] is not None:
+                dashboard_roles[role] = roles[role]['dashboard']()
+    
     return dashboard_roles
 
 # Implies the @login_required decorator
@@ -70,8 +68,7 @@ def register_user():
         raise AuthenticationError('This account already exists!', status_code=420)
 
     with db_safety() as session:
-        account_id = Account.create(session, email_address, hashed_password)
-        roles[role]['model'].create(session, account_id)
+        account_id = Account.create(session, email_address, hashed_password, role)
 
     s = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
     confirm = s.dumps(account_id)

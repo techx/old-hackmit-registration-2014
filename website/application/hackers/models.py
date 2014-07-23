@@ -27,6 +27,10 @@ class Hacker(db.Model, Role):
         return True
 
     @staticmethod
+    def implied_roles():
+        return []
+
+    @staticmethod
     def lookup_from_account_id(account_id):
         return Hacker.query.filter_by(account_id=account_id).first()
 
@@ -42,25 +46,25 @@ class Hacker(db.Model, Role):
     def lottery_submitted(self):
         return self.name is not None and self.name != ""
 
-    def get_hacker_details(self):
-        details = {}
+    def get_hacker_data(self):
+        data = {}
 
-        details['gender'] = self.gender
-        details['account_id'] = self.account_id
-        details['school'] = self.school
-        details['school_id'] = self.school_id
-        details['adult'] = self.adult
-        details['location'] = self.location
-        details['invite_code'] = self.invite_code[:8] if self.invite_code is not None else None
-        details['interests'] = self.interests
+        data['gender'] = self.gender
+        data['account_id'] = self.account_id
+        data['school'] = self.school
+        data['school_id'] = self.school_id
+        data['adult'] = self.adult
+        data['location'] = self.location
+        data['invite_code'] = self.invite_code[:8] if self.invite_code is not None else None
+        data['interests'] = self.interests
 
-        return details
+        return data
 
     @staticmethod
     def create(session, account_id):
         session.add(Hacker(account_id))
 
-    def update_lottery_info(self, session, gender, school_id, school, adult, location, invite_code, interests):
+    def update_lottery_data(self, session, gender, school_id, school, adult, location, invite_code, interests):
         self.gender = gender
         self.school_id = school_id
         self.school = school
