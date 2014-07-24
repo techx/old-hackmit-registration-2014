@@ -13,6 +13,9 @@ from . import bp
 from .forms import LotteryForm
 from .models import Hacker, Team
 
+# temp changes for waiver
+from flask import request
+
 MAX_TEAM_SIZE = 4
 
 def dashboard():
@@ -77,6 +80,39 @@ def lottery():
     name = current_user.get_name()
     hacker = Hacker.lookup_from_account_id(current_user.id).get_hacker_data()
     return render_template('lottery.html', name=name, hacker=hacker)
+
+@bp.route('/waiver_temp')
+@hackers_only
+def waiver_temp():
+    # TODO: integrate into the rest of the application
+    name = current_user.get_name()
+    hacker = Hacker.lookup_from_account_id(current_user.id).get_hacker_data()
+    print "HELLO"
+    return render_template('waiver_temp.html', name=name, hacker=hacker)
+
+@bp.route('/waiver_validate', methods=['POST'])
+def waiver_validate_temp():
+    # this is a test... SHould received a POSTed status update when a document is signed
+    # <?xml version="1.0" encoding="UTF-8"?>
+    #          <callback>
+    #              <callback-type>Document</callback-type>
+    #              <guid>dl3jsdf9850dfkl3-dfl2</guid>
+    #              <status>signed</status>
+    #              <created-at>2009-11-05 16:36:08 -0800</created-at>
+    #              <signed-at>2009-11-05 16:46:08 -0800</signed-at>
+    #          </callback>
+    print "PRINTING STREAM"
+    print "ENDING STREM"
+    print "shit"
+    return jsonify({'message': "Weeeee"})
+
+@bp.route('/waiver_submitted')
+@hackers_only
+def waiver_submitted_temp():
+    # No validation!
+    name = current_user.get_name()
+    hacker = Hacker.lookup_from_account_id(current_user.id).get_hacker_data()
+    return render_template('server_message.html', header="Waiver submitted", subheader="Make sure to validate")
 
 @bp.route('/team')
 @lottery_submitted
