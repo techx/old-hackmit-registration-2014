@@ -52,10 +52,12 @@ def handle_server_error(error):
 
 from .core import bp as core
 from .auth import bp as auth
-from .hackers import bp as hackers
-from .util import bp as util
+from .hackers import bp as hacker
+from .attendee import bp as attendee
+from .admit import bp as admit
 
 app.register_blueprint(core)
 app.register_blueprint(auth)
-app.register_blueprint(hackers)
-app.register_blueprint(util)
+app.register_blueprint(hacker)
+app.register_blueprint(attendee)
+app.register_blueprint(admit)

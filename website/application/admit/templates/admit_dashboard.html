@@ -1,0 +1,13 @@
+{% macro body_text(admit) -%}
+              <h3> You've been admitted to HackMIT 2014!
+              Fill out the confirmation form below by {{ admit['deadline'] }}
+              to let us know that you're coming! </h3>
+{% endmacro %}
+
+{% macro buttons(admit) -%}
+        <button class="ui hack button" onclick="location.href={{ url_for('admit.confirmation') }}">
+          Confirmation of Attendance
+        </button>
+
+        <br><br>
+{% endmacro %}

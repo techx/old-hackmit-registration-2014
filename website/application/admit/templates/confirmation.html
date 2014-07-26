@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block head %}
+
+<script src="{{ url_for('.static', filename='js/confirmation.js') }}"></script>
+
+{% endblock %}
+
+{% block title %}
+
+    Confirm
+
+{% endblock %}
+
+{% block headerTitle %}
+
+    CONFIRMATION
+
+{% endblock %}
+
+{% block content %}
+
+  <div class="confirmation">
+
+    <div class="ui stackable aligned three column page grid">
+
+      <div class="row"></div>
+
+      <div class="row">
+        <div class="column"></div>
+
+        <div class="column">
+          <div class="ui dimmable form">
+
+            <div class="ui inverted dimmer">
+              <div class="content">
+                <div class="center">
+                  <h3> Sit tight, saving your settings... </h3>
+                </div>
+              </div>
+            </div>
+
+           {% include 'attendee_form.html' with context %}
+
+            <div class="field">
+              <label>Dietary Restrictions</label>
+              <div class="ui fluid selection dropdown">
+                <div class="text">Select</div>
+                <i class="dropdown icon"></i>
+                <input id="diet" type="hidden" value="{{ admit.dietary_restriction if admit.dietary_restriction != None }}">
+                <div class="menu">
+                  <div class="item" data-value="none">No restrictions!</div>
+                  <div class="item" data-value="veg">Vegetarian</div>
+                  <div class="item" data-value="vegan">Vegan</div>
+                  <div class="item" data-value="kosher">Kosher</div>
+                  <div class="item" data-value="halal">Halal</div>
+                  <div class="item" data-value="other">Other</div>
+                </div>
+              </div>
+            </div>
+
+
+Show the legal waiver here.
+
+            <div class="inline field">
+              <div class="ui checkbox">
+                <input id="legal" type="checkbox" {% if admit.legal_waiver %}checked{% endif %}>
+                <label for="legal">I have read and understood the above legal waiver and agree to it by checking this box.</label>
+              </div>
+            </div>
+
+Show the photo release here.
+
+            <div class="inline field">
+              <div class="ui checkbox">
+                <input id="photo" type="checkbox" {% if admit.photo_release %}checked{% endif %}>
+                <label for="photo">I have read and understood the above photo release waiver and agree to it by checking this box.</label>
+              </div>
+            </div>
+
+            <div class="ui hack fluid submit button">Save</div>
+          </div>
+        </div>
+
+        <div class="column"></div>
+
+      </div>
+
+      <div class="row"></div>
+
+    </div>
+ </div>
+
+{% endblock %}

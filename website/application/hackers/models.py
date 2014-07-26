@@ -1,7 +1,5 @@
 from random import randrange
 
-from flask.ext.login import current_user # For migration
-
 from ..models import db
 
 from ..auth.models import Role

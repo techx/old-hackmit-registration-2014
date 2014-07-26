@@ -7,7 +7,8 @@ class Attendee(db.Model, Role):
     __tablename__ = 'attendees'
 
     account_id = db.Column(db.Integer, db.ForeignKey('accounts.id'), primary_key=True)
-    shirt_size = db.Column(db.Integer) # (Implied t-shirts) Have a lookup table as with schools
+    badge_name = db.Column(db.String(50))
+    shirt_size = db.Column(db.String(6)) # (Implied t-shirts)
     phone_number = db.Column(db.String(16)) # Store in E164 format including leading plus
     
     @staticmethod
@@ -18,11 +19,12 @@ class Attendee(db.Model, Role):
     def implied_roles():
         return []
 
-    def get_attendee_data():
+    def get_attendee_data(self):
        data = {}
-       
-       data['shirt_size'] = shirt_size
-       data['phone_number'] = phone_number
+
+       data['badge_name'] = self.badge_name
+       data['shirt_size'] = self.shirt_size
+       data['phone_number'] = self.phone_number
        
        return data 
 
@@ -34,7 +36,8 @@ class Attendee(db.Model, Role):
     def create(session, account_id):
         session.add(Attendee(account_id))
 
-    def update_account_data(self, session, shirt_size, phone_number):
+    def update_attendee_data(self, session, badge_name, shirt_size, phone_number):
+        self.badge_name = badge_name
         self.shirt_size = shirt_size
         self.phone_number = phone_number
 
