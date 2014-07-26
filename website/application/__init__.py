@@ -3,8 +3,11 @@ from os import environ
 from flask import Flask, render_template, jsonify, abort
 from flask_sslify import SSLify
 from flask_wtf.csrf import CsrfProtect
+from flask.ext.admin import Admin, BaseView, expose
+from flask.ext.admin.contrib.sqla import ModelView
 
 application = Flask(__name__, instance_relative_config=True)
+admin = Admin(application, name="HackMIT Admin")
 
 # For AWS
 app = application
@@ -61,3 +64,11 @@ app.register_blueprint(auth)
 app.register_blueprint(hacker)
 app.register_blueprint(attendee)
 app.register_blueprint(admit)
+
+from .hackers.models import Hacker
+from .attendee.models import Attendee 
+from .admit.models import Admit
+admin.add_view(ModelView(Hacker, db.session))
+admin.add_view(ModelView(Attendee, db.session))
+admin.add_view(ModelView(Admit, db.session))
+
