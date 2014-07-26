@@ -79,9 +79,10 @@ class Account(db.Model, UserMixin):
         roles_queue.append(role)
         while len(roles_queue):
             role_model = roles[roles_queue.popleft()]['model']
-            role_model.create(session, self.id)
-            session.flush()
-            roles_queue.extend(role_model.implied_roles())
+            if role_model.lookup_from_account_id(self.id) is None: # Don't add rows for roles that already exist
+                role_model.create(session, self.id)
+                session.flush()
+                roles_queue.extend(role_model.implied_roles())
 
     def __init__(self, email_address, password):
         self.email_address = email_address
