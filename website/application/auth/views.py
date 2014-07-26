@@ -13,14 +13,14 @@ from .forms import LoginForm, RegistrationForm, ResetForm, ForgotForm, ForgotRes
 from .models import Account
 
 def roles_with_context(view_name):
-    dashboard_roles = {}
+    roles_for_view = {}
 
     for role in roles:
         if roles[role]['model'].lookup_from_account_id(current_user.id) is not None:
             if roles[role][view_name] is not None:
-                dashboard_roles[role] = roles[role]['dashboard']()
+                roles_for_view[role] = roles[role][view_name]()
     
-    return dashboard_roles
+    return roles_for_view
 
 # Implies the @login_required decorator
 def email_confirmed(function):
