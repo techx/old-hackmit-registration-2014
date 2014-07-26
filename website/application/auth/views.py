@@ -4,6 +4,8 @@ from flask import render_template, request, redirect, url_for, jsonify, current_
 from flask.ext.login import login_required, login_user, current_user, logout_user
 from itsdangerous import BadSignature, URLSafeTimedSerializer, SignatureExpired
 
+from ..util import toposort
+
 from ..errors import ServerError, BadDataError
 from ..models import db_safety
 
@@ -14,14 +16,16 @@ from .forms import LoginForm, RegistrationForm, ResetForm, ForgotForm, ForgotRes
 from .models import Account
 
 def roles_with_context(view_name):
-    roles_for_view = {}
+    roles_for_view = []
 
     for role in roles:
         if roles[role]['model'].lookup_from_account_id(current_user.id) is not None:
             if roles[role][view_name] is not None:
-                roles_for_view[role] = roles[role][view_name]()
-    
-    return roles_for_view
+                roles_for_view.append(role)
+
+    toposort(roles_for_view, lambda collection, item: roles[item]['model'].implied_roles())
+
+    return [(role, roles[role][view_name]()) for role in roles_for_view]
 
 # Implies the @login_required decorator
 def email_confirmed(function):

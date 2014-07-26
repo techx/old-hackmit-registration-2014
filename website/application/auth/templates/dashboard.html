@@ -38,8 +38,8 @@ Dashboard
           {% if email_confirmed %}
 
           {% for role in dashboard_roles %}
-              {% from dashboard_roles[role]['name'] import body_text with context %}
-              {{ body_text(dashboard_roles[role]['context']) }}
+              {% from role[1]['name'] import body_text with context %}
+              {{ body_text(role[1]['context']) }}
           {% endfor %}
 
           {% else %}
@@ -65,8 +65,8 @@ Dashboard
       <div class="center aligned column">
 
       {% for role in dashboard_roles %}
-          {% from dashboard_roles[role]['name'] import buttons with context %}
-          {{ buttons(dashboard_roles[role]['context']) }}
+          {% from role[1]['name'] import buttons with context %}
+          {{ buttons(role[1]['context']) }}
       {% endfor %}
 
       </div>

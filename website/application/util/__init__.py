@@ -8,3 +8,5 @@ blueprint_name = 'util'
 bp = Blueprint(blueprint_name, __name__)
 
 register_role('attendee', Attendee, None)
+
+from toposort import toposort, toposorted
