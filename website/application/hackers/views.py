@@ -5,7 +5,8 @@ from flask.ext.login import current_user
 
 from ..models import db_safety
 
-from ..auth.errors import AuthenticationError
+from ..errors import BadDataError
+
 from ..auth.models import Account
 from ..auth.views import email_confirmed
 
@@ -53,15 +54,15 @@ def hackers():
     form = LotteryForm()
     # First find the hacker if they already exist
     if not form.validate_on_submit():
-        raise AuthenticationError("That's not valid data!")
+        raise BadDataError()
 
     if form.school_id.data != "166683" and form.adult.data is not True:
-        raise AuthenticationError("Sorry, you need to be 18+ at the time of HackMIT to attend. Maybe next year?")
+        raise BadDataError("Sorry, you need to be 18+ at the time of HackMIT to attend. Maybe next year?")
 
     previous_hacker_with_code = Hacker.lookup_from_invite_code(form.inviteCode.data)
 
     if form.inviteCode.data != "" and previous_hacker_with_code is not None and previous_hacker_with_code.account_id != current_user.id:
-        raise AuthenticationError("Somebody beat you to it! That code has already been used. Try again or submit without a code to save your data.")
+        raise BadDataError("Somebody beat you to it! That code has already been used. Try again or submit without a code to save your data.")
 
     hacker = Hacker.lookup_from_account_id(current_user.id)
     
@@ -135,12 +136,12 @@ def join_team(team_invite_code):
     team = Team.query.filter_by(team_invite_code=team_invite_code).first()
 
     if team is None:
-        raise AuthenticationError("Aww. That doesn't seem to be a valid invite code.")
+        raise BadDataError("Aww. That doesn't seem to be a valid invite code.")
 
     members = Hacker.lookup_from_team_id(team.id)
 
     if len(members) >= MAX_TEAM_SIZE:
-        raise AuthenticationError("Aww. There are too many people on this team!")
+        raise BadDataError("Aww. There are too many people on this team!")
 
     # Get the current hacker
     hacker = Hacker.lookup_from_account_id(current_user.id)

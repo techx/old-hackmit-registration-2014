@@ -16,7 +16,7 @@ except KeyError:
 app.config.from_object(configuration_module_name)
 
 from .emails import mail
-from .errors import DatabaseError
+from .errors import ServerError
 from .models import db
 
 # Redirect all requests to HTTPS
@@ -44,8 +44,8 @@ def method_not_allowed(error):
     # 405 is method not allowed; just pretend the endpoint doesn't exist (security through obscurity)
     return not_found(error) # Can't call abort as Flask won't handle the reraised HTTPException to prevent infinite loops
 
-@app.errorhandler(DatabaseError)
-def handle_database_error(error):
+@app.errorhandler(ServerError)
+def handle_server_error(error):
     response = jsonify(error.to_dict())
     response.status_code = error.status_code
     return response

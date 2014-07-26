@@ -4,6 +4,7 @@ from flask import render_template, request, redirect, url_for, jsonify, current_
 from flask.ext.login import login_required, login_user, current_user, logout_user
 from itsdangerous import BadSignature, URLSafeTimedSerializer, SignatureExpired
 
+from ..errors import ServerError, BadDataError
 from ..models import db_safety
 
 from . import bp, roles, login_manager
@@ -41,12 +42,6 @@ def load_user(user_id):
 def unauthorized():
     return redirect(url_for('auth.login')) # Use auth.login (full form) so this works correctly when invoked from some other blueprint
 
-@bp.errorhandler(AuthenticationError)
-def handle_authentication_error(error):
-    response = jsonify(error.to_dict())
-    response.status_code = error.status_code
-    return response
-
 @bp.route('/register')
 def get_registration_page():
     if current_user.is_authenticated():
@@ -62,10 +57,10 @@ def register_user():
     hashed_password = form.hashedPassword.data
 
     if not (form.validate_on_submit() and role in roles and roles[role]['model'].is_registrable()):
-        raise AuthenticationError('Your data is bad and you should feel bad.', status_code=403)
+        raise BadDataError()
 
     if Account.lookup_from_email(email_address) != None:
-        raise AuthenticationError('This account already exists!', status_code=420)
+        raise ServerError('This account already exists!', status_code=409)
 
     with db_safety() as session:
         account_id = Account.create(session, email_address, hashed_password, role)
@@ -110,7 +105,7 @@ def update(account_id):
         raise AuthenticationError("Your password is wrong!")
 
     if old_password == new_password:
-        raise AuthenticationError("Your new password can't be the same as your old password!")
+        raise ServerError("Your new password can't be the same as your old password!", status_code=409)
 
     with db_safety() as session:
         account.update_password(session, new_password)
@@ -131,7 +126,7 @@ def sessions():
     form = LoginForm()
 
     if not form.validate_on_submit():
-        raise AuthenticationError("Your data is bad and you should feel bad. What did you do?", status_code=403)
+        raise BadDataError()
 
     email_address = form.email.data
     hashed_password = form.hashedPassword.data
@@ -139,10 +134,10 @@ def sessions():
     stored_account = Account.lookup_from_email(email_address)
 
     if stored_account == None:
-        raise AuthenticationError("Sorry, it doesn't look like you have an account.", status_code=401)
+        raise AuthenticationError("Sorry, it doesn't look like you have an account.")
 
     if not stored_account.check_password(hashed_password):
-        raise AuthenticationError("Your username or password do not match.", status_code=402)
+        raise AuthenticationError("Your username or password do not match.")
 
     login_user(stored_account)
 
@@ -220,7 +215,7 @@ def forgot():
 
             return jsonify({"message": "Email sent! Check your email for a link to reset your password."})
         else:
-            raise AuthenticationError("This account doesn't exist!", status_code=420)
+            raise AuthenticationError("This account doesn't exist!")
 
 @bp.route('/accounts/reset', methods=['POST'])
 def forgot_reset():

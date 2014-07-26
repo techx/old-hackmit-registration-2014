@@ -1,21 +1,7 @@
+from ..errors import ServerError
+
 # -------------------------------------------------
 # Error Handling for Authentication Errors
 # -------------------------------------------------
-class AuthenticationError(Exception):
-    # Status codes and what they mean:
-    # 420: User already exists. What, did you forget?
-
-    status_code = 420
-
-    def __init__(self, message, status_code=None, payload=None):
-        Exception.__init__(self)
-        self.message = message
-        if status_code is not None:
-            self.status_code = status_code
-        self.payload = payload
-
-    def to_dict(self):
-        rv = dict(self.payload or ())
-        rv['message'] = self.message
-        return rv
-
+class AuthenticationError(ServerError):
+    status_code = 403 # Not 401 because WWW-Authenticate header won't work well

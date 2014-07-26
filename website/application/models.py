@@ -1,7 +1,7 @@
 from contextlib import contextmanager
 from flask.ext.sqlalchemy import SQLAlchemy
 
-from .errors import DatabaseError
+from .errors import ServerError
 
 db = SQLAlchemy()
 
@@ -24,5 +24,5 @@ def db_safety():
         with session_scope() as session:
             yield session
     except Exception as e:
-        raise DatabaseError()
+        raise ServerError()
 
