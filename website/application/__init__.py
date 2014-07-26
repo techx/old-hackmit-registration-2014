@@ -37,12 +37,12 @@ mail.init_app(app)
 
 @app.errorhandler(404)
 def not_found(error):
-    return render_template('server_message.html', header="404", subheader="Whoa, you must be lost.")
+    return render_template('server_message.html', header="404", subheader="Whoa, you must be lost."), 404
 
 @app.errorhandler(405)
 def method_not_allowed(error):
-    # 405 is method not allowed; just pretend the endpoint doesn't exist
-     return render_template('server_message.html', header="404", subheader="Whoa, you must be lost.")
+    # 405 is method not allowed; just pretend the endpoint doesn't exist (security through obscurity)
+    return not_found(error) # Can't call abort as Flask won't handle the reraised HTTPException to prevent infinite loops
 
 @app.errorhandler(DatabaseError)
 def handle_database_error(error):
