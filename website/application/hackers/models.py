@@ -44,7 +44,7 @@ class Hacker(db.Model, Role):
         return Hacker.query.filter_by(team_id=team_id).all()
 
     def lottery_submitted(self):
-        return self.name is not None and self.name != ""
+        return self.interests is not None and self.interests != ""
 
     def get_hacker_data(self):
         data = {}
