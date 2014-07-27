@@ -63,11 +63,14 @@ Dashboard
     <div class="row">
 
       <div class="center aligned column">
+      {% if email_confirmed %}
 
       {% for role, context in roles %}
           {% from context['name'] import buttons with context %}
           {{ buttons(context['context']) }}
       {% endfor %}
+
+      {% endif %}
 
       </div>
 
