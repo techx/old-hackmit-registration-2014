@@ -5,7 +5,7 @@
 {% endmacro %}
 
 {% macro buttons(admit) -%}
-        <button class="ui hack button" onclick="location.href={{ url_for('admit.confirmation') }}">
+        <button class="ui hack button" onclick="location.href='{{ url_for('admit.confirmation') }}'">
           Confirmation of Attendance
         </button>
 
