@@ -52,7 +52,7 @@ def update_confirmation():
     
     with db_safety() as session:
         attendee.update_attendee_data(session, form.badge.data, form.shirt.data, form.phone.data)
-        admit.update_admit_data(session, form.diet.data, form.legal.data, form.photo.data)
+        admit.update_admit_data(session, form.diet.data)
 
     return jsonify({'message': "Successfully Updated!"})
 

@@ -5,8 +5,6 @@ from ..attendee.forms import AttendeeForm
 
 class ConfirmationForm(AttendeeForm):
     diet = TextField(validators=[InputRequired(), Length(max=6)])
-    legal = TextField()
-    photo = TextField()
     #travel = 
     #resume =
 

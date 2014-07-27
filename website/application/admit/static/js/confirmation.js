@@ -4,8 +4,6 @@ $(document).ready(function(){
       $phone = $('#phone'),
       $shirt = $('#shirt'),
       $diet = $('#diet'),
-      $legal = $('#legal'),
-      $photo = $('#photo')
 
   $diet.change(function(){
     if ("other" === $diet.val()){
@@ -25,8 +23,6 @@ $(document).ready(function(){
         phone: $phone.val(),
         shirt: $shirt.val(),
         diet: $diet.val(),
-        legal: $legal.is(':checked'),
-        photo: $photo.is(':checked'),
       });
 
     var $dimmable = $('.ui.dimmable').dimmer('show');

@@ -11,8 +11,6 @@ class Admit(db.Model, Role):
     account_id = db.Column(db.Integer, db.ForeignKey('accounts.id'), primary_key=True)
     creation = db.Column(db.DateTime())
     dietary_restriction = db.Column(db.String(6))
-    legal_waiver = db.Column(db.Boolean)
-    photo_release = db.Column(db.Boolean)
     #travel
     #resume
     confirmed = db.Column(db.Boolean)
@@ -33,8 +31,6 @@ class Admit(db.Model, Role):
         data = {}
 
         data['dietary_restriction'] = self.dietary_restriction
-        data['legal_waiver'] = self.legal_waiver
-        data['photo_release'] = self.photo_release
 
         return data
 
@@ -45,10 +41,8 @@ class Admit(db.Model, Role):
     def create(session, account_id):
         session.add(Admit(account_id))
 
-    def update_admit_data(self, session, dietary_restriction, legal_waiver, photo_release):
+    def update_admit_data(self, session, dietary_restriction):
         self.dietary_restriction = dietary_restriction
-        self.legal_waiver = legal_waiver
-        self.photo_release = photo_release
 
     def confirm_admit(self, session):
         self.confirmed = True
