@@ -69,6 +69,15 @@ $(document).ready(function(){
           }
         ]
       },
+      phone: {
+        identifier: 'phone',
+        rules: [
+          {
+            type: 'empty',
+            prompt: 'Please enter your phone number.'
+          }
+        ]
+      },
       diet: {
         identifier: 'diet',
         rules: [
