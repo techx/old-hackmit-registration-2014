@@ -3,13 +3,8 @@ from os import environ
 from flask import Flask, render_template, jsonify, abort
 from flask_sslify import SSLify
 from flask_wtf.csrf import CsrfProtect
-from flask.ext.admin import Admin, BaseView, expose
-from flask.ext.admin.contrib.sqla import ModelView
-from flask.ext.principal import Principal, Permission, RoleNeed
 
 application = Flask(__name__, instance_relative_config=True)
-admin = Admin(application, name="HackMIT Admin")
-principal = Principal(application)
 
 # For AWS
 app = application
@@ -60,22 +55,11 @@ from .auth import bp as auth
 from .hackers import bp as hacker
 from .attendee import bp as attendee
 from .admit import bp as admit
+from .admins import bp as administrator
 
 app.register_blueprint(core)
 app.register_blueprint(auth)
 app.register_blueprint(hacker)
 app.register_blueprint(attendee)
 app.register_blueprint(admit)
-
-
-#admin
-class AdminModelView(ModelView):
-	def is_accessible(self):
-		return True
-
-from .hackers.models import Hacker
-from .attendee.models import Attendee 
-from .admit.models import Admit
-admin.add_view(AdminModelView(Hacker, db.session))
-admin.add_view(AdminModelView(Attendee, db.session))
-admin.add_view(AdminModelView(Admit, db.session))
+app.register_blueprint(administrator)

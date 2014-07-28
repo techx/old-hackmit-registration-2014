@@ -16,6 +16,7 @@ class Account(db.Model, UserMixin):
     email_address = db.Column(db.String(320), unique=True)
     hashed_password = db.Column(db.String(146)) # Total length of hashed, salted password
     confirmed = db.Column(db.Boolean, default=False)
+    is_admin = db.Column(db.Boolean, default=False)
 
     @staticmethod
     def lookup_from_email(email):
