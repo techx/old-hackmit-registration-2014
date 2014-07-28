@@ -8,6 +8,8 @@ from ..models import db_safety
 
 from ..attendee.models import Attendee
 from ..hackers.views import hackers_only
+from ..util.datetime_format import format_utc_datetime
+from ..util.timezones import eastern
 
 from . import bp
 from .forms import ConfirmationForm
@@ -16,7 +18,7 @@ from .models import Admit
 def dashboard(): #TODO
     admit = Admit.lookup_from_account_id(current_user.id)
     deadline = admit.get_deadline()
-    return {'name':'admit_dashboard.html', 'context':{'deadline':deadline}}
+    return {'name':'admit_dashboard.html', 'context':{'deadline':format_utc_datetime(deadline, eastern)}}
 
 # Implies the @login_required, @email_confirmed, and @hackers_only decorators
 def admits_only(function):

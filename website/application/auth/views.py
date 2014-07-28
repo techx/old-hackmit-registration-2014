@@ -4,7 +4,7 @@ from flask import render_template, request, redirect, url_for, jsonify, current_
 from flask.ext.login import login_required, login_user, current_user, logout_user
 from itsdangerous import BadSignature, URLSafeTimedSerializer, SignatureExpired
 
-from ..util import toposort
+from ..util.toposort import toposort
 
 from ..errors import ServerError, BadDataError
 from ..models import db_safety
