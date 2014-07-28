@@ -4,15 +4,11 @@ $(document).ready(function(){
       $phone = $('#phone'),
       $shirt = $('#shirt'),
       $diet = $('#diet'),
+      $waiver = $('#waiver'),
+      $photoRelease = $('#photoRelease');
 
-  $diet.change(function(){
-    if ("other" === $diet.val()){
-      // TODO: pop up a message saying we'll give you a gift card at the event
-    }
-  });
 
   function validate(){
-
     submitConfirmation();
   }
   
@@ -23,6 +19,8 @@ $(document).ready(function(){
         phone: $phone.val(),
         shirt: $shirt.val(),
         diet: $diet.val(),
+        waiver: $waiver.val(),
+        photoRelease: $photoRelease.val()
       });
 
     var $dimmable = $('.ui.dimmable').dimmer('show');
@@ -77,6 +75,24 @@ $(document).ready(function(){
           {
             type: 'empty',
             prompt: "Please enter a dietary restriction!"
+          }
+        ]
+      },
+      waiver: {
+        identifier: 'waiver',
+        rules: [
+          {
+            type: 'empty',
+            prompt: "Please enter your full legal name."
+          }
+        ]
+      },
+      photoRelease: {
+        identifier: 'photoRelease',
+        rules: [
+          {
+            type: 'empty',
+            prompt: 'Please enter your full legal name.'
           }
         ]
       }

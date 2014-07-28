@@ -1,6 +1,6 @@
 {% macro body_text(admit) -%}
               <h3> You've been admitted to HackMIT 2014!
-              Fill out the confirmation form below by {{ admit['deadline'] }}
+              Fill out the confirmation form below by <span class="deadline">{{ admit['deadline'] }}</span>
               to let us know that you're coming! </h3>
 {% endmacro %}
 
