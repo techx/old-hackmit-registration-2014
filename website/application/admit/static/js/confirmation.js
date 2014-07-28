@@ -7,7 +7,6 @@ $(document).ready(function(){
       $waiver = $('#waiver'),
       $photoRelease = $('#photoRelease');
 
-
   function validate(){
     submitConfirmation();
   }
@@ -16,7 +15,7 @@ $(document).ready(function(){
 
     var formData = JSON.stringify({
         badge: $badge.val(),
-        phone: $phone.val(),
+        phone: $phone.val().replace(/[^0-9]/gi, ""),
         shirt: $shirt.val(),
         diet: $diet.val(),
         waiver: $waiver.val(),
