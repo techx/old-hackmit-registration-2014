@@ -3,17 +3,19 @@
 {% block head %}
 
 <script src="{{ url_for('.static', filename='js/confirmation.js') }}"></script>
-<style>
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
-  .waiver {
-    text-align: center;
-  }
+<style>
 
   .waiver a {
     text-decoration: none;
     color: rgb(35, 177, 150);
     font-size: 1.4em;
     text-align: center;
+  }
+
+  .waiver i {
+    margin-right: 4px;
   }
 
 </style>
@@ -83,7 +85,7 @@
               <label class="waiver">
                 <a
                    href="{{ url_for('.static', filename='docs/HackMITLiabilityRelease.pdf') }}">
-                  HACKMIT LIABILITY WAIVER
+                  <i class="fa fa-file-pdf-o"></i> HACKMIT LIABILITY WAIVER
                 </a>
               </label>
               <label>
@@ -97,7 +99,7 @@
               <label class="waiver">
                 <a
                    href="{{ url_for('.static', filename='docs/HackMITPhotoRelease.pdf') }}">
-                  HACKMIT PHOTO RELEASE
+                  <i class="fa fa-file-pdf-o"></i> HACKMIT PHOTO RELEASE
                 </a>
               </label>
               <label>
