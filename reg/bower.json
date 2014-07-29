@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "homepage": "https://github.com/techx/hackmit",
   "authors": [
-    "Edwin Zhang <ehzhang@mit.edu>"
+    "Edwin Zhang <ehzhang@mit.edu>",
+    "Aneesh Agrawal <aneesh1@mit.edu>"
   ],
   "description": "HackMIT Bower Packages",
   "keywords": [
@@ -20,7 +21,6 @@
   ],
   "dependencies": {
     "semantic-ui": "~0.18.0",
-    "select2": "~3.5.0",
     "skrollr": "~0.6.26"
   }
 }
