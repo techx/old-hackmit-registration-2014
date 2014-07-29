@@ -11,3 +11,4 @@ from . import views
 
 register_role('company', Company, views.dashboard)
 register_role('mentor', Mentor, views.dashboard)
+register_role('recruiter', Recruiter, views.dashboard)
