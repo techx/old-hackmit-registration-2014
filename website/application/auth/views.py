@@ -5,6 +5,7 @@ from flask.ext.login import login_required, login_user, current_user, logout_use
 from itsdangerous import BadSignature, URLSafeTimedSerializer, SignatureExpired
 
 from ..util import toposort
+from ..admins import Admin
 
 from ..errors import ServerError, BadDataError
 from ..models import db_safety
@@ -14,7 +15,7 @@ from .emails import send_account_confirmation_email, send_forgot_password_email,
 from .errors import AuthenticationError
 from .forms import LoginForm, RegistrationForm, ResetForm, ForgotForm, ForgotResetForm
 from .models import Account
-from ..admins.models import Admin
+
 
 def roles_with_context(view_name):
     roles_for_view = []
@@ -146,7 +147,7 @@ def sessions():
 
     login_user(stored_account)
 
-    if admin.lookup_from_account_id(current_user.id):
+    if Admin.lookup_from_account_id(current_user.id):
         return jsonify({'url': url_for('/admin')})
     else:
         return jsonify({'url': url_for('.dashboard')})
