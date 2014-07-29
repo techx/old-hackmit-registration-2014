@@ -3,6 +3,20 @@
 {% block head %}
 
 <script src="{{ url_for('.static', filename='js/confirmation.js') }}"></script>
+<style>
+
+  .waiver {
+    text-align: center;
+  }
+
+  .waiver a {
+    text-decoration: none;
+    color: rgb(35, 177, 150);
+    font-size: 1.4em;
+    text-align: center;
+  }
+
+</style>
 
 {% endblock %}
 
@@ -42,7 +56,7 @@
 
             <div class="ui error message">
               <div class="header">Action Forbidden</div>
-              <p>You can only sign up for an account once with a given e-mail address.</p>
+              <p></p>
             </div>
 
 
@@ -66,6 +80,12 @@
             </div>
 
             <div class="field">
+              <label class="waiver">
+                <a
+                   href="{{ url_for('.static', filename='docs/HackMITLiabilityRelease.pdf') }}">
+                  HACKMIT LIABILITY WAIVER
+                </a>
+              </label>
               <label>
                 By typing my full legal name below, I affirm that
                 I have read and agree to the waiver presented above.
@@ -74,6 +94,12 @@
             </div>
 
             <div class="field">
+              <label class="waiver">
+                <a
+                   href="{{ url_for('.static', filename='docs/HackMITPhotoRelease.pdf') }}">
+                  HACKMIT PHOTO RELEASE
+                </a>
+              </label>
               <label>
                 By typing my full legal name below, I affirm that
                 I have read and agree to the photo release presented above.
