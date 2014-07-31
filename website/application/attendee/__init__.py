@@ -7,4 +7,4 @@ blueprint_name = 'attendee'
 
 bp = Blueprint(blueprint_name, __name__, template_folder='templates')
 
-register_role('attendee', Attendee, None)
+register_role(Attendee, None)

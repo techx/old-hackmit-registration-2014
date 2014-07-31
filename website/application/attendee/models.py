@@ -6,7 +6,6 @@ class Attendee(db.Model, Role):
     __bind_key__ = 'local'
     __tablename__ = 'attendees'
 
-    account_id = db.Column(db.Integer, db.ForeignKey('accounts.id'), primary_key=True)
     badge_name = db.Column(db.String(50))
     shirt_size = db.Column(db.String(6)) # (Implied t-shirts)
     phone_number = db.Column(db.String(16)) # Store in E164 format including leading plus
@@ -14,6 +13,10 @@ class Attendee(db.Model, Role):
     @staticmethod
     def is_registrable():
         return False
+
+    @staticmethod
+    def role_name():
+        return 'attendee'
 
     @staticmethod
     def implied_roles():
@@ -27,14 +30,6 @@ class Attendee(db.Model, Role):
        data['phone_number'] = self.phone_number
        
        return data 
-
-    @staticmethod
-    def lookup_from_account_id(account_id):
-        return Attendee.query.get(int(account_id))
-
-    @staticmethod
-    def create(session, account_id):
-        session.add(Attendee(account_id))
 
     def update_attendee_data(self, session, badge_name, shirt_size, phone_number):
         self.badge_name = badge_name

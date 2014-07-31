@@ -12,13 +12,11 @@ bp = Blueprint(blueprint_name, __name__, static_folder='static', static_url_path
 
 roles = {}
 
-def register_role(role, model, dashboard):
-    if type(role) != str:
-        raise TypeError("Need a string to identify the role.")
-    if model == Role or not issubclass(model, Role):
+def register_role(model, dashboard_view_context_func):
+    if not issubclass(model, Role):
         raise TypeError("Can only register subclasses of auth.models.Role!")
     # Allow roles to be overriden by later registrations
-    roles[role] = {'model': model, 'dashboard': dashboard}
+    roles[model.role_name()] = {'model': model, 'dashboard': dashboard_view_context_func}
 
 login_manager = LoginManager()
 with app.app_context():

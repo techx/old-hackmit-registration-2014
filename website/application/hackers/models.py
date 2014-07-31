@@ -8,8 +8,6 @@ class Hacker(db.Model, Role):
     __bind_key__ = 'local'
     __tablename__ = 'hackers'
 
-    id = db.Column(db.Integer, primary_key=True)
-    account_id = db.Column(db.Integer, db.ForeignKey('accounts.id'))
     team_id = db.Column(db.Integer, db.ForeignKey('teams.id'))
     name = db.Column(db.String(50))
     gender = db.Column(db.String(8))
@@ -25,12 +23,12 @@ class Hacker(db.Model, Role):
         return True
 
     @staticmethod
-    def implied_roles():
-        return []
+    def role_name():
+        return 'hacker'
 
     @staticmethod
-    def lookup_from_account_id(account_id):
-        return Hacker.query.filter_by(account_id=account_id).first()
+    def implied_roles():
+        return []
 
     # Automatically truncates codes to 8 characters for comparison
     @staticmethod
@@ -57,10 +55,6 @@ class Hacker(db.Model, Role):
         data['interests'] = self.interests
 
         return data
-
-    @staticmethod
-    def create(session, account_id):
-        session.add(Hacker(account_id))
 
     def update_lottery_data(self, session, gender, school_id, school, adult, location, invite_code, interests):
         self.gender = gender
