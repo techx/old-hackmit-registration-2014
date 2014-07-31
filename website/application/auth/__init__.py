@@ -1,6 +1,7 @@
 from flask import Blueprint, current_app
 
 from flask.ext.login import LoginManager
+from flask.ext.principal import Principal
 
 from .. import app
 
@@ -21,6 +22,11 @@ def register_role(model, dashboard_view_context_func):
 login_manager = LoginManager()
 with app.app_context():
     login_manager.init_app(current_app)
+
+    # Must be initialized after LoginManager
+    # Don't use sessions as goal is to have the Flask end be a stateless API
+    # Skip static as it shouldn't have anything sensitive
+    principal = Principal(current_app, use_sessions=False, skip_static=True)
 
 # For some bizarre reason this isn't getting set properly, even though there is no 'LOGIN_REQUIRED' config variable, so do it manually
 login_manager._login_disabled = False

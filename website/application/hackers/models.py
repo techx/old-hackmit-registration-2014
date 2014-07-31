@@ -39,6 +39,12 @@ class Hacker(db.Model, Role):
     def lookup_from_team_id(team_id):
         return Hacker.query.filter_by(team_id=team_id).all()
 
+    def perms(self):
+        permissions = []
+        if self.lottery_submitted():
+            permissions.append('lottery_submitted')
+        return permissions
+
     def lottery_submitted(self):
         return self.interests is not None and self.interests != ""
 
