@@ -8,7 +8,6 @@ class Admit(db.Model, Role):
     __bind_key__ = 'local'
     __tablename__ = 'admits'
 
-    account_id = db.Column(db.Integer, db.ForeignKey('accounts.id'), primary_key=True)
     creation = db.Column(db.DateTime())
     dietary_restriction = db.Column(db.String(6))
     #travel
@@ -16,16 +15,12 @@ class Admit(db.Model, Role):
     confirmed = db.Column(db.Boolean)
 
     @staticmethod
-    def is_registrable():
-        return False
+    def role_name():
+        return 'admit'
 
     @staticmethod
     def implied_roles():
         return ['attendee', 'hacker']
-
-    @staticmethod
-    def lookup_from_account_id(account_id):
-        return Admit.query.filter_by(account_id=account_id).first()
 
     def get_admit_data(self):
         data = {}
@@ -36,10 +31,6 @@ class Admit(db.Model, Role):
 
     def get_deadline(self):
         return self.creation + timedelta(7)
-
-    @staticmethod
-    def create(session, account_id):
-        session.add(Admit(account_id))
 
     def update_admit_data(self, session, dietary_restriction):
         self.dietary_restriction = dietary_restriction

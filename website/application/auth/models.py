@@ -1,8 +1,13 @@
+from functools import partial
 from collections import deque
 from sqlalchemy import func
+from sqlalchemy.ext.declarative import declared_attr
 from flask.ext.login import UserMixin
+from flask.ext.principal import ItemNeed
 from werkzeug.security import generate_password_hash as werkzeug_generate_password_hash, check_password_hash
 from ..models import db
+
+AttributeNeed = partial(ItemNeed, 'attribute')
 
 def generate_password_hash(password):
         # Parameters: salt_length is number of characters, 62 matches the length of the password
@@ -90,21 +95,36 @@ class Account(db.Model, UserMixin):
 
 class Role:
 
-    # All functionality must be in methods to avoid spurious db fields
-    # All methods must be overriden in subclasses
+    id = db.Column(db.Integer, primary_key=True)
+    @declared_attr
+    def account_id(cls):
+        return db.Column('account_id', db.Integer, db.ForeignKey('accounts.id'))
 
     @staticmethod
     def is_registrable():
+        return False
+
+    @staticmethod
+    def role_name():
         raise NotImplementedError
 
     @staticmethod
     def implied_roles():
-        raise NotImplementedError
+        return []
 
-    @staticmethod
-    def lookup_from_account_id(account_id):
-        raise NotImplementedError
+    @classmethod
+    def lookup_from_account_id(cls, account_id):
+        return cls.query.filter_by(account_id=account_id).first()
 
+    @classmethod
+    def create(cls, session, account_id):
+        session.add(cls(account_id))
+
+    def needs(self):
+        return [partial(AttributeNeed, self.role_name())(perm) for perm in self.perms()]
+
+    def perms(self):
+        return []
 
 class Name(db.Model):
     __bind_key__ = 'local'

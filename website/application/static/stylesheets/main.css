@@ -68,9 +68,23 @@ textarea {
   width: 30%;
 }
 
+.ui.hack.button.completed {
+  background: rgb(35, 177, 150);
+  color: white;
+}
+
 .ui.hack.button:hover {
   background: rgb(35, 177, 150);
   color: white;
+}
+
+.ui.hack.button.completed:hover {
+  cursor: default;
+}
+
+
+.invisible {
+  display: none;
 }
 
 
@@ -84,6 +98,4 @@ textarea {
     min-width: 300px !important;
   }
 }
-
-
 

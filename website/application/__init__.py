@@ -55,9 +55,11 @@ from .auth import bp as auth
 from .hackers import bp as hacker
 from .attendee import bp as attendee
 from .admit import bp as admit
+from .util import bp as util
 
 app.register_blueprint(core)
 app.register_blueprint(auth)
 app.register_blueprint(hacker)
 app.register_blueprint(attendee)
 app.register_blueprint(admit)
+app.register_blueprint(util)
