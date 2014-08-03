@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block head %}
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.9.0/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="{{ url_for('.static', filename='js/jquery.fileupload.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('.static', filename='js/s3-upload.js') }}"></script>
+{% endblock %}
+
+
+{% block title %}
+
+Test
+
+{% endblock %}
+
+{% block headerTitle %}
+
+TESTING
+
+{% endblock %}
+{% block content %}
+
+  <div class="test">
+
+    <div class="ui stackable aligned three column page grid">
+
+      <div class="row"></div>
+
+      <div class="row">
+        <div class="column"></div>
+
+        <div class="column">
+          {% from 's3_upload.html' import upload_form with context %}
+          {{ upload_form(resume_form) }}
+        </div>
+
+        <div class="column">
+          {% from 's3_upload.html' import upload_form with context %}
+          {{ upload_form(api_form) }}
+
+        </div>
+
+      </div>
+
+      <div class="row"></div>
+
+    </div>
+ </div>
+
+{% endblock %}
