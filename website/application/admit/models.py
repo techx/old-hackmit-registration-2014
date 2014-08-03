@@ -30,7 +30,7 @@ class Admit(db.Model, Role):
         return data
 
     def get_deadline(self):
-        return self.creation + timedelta(7)
+        return self.creation + timedelta(10)
 
     def update_admit_data(self, session, dietary_restriction):
         self.dietary_restriction = dietary_restriction
