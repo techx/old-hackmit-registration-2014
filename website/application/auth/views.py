@@ -1,7 +1,8 @@
 from functools import wraps
 
-from flask import render_template, request, redirect, url_for, jsonify, current_app
+from flask import render_template, request, redirect, url_for, jsonify, current_app, abort
 from flask.ext.login import login_required, login_user, current_user, logout_user
+from flask.ext.principal import Identity, AnonymousIdentity, identity_changed, identity_loaded, RoleNeed, PermissionDenied
 from itsdangerous import BadSignature, URLSafeTimedSerializer, SignatureExpired
 
 from ..util import toposort
@@ -9,7 +10,7 @@ from ..util import toposort
 from ..errors import ServerError, BadDataError
 from ..models import db_safety
 
-from . import bp, roles, login_manager
+from . import bp, roles, login_manager, principal
 from .emails import send_account_confirmation_email, send_forgot_password_email, send_password_reset_email
 from .errors import AuthenticationError
 from .forms import LoginForm, RegistrationForm, ResetForm, ForgotForm, ForgotResetForm
@@ -27,24 +28,35 @@ def roles_with_context(view_name):
 
     return [(role, roles[role][view_name]()) for role in roles_for_view]
 
-# Implies the @login_required decorator
-def email_confirmed(function):
-    @login_required
-    @wraps(function)
-    def wrapped_email_confirmed_function(**kwargs):
-        if not current_user.email_confirmed():
-            return render_template('server_message.html', header="You need to verify your email to get here!", subheader="You can resend the confirmation email from the dashboard.")
-        else:
-            return function(**kwargs)
-    return wrapped_email_confirmed_function
+@principal.identity_loader
+def load_identity_from_flask_login_session(): # TODO: Switch to a before request handler for 100% stateless auth
+    if hasattr(current_user, 'id'):
+        return Identity(current_user.id)
+
+@identity_loaded.connect
+def on_identity_loaded(sender, identity):
+    # Check for id as a proxy for non-AnonymousIdentity
+    if hasattr(current_user, 'id'):
+        account = Account.query.get(int(current_user.id));
+        if account.email_confirmed():
+            # Add Needs from each associated Role
+            for role_name in roles:
+                role = roles[role_name]['model'].lookup_from_account_id(current_user.id)
+                if role is not None:
+                    identity.provides.add(RoleNeed(role_name))
+                    identity.provides.update(role.needs())
 
 @login_manager.user_loader
 def load_user(user_id):
     return Account.query.get(int(user_id))
 
-@login_manager.unauthorized_handler
-def unauthorized():
+@login_manager.unauthorized_handler # This should really be "unauthenticated_handler"
+def handle_unauthenticated_error():
     return redirect(url_for('auth.login')) # Use auth.login (full form) so this works correctly when invoked from some other blueprint
+
+@bp.app_errorhandler(PermissionDenied)
+def handle_unauthorized_error(error):
+    return render_template('server_message.html', header="You don't have access to that resource!", subheader="Snooping as usual, I see.")
 
 @bp.route('/register')
 def get_registration_page():
@@ -81,11 +93,14 @@ def register_user():
 def resend_email():
     if current_user.email_confirmed():
         render_template('server_message.html', header="You're already confirmed!", subheader="We do, however, appreciate your enthusiasm.")
+
     account_id = current_user.id
     s = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
     confirm = s.dumps(account_id)
     email_address = current_user.email_address
+
     send_account_confirmation_email(email_address, confirm=confirm)
+
     return redirect(url_for('.dashboard'))
 
 @bp.route('/accounts/<account_id>', methods=['PUT'])
@@ -144,6 +159,7 @@ def sessions():
         raise AuthenticationError("Your username or password do not match.")
 
     login_user(stored_account)
+    identity_changed.send(current_app._get_current_object(), identity=Identity(stored_account.id))
 
     return jsonify({'url': url_for('.dashboard')})
 
@@ -256,6 +272,7 @@ def forgot_reset():
 @login_required
 def logout():
     logout_user()
+    identity_changed.send(current_app._get_current_object(), identity=AnonymousIdentity())
     return redirect(url_for('core.index'))
 
 @bp.route('/reset')

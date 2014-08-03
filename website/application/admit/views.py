@@ -2,12 +2,12 @@ from functools import wraps
 
 from flask import render_template, jsonify
 from flask.ext.login import current_user
+from flask.ext.principal import Permission, RoleNeed
 
 from ..errors import BadDataError
 from ..models import db_safety
 
 from ..attendee.models import Attendee
-from ..hackers.views import hackers_only
 
 from . import bp
 from .forms import ConfirmationForm
@@ -18,20 +18,10 @@ def dashboard(): #TODO
     deadline = admit.get_deadline()
     return {'name':'admit_dashboard.html', 'context':{'deadline':deadline}}
 
-# Implies the @login_required, @email_confirmed, and @hackers_only decorators
-def admits_only(function):
-    @hackers_only
-    @wraps(function)
-    def wrapped_admits_only_function(*args, **kwargs):
-        admit = Admit.lookup_from_account_id(current_user.id)
-        if not admit:
-            return render_template('server_message.html', header="You need to be admitted to access this!", subheader="Sorry about that.")
-        else:
-            return function(*args, **kwargs)
-    return wrapped_admits_only_function
+AttendeePermission = Permission(RoleNeed('admit'))
 
 @bp.route('/confirmation')
-@admits_only
+@AttendeePermission.require()
 def confirmation():
     attendee = Attendee.lookup_from_account_id(current_user.id).get_attendee_data()
     if attendee['badge_name'] is None:
@@ -40,7 +30,7 @@ def confirmation():
     return render_template('confirmation.html', attendee=attendee, admit=admit)
 
 @bp.route('/admits', methods=['PUT'])
-@admits_only
+@AttendeePermission.require()
 def update_confirmation():
     form = ConfirmationForm()
     # First find the hacker if they already exist

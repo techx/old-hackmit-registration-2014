@@ -2,13 +2,13 @@ from functools import wraps
 
 from flask import render_template, jsonify
 from flask.ext.login import current_user
+from flask.ext.principal import Permission, RoleNeed
 
 from ..models import db_safety
 
 from ..errors import BadDataError
 
-from ..auth.models import Account
-from ..auth.views import email_confirmed
+from ..auth.models import Account, AttributeNeed
 
 from . import bp
 from .forms import LotteryForm
@@ -23,33 +23,11 @@ def dashboard():
         lottery_complete = True
     return {'name':'hacker_dashboard.html', 'context':{'lottery_complete':lottery_complete}}
 
-# Implies the @login_required and @email_confirmed decorators
-def hackers_only(function):
-    @email_confirmed
-    @wraps(function)
-    def wrapped_hackers_only_function(*args, **kwargs):
-        hacker = Hacker.lookup_from_account_id(current_user.id)
-        if not hacker:
-            return render_template('server_message.html', header="You need to be a hacker to access this!", subheader="This ain't a UNIX file system.")
-        else:
-            return function(*args, **kwargs)
-    return wrapped_hackers_only_function
-
-# Implies the @login_required, @email_confirmed, and @hackers_only decorators
-def lottery_submitted(function):
-    @hackers_only
-    @wraps(function)
-    def wrapped_lottery_submitted_function(*args, **kwargs):
-        hacker = Hacker.lookup_from_account_id(current_user.id)
-        if not hacker.lottery_submitted():
-            return render_template('server_message.html', header="You need to submit the lottery form to do that!", subheader="Hope you're feeling lucky.")
-        else:
-            return function(*args, **kwargs)
-    return wrapped_lottery_submitted_function
-
+HackerPermission = Permission(RoleNeed('hacker'))
+LotterySubmittedPermission = Permission(AttributeNeed('hacker', 'lottery_submitted'))
 
 @bp.route('/hackers', methods=['POST'])
-@hackers_only
+@HackerPermission.require()
 def hackers():
     form = LotteryForm()
     # First find the hacker if they already exist
@@ -73,14 +51,14 @@ def hackers():
     return jsonify({'message': "Successfully Updated!"})
 
 @bp.route('/lottery')
-@hackers_only
+@HackerPermission.require()
 def lottery():
     name = current_user.get_name()
     hacker = Hacker.lookup_from_account_id(current_user.id).get_hacker_data()
     return render_template('lottery.html', name=name, hacker=hacker)
 
 @bp.route('/team')
-@lottery_submitted
+@LotterySubmittedPermission.require()
 def team():
     hacker = Hacker.lookup_from_account_id(current_user.id)
     team_id = hacker.team_id
@@ -108,7 +86,7 @@ def team():
     return render_template('team.html', team=team)
 
 @bp.route('/team/leave', methods=['POST'])
-@lottery_submitted
+@LotterySubmittedPermission.require()
 def leave_team():
     hacker = Hacker.lookup_from_account_id(current_user.id)
 
@@ -118,7 +96,7 @@ def leave_team():
     return jsonify({'message': "It's been real, see ya!"})
 
 @bp.route('/teams', methods=['POST'])
-@lottery_submitted
+@LotterySubmittedPermission.require()
 def teams():
     hacker = Hacker.lookup_from_account_id(current_user.id)
 
@@ -129,7 +107,7 @@ def teams():
     return jsonify({'message': "Team successfully created"})
 
 @bp.route('/teams/<team_invite_code>', methods=['POST'])
-@lottery_submitted
+@LotterySubmittedPermission.require()
 def join_team(team_invite_code):
 
     # Find the team associated with the invite code
