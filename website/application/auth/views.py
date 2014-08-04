@@ -1,11 +1,14 @@
 from functools import wraps
 
-from flask import render_template, request, redirect, url_for, jsonify, current_app, abort
+from flask import request, redirect, url_for, jsonify, current_app, abort
 from flask.ext.login import login_required, login_user, current_user, logout_user
 from flask.ext.principal import Identity, AnonymousIdentity, identity_changed, identity_loaded, RoleNeed, PermissionDenied
 from itsdangerous import BadSignature, URLSafeTimedSerializer, SignatureExpired
 
+from .. import render_full_template
+
 from ..util.toposort import toposort
+from ..util.dates import get_passed_dates
 
 from ..errors import ServerError, BadDataError
 from ..models import db_safety
@@ -57,14 +60,14 @@ def handle_unauthenticated_error():
 
 @bp.app_errorhandler(PermissionDenied)
 def handle_unauthorized_error(error):
-    return render_template('server_message.html', header="You don't have access to that resource!", subheader="Snooping as usual, I see.")
+    return render_full_template('server_message.html', header="You don't have access to that resource!", subheader="Snooping as usual, I see.")
 
 @bp.route('/register')
 def get_registration_page():
     if current_user.is_authenticated():
         return redirect(url_for('.dashboard'))
     else:
-        return render_template('register.html')
+        return render_full_template('register.html')
 
 @bp.route('/accounts', methods=['POST'])
 def register_user():
@@ -93,7 +96,7 @@ def register_user():
 @login_required
 def resend_email():
     if current_user.email_confirmed():
-        render_template('server_message.html', header="You're already confirmed!", subheader="We do, however, appreciate your enthusiasm.")
+        render_full_template('server_message.html', header="You're already confirmed!", subheader="We do, however, appreciate your enthusiasm.")
 
     account_id = current_user.id
     s = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
@@ -139,7 +142,7 @@ def login():
     if current_user.is_authenticated():
         return redirect(url_for('.dashboard'))
     else:
-        return render_template('login.html')
+        return render_full_template('login.html')
 
 @bp.route('/sessions', methods=['POST'])
 def sessions():
@@ -176,7 +179,7 @@ def dashboard():
 
     name = account.get_name()
 
-    return render_template('dashboard.html', email_confirmed=email_confirmed, name=name, roles=roles_with_context('dashboard'))
+    return render_full_template('dashboard.html', email_confirmed=email_confirmed, name=name, roles=roles_with_context('dashboard'))
 
 @bp.route('/confirm')
 def confirm():
@@ -187,7 +190,7 @@ def confirm():
             confirm_user_id = s.loads(confirm_code, max_age=86400) # Max age of 24 hours
             account = Account.query.get(int(confirm_user_id))
             if account is None:
-                return render_template('server_message.html', header="You don't seem to have an account.", subheader="What are you waiting for? Go register!")
+                return render_full_template('server_message.html', header="You don't seem to have an account.", subheader="What are you waiting for? Go register!")
 
             with db_safety() as session:
                 account.confirm_email(session)
@@ -196,11 +199,11 @@ def confirm():
 
             return redirect(url_for('.login'))
         except SignatureExpired:
-            return render_template('server_message.html', header="Oops. Your email confirmation link has expired.", subheader="You should probably try again!")
+            return render_full_template('server_message.html', header="Oops. Your email confirmation link has expired.", subheader="You should probably try again!")
         except BadSignature:
             pass
 
-    return render_template('server_message.html', header="That's not a valid confirmation code!", subheader="Check for typos in the link, or login and resend the confirmation email.")
+    return render_full_template('server_message.html', header="That's not a valid confirmation code!", subheader="Check for typos in the link, or login and resend the confirmation email.")
 
 @bp.route('/forgot', methods=['GET', 'POST'])
 def forgot():
@@ -209,19 +212,19 @@ def forgot():
         if current_user.is_authenticated():
             return redirect(url_for('.dashboard'))
         elif token is None:
-            return render_template('forgot.html')
+            return render_full_template('forgot.html')
         else:
             s = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
             try:
                 confirm_user_id = s.loads(token, max_age=1800) # Max age of 30 minutes
                 account = load_user(confirm_user_id)
                 if account is None:
-                    return render_template('server_message.html', header="You don't seem to have an account.", subheader="What are you waiting for? Go register!")
-                return render_template('forgot_set_password.html', token=token)
+                    return render_full_template('server_message.html', header="You don't seem to have an account.", subheader="What are you waiting for? Go register!")
+                return render_full_template('forgot_set_password.html', token=token)
             except SignatureExpired:
-                return render_template('server_message.html', header="Oops. Your token has expired.", subheader="You should probably try again!")
+                return render_full_template('server_message.html', header="Oops. Your token has expired.", subheader="You should probably try again!")
             except BadSignature:
-                return render_template('server_message.html', header="Oops. Your token is invalid.")
+                return render_full_template('server_message.html', header="Oops. Your token is invalid.")
 
     if request.method == 'POST':
         form = ForgotForm()
@@ -242,7 +245,7 @@ def forgot():
 def forgot_reset():
     token = request.args.get('token')
     if token is None:
-        return render_template('server_message', header="You can't forgot the password for an account that doesn't exist!", subheader="Go register for a real account now!")
+        return render_full_template('server_message', header="You can't forgot the password for an account that doesn't exist!", subheader="Go register for a real account now!")
     form = ForgotResetForm()
     new_password = form.newPassword.data
     s = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
@@ -250,7 +253,7 @@ def forgot_reset():
         confirm_user_id = s.loads(token, max_age=1800) # Max age of 30 minutes
         account = load_user(confirm_user_id)
         if account is None:
-            return render_template('server_message.html', header="You don't seem to have an account.", subheader="What are you waiting for? Go register!")
+            return render_full_template('server_message.html', header="You don't seem to have an account.", subheader="What are you waiting for? Go register!")
 
         with db_safety() as session:
             # In case the user hasn't already been confirmed.
@@ -264,10 +267,10 @@ def forgot_reset():
         return jsonify({"message": "You have successfully reset your password!"})
 
     except SignatureExpired:
-        return render_template('server_message.html', header="Oops. Your token has expired.", subheader="You should probably try again!")
+        return render_full_template('server_message.html', header="Oops. Your token has expired.", subheader="You should probably try again!")
 
     except BadSignature:
-        return render_template('server_message.html', header="Oops. Your token is invalid.")
+        return render_full_template('server_message.html', header="Oops. Your token is invalid.")
 
 @bp.route('/logout')
 @login_required
@@ -280,5 +283,5 @@ def logout():
 @login_required
 def reset():
     email = current_user.email_address
-    return render_template('reset.html', email=email)
+    return render_full_template('reset.html', email=email)
 

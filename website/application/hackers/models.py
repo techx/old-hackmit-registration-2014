@@ -2,13 +2,10 @@ from random import randrange
 from datetime import datetime
 
 from ..models import db
-from ..util.dates import utc_lottery_closing
+from ..util.dates import has_passed, utc_lottery_closing
 from ..util.timezones import utc
 
 from ..auth.models import Role
-
-def is_lottery_closed():
-    return datetime.utcnow().replace(tzinfo=utc) > utc_lottery_closing
 
 class Hacker(db.Model, Role):
     __bind_key__ = 'local'
@@ -47,7 +44,7 @@ class Hacker(db.Model, Role):
 
     def perms(self):
         permissions = []
-        if self.lottery_submitted() and not is_lottery_closed():
+        if self.lottery_submitted() and not has_passed(utc_lottery_closing):
             permissions.append('lottery_submitted')
         return permissions
 

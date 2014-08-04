@@ -15,6 +15,12 @@ except KeyError:
     configuration_module_name = 'application.config.dev.DevelopmentConfig'
 app.config.from_object(configuration_module_name)
 
+from .util.dates import get_passed_dates
+
+def render_full_template(*args, **kwargs):
+    kwargs['passed_dates'] = get_passed_dates()
+    return render_template(*args, **kwargs)
+
 from .emails import mail
 from .errors import ServerError
 from .models import db
@@ -28,7 +34,7 @@ csrf = CsrfProtect(app)
 # All pages protected by CSRF, if validation fails, render csrf_error page
 @csrf.error_handler
 def csrf_error(reason):
-    return render_template('csrf_error.html', reason=reason), 400
+    return render_full_template('csrf_error.html', reason=reason), 400
 
 app.secret_key = app.config['SECRET_KEY'] # For Flask
 
@@ -37,7 +43,7 @@ mail.init_app(app)
 
 @app.errorhandler(404)
 def not_found(error):
-    return render_template('server_message.html', header="404", subheader="Whoa, you must be lost."), 404
+    return render_full_template('server_message.html', header="404", subheader="Whoa, you must be lost."), 404
 
 @app.errorhandler(405)
 def method_not_allowed(error):

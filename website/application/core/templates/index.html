@@ -54,10 +54,13 @@
               Open to all undergraduates from all universities.
             </div>
             <br>
+            {% if 'lottery_closing' not in passed_dates %}
             <button class="montserrat green outline button" onclick="location.href='/register'">REGISTER</button><br>
+            {% endif %}
             <button class="montserrat green outline button" onclick="location.href='/login'">LOGIN</button>
+            <br>
           </div>
-
+          <br>
           <br>
           <br>
           <br>
@@ -274,8 +277,10 @@
             <div class="tagline">
               What are you waiting for?
             </div>
+            {% if 'lottery_closing' not in passed_dates %}
             <button class="montserrat red outline button" onclick="location.href='/register'">REGISTER</button>
             <br>
+            {% endif %}
             <button class="montserrat red outline button" onclick="location.href='/login'">LOGIN</button>
 
           </div>

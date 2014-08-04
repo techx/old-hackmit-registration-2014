@@ -3,7 +3,7 @@
 
             {% else %}
 
-            {% if hacker['lottery_closed'] %}
+            {% if 'lottery_closing' in passed_dates %}
 
             <h2> Status: Waitlisted </h2>
 
@@ -46,7 +46,7 @@
 
         {% else %}
  
-        {% if hacker['lottery_complete'] and not hacker['lottery_closed'] %}
+        {% if hacker['lottery_complete'] and 'lottery_closing' not in passed_dates %}
           <button class="ui hack button" onclick="location.href='/team'">
             Teams
           </button>

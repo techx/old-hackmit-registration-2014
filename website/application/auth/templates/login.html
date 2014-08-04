@@ -7,17 +7,6 @@
 
 {% endblock %}
 
-{% block navItems %}
-
-  <a class="active item" href="{{ url_for('.login') }}">
-    Log In
-  </a>
-  <a class="item" href="{{ url_for('.get_registration_page') }}">
-    Register
-  </a>
-
-{% endblock %}
-
 {% block title %}
 
     Login
@@ -85,10 +74,15 @@
     <div class="column"></div>
     <div class="center aligned column">
 
+      {% if 'lottery_closing' not in passed_dates %}
+
       <button class="ui fluid hack button" onclick="location.href='{{ url_for('.get_registration_page') }}'">
         I don't have an account
       </button>
       <br>
+
+      {% endif %}
+
       <button class="ui fluid hack button" onclick="location.href='{{ url_for('.forgot') }}'">
         I forgot my password
       </button>

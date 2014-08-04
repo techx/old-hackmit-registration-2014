@@ -1,8 +1,10 @@
 from functools import wraps
 
-from flask import render_template, jsonify
+from flask import jsonify
 from flask.ext.login import current_user
 from flask.ext.principal import Permission, RoleNeed
+
+from .. import render_full_template
 
 from ..errors import BadDataError
 from ..models import db_safety
@@ -49,7 +51,7 @@ def confirmation():
     travel['resource_name'] = "Travel Confirmation"
 
 
-    return render_template('confirmation.html', attendee=attendee, admit=admit, s3=s3_config(), resume=resume, bus=bus, mit=mit, travel_reimbursement=travel)
+    return render_full_template('confirmation.html', attendee=attendee, admit=admit, s3=s3_config(), resume=resume, bus=bus, mit=mit, travel_reimbursement=travel)
 
 @bp.route('/admits', methods=['PUT'])
 @AdmitPermission.require()

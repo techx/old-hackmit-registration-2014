@@ -7,4 +7,3 @@ bp = Blueprint(blueprint_name, __name__, static_folder='static', static_url_path
 # Util module only: exported functions
 from .toposort import toposort, toposorted
 from .s3_upload import s3_config, register_policy_route
-from .dates import utc_lottery_closing

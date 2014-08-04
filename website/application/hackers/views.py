@@ -1,19 +1,21 @@
 from functools import wraps
 
-from flask import render_template, jsonify
+from flask import jsonify
 from flask.ext.login import current_user
 from flask.ext.principal import Permission, RoleNeed
 
-from ..models import db_safety
+from .. import render_full_template
 
+from ..models import db_safety
 from ..errors import BadDataError
 
 from ..auth.models import Account, AttributeNeed
 from ..admit.models import Admit
+from ..util.dates import utc_lottery_closing, has_passed
 
 from . import bp
 from .forms import LotteryForm
-from .models import Hacker, Team, is_lottery_closed
+from .models import Hacker, Team
 
 MAX_TEAM_SIZE = 4
 
@@ -22,8 +24,7 @@ def dashboard():
     hacker = Hacker.lookup_from_account_id(current_user.id)
     if hacker.lottery_submitted():
         lottery_complete = True
-    lottery_closed = is_lottery_closed()
-    return {'name':'hacker_dashboard.html', 'context':{'lottery_complete':lottery_complete, 'lottery_closed':lottery_closed}}
+    return {'name':'hacker_dashboard.html', 'context':{'lottery_complete':lottery_complete}}
 
 HackerPermission = Permission(RoleNeed('hacker'))
 TeamPermission = Permission(AttributeNeed('hacker', 'lottery_submitted'), RoleNeed('admit'))
@@ -58,7 +59,7 @@ def lottery():
     name = current_user.get_name()
     hacker = Hacker.lookup_from_account_id(current_user.id)
     hacker_data = hacker.get_hacker_data()
-    return render_template('lottery.html', name=name, hacker=hacker_data)
+    return render_full_template('lottery.html', name=name, hacker=hacker_data)
 
 @bp.route('/team')
 @TeamPermission.require()
@@ -86,7 +87,7 @@ def team():
         team["teammates"] = teammates
         team["teamInviteCode"] = Team.query.get(int(team_id)).team_invite_code
 
-    return render_template('team.html', team=team)
+    return render_full_template('team.html', team=team)
 
 @bp.route('/team/leave', methods=['POST'])
 @TeamPermission.require()
@@ -124,7 +125,7 @@ def join_team(team_invite_code):
     if len(members) >= MAX_TEAM_SIZE:
         raise BadDataError("Aww. There are too many people on this team!")
 
-    if is_lottery_closed():
+    if has_passed(utc_lottery_closing):
         for member in members:
             if Admit.lookup_from_account_id(member.account_id) is None:
                 raise BadDataError("You can't join a team with people who didn't get admitted to HackMIT.")

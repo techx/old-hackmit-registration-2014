@@ -1,14 +1,14 @@
 from binascii import unhexlify
 
-from flask import render_template, current_app
+from flask import current_app
 
-from .. import app
+from .. import app, render_full_template
 
 from . import bp
 
 @bp.route('/')
 def index():
-    return render_template('index.html')
+    return render_full_template('index.html')
 
 @bp.route('/sponsor')
 def sponsors():
@@ -21,6 +21,6 @@ if extra is not None:
     def hex():
         try:
             template_name = unhexlify(extra)
-            return render_template(template_name + '.html')
+            return render_full_template(template_name + '.html')
         except TypeError:
             pass
