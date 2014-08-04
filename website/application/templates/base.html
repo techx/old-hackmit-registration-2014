@@ -87,9 +87,11 @@
         <a class="item" href="{{ url_for('auth.login') }}">
           Log In
         </a>
+        {% if not lottery_closed %}
         <a class="item" href="{{ url_for('auth.get_registration_page') }}">
           Register
         </a>
+        {% endif %}
 
       {% endif %}
 

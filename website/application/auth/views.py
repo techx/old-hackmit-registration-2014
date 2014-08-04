@@ -20,7 +20,8 @@ def roles_with_context(view_name):
     roles_for_view = []
 
     for role in roles:
-        if roles[role]['model'].lookup_from_account_id(current_user.id) is not None:
+        role_model = roles[role]['model'].lookup_from_account_id(current_user.id)
+        if role_model is not None:
             if roles[role][view_name] is not None:
                 roles_for_view.append(role)
 

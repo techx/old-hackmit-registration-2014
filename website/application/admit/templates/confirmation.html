@@ -3,8 +3,11 @@
 {% block head %}
 
 <script src="{{ url_for('.static', filename='js/confirmation.js') }}"></script>
-<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.9.0/jquery-ui.min.js"></script>
+<script type="text/javascript" src="{{ url_for('util.static', filename='js/jquery.fileupload.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('util.static', filename='js/s3-upload.js') }}"></script>
 
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 <style>
 
   .waiver a {
@@ -108,6 +111,61 @@
               </label>
               <input id="photoRelease" type="text">
             </div>
+
+               <label>Upload a PDF detailing your skills, abilities and experiences!</label>
+              <br /><br />
+
+           <div class="inline field">
+             <div class="ui checkbox">
+                <input id="resumeOptOut" type="checkbox" value="{{ (admit.resumeOptOut == 0) if admit.resumeOptOut != None }}"></input>
+                <label for "resumeOptOut">Opt out of profile information for team/mentor matching</label>
+              </div>
+            </div>
+
+            {% from 's3_upload.html' import upload_form with context %}
+            {{ upload_form(resume) }}
+
+            {% if bus %}
+ 
+             <p>We will be providing bus transportation from your school to HackMIT. Keep an eye on your inbox for an email with logistical information about the bus ride from your school’s point person.</p>
+           {% elif mit %}
+           
+            <!-- Show nothing, it's jarring and comes out of nowhere. <p>As an MIT student, you're not eligible for travel reimbursement.</p> -->
+
+           {% else %}
+
+           <p>This year, we won’t be sending a bus to your school, but HackMIT is offering up to $200 in travel reimbursement to students living outside of Massachusetts.</p> 
+
+           </p>To claim this reimbursement, please upload documentation from your travel bookings (airline receipts, train tickets, etc.). We cannot offer reimbursement for business or first-class tickets. If you plan on driving to HackMIT, we’ll reimburse you at the rate of $0.30 cents per mile up to a cap of $200; just upload a screenshot of your route on Google Maps along with the trip distance and requested reimbursement amount.</p>
+
+           <p>Feel free to send any questions about travel reimbursements to team@hackmit.org.</p>
+
+            {% from 's3_upload.html' import upload_form with context %}
+            {{ upload_form(travel_reimbursement) }}
+
+           {% endif %}
+  <p> How likely are you to come to HackMIT 2014?</p>
+
+  <div class="grouped inline fields">
+    <div class="field">
+      <div class="ui radio checkbox">
+        <input id="unlikely" name="likelihood" type="radio">
+        <label for="unlikely">Not sure</label>
+      </div>
+    </div>
+    <div class="field">
+      <div class="ui radio checkbox">
+        <input id="maybe" name="likelihood" type="radio">
+        <label for="maybe">Probably</label>
+      </div>
+    </div>
+    <div class="field">
+      <div class="ui radio checkbox">
+        <input id="definitely" name="likelihood" type="radio">
+        <label for="definitely">Definitely!</label>
+      </div>
+    </div>
+  </div>
 
             <div class="ui hack fluid submit button">Save</div>
           </div>

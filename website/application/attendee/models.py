@@ -8,7 +8,7 @@ class Attendee(db.Model, Role):
 
     badge_name = db.Column(db.String(50))
     shirt_size = db.Column(db.String(6)) # (Implied t-shirts)
-    phone_number = db.Column(db.String(16)) # Store in E164 format including leading plus
+    phone_number = db.Column(db.String(16)) # Store as string of digits, 10-15 chars (leave extra space for future E164 compatibility)
     
     @staticmethod
     def is_registrable():

@@ -1,17 +1,26 @@
 $(document).ready(function(){
-  var $form = $('.ui.form'),
+  var $form = $('.ui.form').not('.s3'),
       $badge = $('#badge'),
       $phone = $('#phone'),
       $shirt = $('#shirt'),
       $diet = $('#diet'),
       $waiver = $('#waiver'),
       $photoRelease = $('#photoRelease');
+      $resumeOptOut = $('#resumeOptOut');
+      $resume = $('.s3.upload.form').eq(0).find('div[class*=s3][class*=upload][class*=button]');
+      $travel = $('.s3.upload.form').eq(1).find('div[class*=s3][class*=upload][class*=button]');
 
-  function validate(){
+  $resumeOptOut.prop('checked', $resumeOptOut.val() === "True");
+  $resumeOptOut.click(function() { console.log('clicked'); } );
+
+  function validate() {
+    console.log($resume.hasClass('completed'));
+    console.log($('[name=likelihood]:checked') === [])
+    debugger;
     submitConfirmation();
   }
   
-  function submitConfirmation(){
+  function submitConfirmation() {
 
     var formData = JSON.stringify({
         badge: $badge.val(),
@@ -19,7 +28,10 @@ $(document).ready(function(){
         shirt: $shirt.val(),
         diet: $diet.val(),
         waiver: $waiver.val(),
-        photoRelease: $photoRelease.val()
+        photoRelease: $photoRelease.val(),
+        resumeOptOut: $resumeOptOut.is(':checked'),
+        resume: $resume.hasClass('completed'),
+        travel: $travel.hasClass('completed')
       });
 
     var $dimmable = $('.ui.dimmable').dimmer('show');
@@ -89,12 +101,21 @@ $(document).ready(function(){
 
         ]
       },
+      shirt: {
+        identifier: 'shirt',
+        rules: [
+          {
+            type: 'empty',
+            prompt: "Please pick a t-shirt size!"
+          }
+        ]
+      },
       diet: {
         identifier: 'diet',
         rules: [
           {
             type: 'empty',
-            prompt: "Please enter a dietary restriction!"
+            prompt: "Please pick a dietary restriction! If you don't have any, just choose None."
           }
         ]
       },

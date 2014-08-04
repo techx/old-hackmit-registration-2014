@@ -5,7 +5,7 @@ from sqlalchemy.ext.declarative import declared_attr
 from flask.ext.login import UserMixin
 from flask.ext.principal import ItemNeed
 from werkzeug.security import generate_password_hash as werkzeug_generate_password_hash, check_password_hash
-from ..models import db
+from ..models import db, db_safety
 
 AttributeNeed = partial(ItemNeed, 'attribute')
 
@@ -34,21 +34,21 @@ class Account(db.Model, UserMixin):
 
     def get_name(self):
         name = Name.query.get(int(self.id))
-        if name is None:
+        if name.name is None:
+            name = None
 
             # Name migration code
-            from ..hackers.model import Hacker
-
+            from ..hackers.models import Hacker
             hacker = Hacker.lookup_from_account_id(self.id)
             if hacker is not None:
                 name = hacker.name
-                with db_safety() as session:
-                    update_name(session, name)
+                session = db.Session.object_session(self)
+                self.update_name(session, name)
 
             return name
 
         else:
-            return name.get_name()
+            return name.name
 
     @staticmethod
     def create(session, email_address, hashed_password, initial_role):
@@ -70,11 +70,10 @@ class Account(db.Model, UserMixin):
 
     def update_name(self, session, new_name):
         name = Name.query.get(int(self.id))
-       
+
         # Name migration code 
         if name is None:
-            with db_safety() as session:
-               Name.create(session, self.id)
+            Name.create(session, self.id)
 
         name.update_name(session, new_name)
 
@@ -132,9 +131,6 @@ class Name(db.Model):
 
     account_id = db.Column(db.Integer, db.ForeignKey('accounts.id'), primary_key=True)
     name = db.Column(db.String(100))
-
-    def get_name(self):
-        return self.name
 
     @staticmethod
     def create(session, account_id):

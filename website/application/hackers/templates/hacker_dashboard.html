@@ -3,9 +3,20 @@
 
             {% else %}
 
+            {% if hacker['lottery_closed'] %}
+
+            <h2> Status: Waitlisted </h2>
+
+            <h3> Unfortunately, we are currently unable to offer you a spot at HackMIT through the initial round of the lottery. However, you’ve been placed on our waitlist, so if a spot at HackMIT opens, you’ll be notified via email and asked to confirm your registration. </h3>
+            
+            <h3> An unbelievable number of people registered for HackMIT this year, and we wish we could offer spots to everyone. Thanks for your interest in HackMIT, and we hope to see you at some hackathons this fall! </h3>
+            
+
+            {% else %}
+
             {% if hacker['lottery_complete'] %}
 
-              <h3> You're all set! Feel free to change any information
+             <h3> You're all set! Feel free to change any information
               in your lottery application until midnight on July 28th -
               that's when we'll let you know if you're guaranteed a spot at this year's HackMIT. </h3>
 
@@ -25,6 +36,8 @@
 
             {% endif %}
 
+            {% endif %}
+
             {% endfor %}
 {% endmacro %}
 
@@ -32,14 +45,8 @@
         {% for role, context in roles if role=='admit'%}
 
         {% else %}
-        
-        <button class="ui hack button" onclick="location.href='/lottery'">
-          Lottery Application
-        </button>
-
-        <br><br>
-
-        {% if hacker['lottery_complete'] %}
+ 
+        {% if hacker['lottery_complete'] and not hacker['lottery_closed'] %}
           <button class="ui hack button" onclick="location.href='/team'">
             Teams
           </button>

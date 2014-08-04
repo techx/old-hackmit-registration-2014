@@ -1,13 +1,32 @@
 {% macro body_text(admit) -%}
-              <h3> You've been admitted to HackMIT 2014!
-              Fill out the confirmation form below by <span class="deadline">{{ admit['deadline'] }}</span>
-              to let us know that you're coming! </h3>
+             
+              {% if admit['confirmed'] %}
+
+              <h2> Status: Confirmed </h2>
+
+              <h3> Thanks for filling out the confirmation form! Your form has been reviewed by a HackMIT team member and your spot at HackMIT 2014 is officially secure. See you in October! </h3>
+
+              {% else %}
+              
+              <h2> Status: Admitted </h2>
+              
+              <h3> Congratulations! You’ve received a spot at this year’s HackMIT. Confirm your spot by <span class="deadline">{{ admit['deadline'] }}</span> by filling out the confirmation form below. </h3>
+
+              <h3> You can also change your team at any time, but any team you join can contain only admitted hackers. </h3>
+
+              {% endif %}
 {% endmacro %}
 
 {% macro buttons(admit) -%}
+        {% if not admit['confirmed'] %}
         <button class="ui hack button" onclick="location.href='{{ url_for('admit.confirmation') }}'">
           Confirmation of Attendance
         </button>
+        <br /><br />
+        {% endif %}
 
-        <br><br>
+        <button class="ui hack button" onclick="location.href='{{ url_for('hackers.team') }}'">
+          Teams
+        </button>
+        <br /><br />
 {% endmacro %}

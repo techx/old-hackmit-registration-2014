@@ -9,10 +9,11 @@ from ..models import db_safety
 from ..errors import BadDataError
 
 from ..auth.models import Account, AttributeNeed
+from ..admit.models import Admit
 
 from . import bp
 from .forms import LotteryForm
-from .models import Hacker, Team
+from .models import Hacker, Team, is_lottery_closed
 
 MAX_TEAM_SIZE = 4
 
@@ -21,10 +22,11 @@ def dashboard():
     hacker = Hacker.lookup_from_account_id(current_user.id)
     if hacker.lottery_submitted():
         lottery_complete = True
-    return {'name':'hacker_dashboard.html', 'context':{'lottery_complete':lottery_complete}}
+    lottery_closed = is_lottery_closed()
+    return {'name':'hacker_dashboard.html', 'context':{'lottery_complete':lottery_complete, 'lottery_closed':lottery_closed}}
 
 HackerPermission = Permission(RoleNeed('hacker'))
-LotterySubmittedPermission = Permission(AttributeNeed('hacker', 'lottery_submitted'))
+TeamPermission = Permission(AttributeNeed('hacker', 'lottery_submitted'), RoleNeed('admit'))
 
 @bp.route('/hackers', methods=['POST'])
 @HackerPermission.require()
@@ -54,11 +56,12 @@ def hackers():
 @HackerPermission.require()
 def lottery():
     name = current_user.get_name()
-    hacker = Hacker.lookup_from_account_id(current_user.id).get_hacker_data()
-    return render_template('lottery.html', name=name, hacker=hacker)
+    hacker = Hacker.lookup_from_account_id(current_user.id)
+    hacker_data = hacker.get_hacker_data()
+    return render_template('lottery.html', name=name, hacker=hacker_data)
 
 @bp.route('/team')
-@LotterySubmittedPermission.require()
+@TeamPermission.require()
 def team():
     hacker = Hacker.lookup_from_account_id(current_user.id)
     team_id = hacker.team_id
@@ -86,7 +89,7 @@ def team():
     return render_template('team.html', team=team)
 
 @bp.route('/team/leave', methods=['POST'])
-@LotterySubmittedPermission.require()
+@TeamPermission.require()
 def leave_team():
     hacker = Hacker.lookup_from_account_id(current_user.id)
 
@@ -96,7 +99,7 @@ def leave_team():
     return jsonify({'message': "It's been real, see ya!"})
 
 @bp.route('/teams', methods=['POST'])
-@LotterySubmittedPermission.require()
+@TeamPermission.require()
 def teams():
     hacker = Hacker.lookup_from_account_id(current_user.id)
 
@@ -107,7 +110,7 @@ def teams():
     return jsonify({'message': "Team successfully created"})
 
 @bp.route('/teams/<team_invite_code>', methods=['POST'])
-@LotterySubmittedPermission.require()
+@TeamPermission.require()
 def join_team(team_invite_code):
 
     # Find the team associated with the invite code
@@ -120,6 +123,11 @@ def join_team(team_invite_code):
 
     if len(members) >= MAX_TEAM_SIZE:
         raise BadDataError("Aww. There are too many people on this team!")
+
+    if is_lottery_closed():
+        for member in members:
+            if Admit.lookup_from_account_id(member.account_id) is None:
+                raise BadDataError("You can't join a team with people who didn't get admitted to HackMIT.")
 
     # Get the current hacker
     hacker = Hacker.lookup_from_account_id(current_user.id)
