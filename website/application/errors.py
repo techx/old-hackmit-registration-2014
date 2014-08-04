@@ -1,7 +1,3 @@
-# -------------------------------------------------
-# Error Handling for Database Errors
-# -------------------------------------------------
-
 class ServerError(Exception):
     message = "Something went wrong! :( Please try again."
     status_code = 500
