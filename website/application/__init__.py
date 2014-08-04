@@ -20,7 +20,7 @@ from .errors import ServerError
 from .models import db
 
 # Redirect all requests to HTTPS
-#sslify = SSLify(app, subdomains=True, permanent=True)
+sslify = SSLify(app, permanent=True)
 
 # Secure the app with CsrfProtect
 csrf = CsrfProtect(app)
