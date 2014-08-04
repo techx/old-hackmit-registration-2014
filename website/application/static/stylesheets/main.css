@@ -78,15 +78,9 @@ textarea {
   color: white;
 }
 
-.ui.hack.button.completed:hover {
-  cursor: default;
-}
-
-
 .invisible {
   display: none;
 }
-
 
 @media only screen and (max-width : 480px) {
 

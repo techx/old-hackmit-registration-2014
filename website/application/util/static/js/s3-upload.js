@@ -14,12 +14,15 @@ $(function() {
     });
     button.text("Upload " + button.text());
 
+    var result = form.find("h4");
+
     form.fileupload({
       autoUpload: true,
       dataType: 'xml',
       url: form.find('input[name=x-amz-meta-bucket_url]').val(),
       formData: getSanitizedData(form),
       add: function(event, data) {
+        result.parent('.field').slideUp();
         var policyEndpoint = form.find('input[name=x-amz-meta-policy_endpoint]').val();
         $.get(policyEndpoint).done(function(params) {
           form.find('input[name=key]').val(params.key);
@@ -30,9 +33,10 @@ $(function() {
       },
       done: function(event, data) {
         button.addClass('completed');
-        button.unbind('click');
-        button.text(button.text().replace('Upload ', '') + ' Uploaded!');
-        console.log("done");
+        if (button.text().indexOf('new')===-1) {
+          button.text(button.text().replace('Upload', 'Upload new'));
+        }
+        result.parent('.field').slideDown();
         }
     });
   });
