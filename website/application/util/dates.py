@@ -1,3 +1,7 @@
+from functools import wraps
+
+from flask import abort
+
 from datetime import datetime
 
 from .timezones import eastern, utc
@@ -18,3 +22,23 @@ def get_passed_dates():
         if has_passed(dates[utc_datetime]):
             passed_dates[utc_datetime] = dates[utc_datetime]
     return passed_dates
+
+def before(test_datetime):
+    def wrap(view_func):
+        @wraps(view_func)
+        def wrapped_timed_function(*args, **kwargs):
+            if has_passed(test_datetime):
+                abort(404)
+            view_func(*args, **kwargs)
+        return wrapped_timed_function
+    return wrap
+
+def after(test_datetime):
+    def wrap(view_func):
+        @wraps(view_func)
+        def wrapped_timed_function(*args, **kwargs):
+            if not has_passed(test_datetime):
+                abort(404)
+            view_func(*args, **kwargs)
+        return wrapped_timed_function
+    return wrap

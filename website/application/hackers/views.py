@@ -11,7 +11,7 @@ from ..errors import BadDataError
 
 from ..auth.models import Account, AttributeNeed
 from ..admit.models import Admit
-from ..util.dates import utc_lottery_closing, has_passed
+from ..util.dates import utc_lottery_closing, has_passed, before
 
 from . import bp
 from .forms import LotteryForm
@@ -31,6 +31,7 @@ TeamPermission = Permission(AttributeNeed('hacker', 'lottery_submitted'), RoleNe
 
 @bp.route('/hackers', methods=['POST'])
 @HackerPermission.require()
+@before(utc_lottery_closing)
 def hackers():
     form = LotteryForm()
     # First find the hacker if they already exist
@@ -55,6 +56,7 @@ def hackers():
 
 @bp.route('/lottery')
 @HackerPermission.require()
+@before(utc_lottery_closing)
 def lottery():
     name = current_user.get_name()
     hacker = Hacker.lookup_from_account_id(current_user.id)
