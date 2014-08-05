@@ -148,15 +148,15 @@
                <label>Upload a PDF detailing your skills, abilities and experiences!</label>
               <br><br>
 
+            {% from 's3_upload.html' import upload_form with context %}
+            {{ upload_form(resume) }}<br>
+
             <div class="inline field">
              <div class="ui checkbox">
                 <input id="resumeOptOut" type="checkbox">
                 <label for="resumeOptOut">Opt out of profile information for team/mentor matching</label>
               </div>
             </div>
-
-            {% from 's3_upload.html' import upload_form with context %}
-            {{ upload_form(resume) }}<br>
 
             <div class="field">
               <label>
