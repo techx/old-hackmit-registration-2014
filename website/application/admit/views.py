@@ -62,10 +62,10 @@ def update_confirmation():
 
     hacker = Hacker.lookup_from_account_id(current_user.id)
 
-    if form.resumeOptOut.data is False and form.resume.data is None:
+    if form.resumeOptOut.data is False and form.resume.data is False:
         raise BadDataError()
 
-    if hacker.school_id!=166683 and form.data.meng is True:
+    if hacker.school_id!=166683 and form.meng.data is True:
         raise BadDataError()
 
     attendee = Attendee.lookup_from_account_id(current_user.id)
@@ -73,6 +73,6 @@ def update_confirmation():
     
     with db_safety() as session:
         attendee.update_attendee_data(session, form.badge.data, form.shirt.data, form.phone.data)
-        admit.update_admit_data(session, form.data.graduation, form.data.meng, form.diet.data, form.waiver.data, form.photoRelease.data, form.resumeOptOut.data, form.resume.data, form.github.data, form.travel.data, form.likelihood.data)
+        admit.update_admit_data(session, form.graduation.data, form.meng.data, form.diet.data, form.waiver.data, form.photoRelease.data, form.resumeOptOut.data, form.resume.data, form.github.data, form.travel.data, form.likelihood.data)
     return jsonify({'message': "Successfully Updated!"})
 
