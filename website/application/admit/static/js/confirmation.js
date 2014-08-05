@@ -81,6 +81,10 @@ $(document).ready(function(){
     return $resumeOptOut.is(':checked') ^ $resume.hasClass('completed')
   };
 
+  $.fn.form.settings.rules.travel = function(){
+    return $travel.hasClass('completed')
+  };
+
   $form
     .form({
       name: {
@@ -134,6 +138,15 @@ $(document).ready(function(){
           {
             type: 'empty',
             prompt: "Please enter your full legal name."
+          }
+        ]
+      },
+      travel {
+        identifier: 'travel',
+        rules: [
+          {
+            type: 'empty',
+            prompt: "You must upload a travel receipt to confirm your spot."
           }
         ]
       },

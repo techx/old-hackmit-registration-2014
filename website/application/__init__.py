@@ -3,6 +3,7 @@ from os import environ
 from flask import Flask, render_template, jsonify, abort
 from flask_sslify import SSLify
 from flask_wtf.csrf import CsrfProtect
+from flask_s3 import FlaskS3
 
 application = Flask(__name__, instance_relative_config=True)
 
