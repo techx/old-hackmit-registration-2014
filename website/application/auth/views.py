@@ -8,7 +8,7 @@ from itsdangerous import BadSignature, URLSafeTimedSerializer, SignatureExpired
 from .. import render_full_template
 
 from ..util.toposort import toposort
-from ..util.dates import get_passed_dates
+from ..util.dates import utc_lottery_closing, has_passed, before
 
 from ..errors import ServerError, BadDataError
 from ..models import db_safety
@@ -63,6 +63,7 @@ def handle_unauthorized_error(error):
     return render_full_template('server_message.html', header="You don't have access to that resource!", subheader="Snooping as usual, I see.")
 
 @bp.route('/register')
+@before(utc_lottery_closing)
 def get_registration_page():
     if current_user.is_authenticated():
         return redirect(url_for('.dashboard'))
@@ -81,6 +82,9 @@ def register_user():
 
     if Account.lookup_from_email(email_address) != None:
         raise ServerError('This account already exists!', status_code=409)
+
+    if role=='hacker' and has_passed(utc_lottery_closing):
+       return jsonify({'message': 'The lottery is closed!'})
 
     with db_safety() as session:
         account_id = Account.create(session, email_address, hashed_password, role)
