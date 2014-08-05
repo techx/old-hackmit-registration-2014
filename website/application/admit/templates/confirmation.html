@@ -146,18 +146,19 @@
               <input id="photoRelease" type="text">
             </div>
 
-               <label>Upload a PDF detailing your background, skills, abilities and experiences!</label>
-              <br><br>
+            <label>Upload a PDF detailing your background, skills, abilities and experiences!</label>
 
-            {% from 's3_upload.html' import upload_form with context %}
-            {{ upload_form(resume) }}<br>
+            <br><br>
 
             <div class="inline field">
-             <div class="ui checkbox">
+              <div class="ui checkbox">
                 <input id="resumeOptOut" type="checkbox">
                 <label for="resumeOptOut">Opt out of profile information for team/mentor matching</label>
               </div>
             </div>
+
+            {% from 's3_upload.html' import upload_form with context %}
+            {{ upload_form(resume) }}
 
             <div class="field">
               <label>

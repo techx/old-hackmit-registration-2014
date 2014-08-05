@@ -16,6 +16,14 @@ $(document).ready(function(){
 
   $resumeOptOut.prop('checked', $resumeOptOut.val() === "True");
 
+  $resumeOptOut.change(function() {
+    if ($resumeOptOut.is(':checked')) {
+      $resume.parent('.field').slideUp();
+    } else {
+      $resume.parent('.field').slideDown();
+    }
+  });
+
   $travelOptOut.change(function() {
     if ($travelOptOut.is(':checked')) {
       $travel.parent('.field').slideUp();
@@ -164,7 +172,7 @@ $(document).ready(function(){
         rules: [
           {
             type: 'resume',
-            prompt: 'Please upload a PDF!'
+            prompt: 'Please upload a PDF, or click the opt out checkbox.'
           }
         ]
       },
