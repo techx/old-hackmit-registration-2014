@@ -61,7 +61,7 @@ def update_confirmation():
     if not form.validate_on_submit():
         raise BadDataError()
 
-    if form.data.resumeOptOut is False and form.data.resume is None:
+    if form.resumeOptOut.data is False and form.resume.data is None:
         raise BadDataError()
 
     attendee = Attendee.lookup_from_account_id(current_user.id)
