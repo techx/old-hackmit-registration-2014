@@ -20,7 +20,7 @@ class Admit(db.Model, Role):
     photo_release = db.Column(db.String(50))
     resume_opt_out = db.Column(db.Boolean)
     resume = db.Column(db.Boolean)
-    github = db.Column(db.String(39), unique=True) # Max is 39 as per their signup page
+    github = db.Column(db.String(39)) # Max is 39 as per their signup page
     travel = db.Column(db.Boolean)
     likelihood = db.Column(db.String(10))
     confirmed = db.Column(db.Boolean)
