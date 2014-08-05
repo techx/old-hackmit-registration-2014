@@ -3,34 +3,51 @@ $(document).ready(function(){
       $badge = $('#badge'),
       $phone = $('#phone'),
       $shirt = $('#shirt'),
+      $graduation = $('#graduation'),
+      $meng = $('#meng'),
       $diet = $('#diet'),
       $waiver = $('#waiver'),
-      $photoRelease = $('#photoRelease');
-      $resumeOptOut = $('#resumeOptOut');
-      $resume = $('.s3.upload.form').eq(0).find('div[class*=s3][class*=upload][class*=button]');
-      $travel = $('.s3.upload.form').eq(1).find('div[class*=s3][class*=upload][class*=button]');
+      $photoRelease = $('#photoRelease'),
+      $resumeOptOut = $('#resumeOptOut'),
+      $resume = $('.s3.upload.form').eq(0).find('div[class*=s3][class*=upload][class*=button]'),
+      $github =$('#github'),
+      $travel = $('.s3.upload.form').eq(1).find('div[class*=s3][class*=upload][class*=button]'),
+      $likelihood = $('#likelihood');
 
   $resumeOptOut.prop('checked', $resumeOptOut.val() === "True");
 
+  function getLikelihood() {
+    $likelihood.find('input').each(function() {
+      if ($(this).is(':checked')) {
+        return $(this).val();
+      }
+    });
+    return null;
+  }
+
   function validate() {
-    console.log($resume.hasClass('completed'));
-    console.log($('[name=likelihood]:checked') === [])
-    debugger;
+  //    if (getLikelihood() is null) {
+  //     return false;
+  //  }
     submitConfirmation();
   }
-  
+ 
   function submitConfirmation() {
 
     var formData = JSON.stringify({
         badge: $badge.val(),
         phone: $phone.val().replace(/[^0-9]/gi, ""),
         shirt: $shirt.val(),
+        graduation: $graduation.val(),
+        $meng: $meng.is(':checked'),
         diet: $diet.val(),
         waiver: $waiver.val(),
         photoRelease: $photoRelease.val(),
         resumeOptOut: $resumeOptOut.is(':checked'),
         resume: $resume.hasClass('completed'),
-        travel: $travel.hasClass('completed')
+        github: $github.val(),
+        travel: $travel.hasClass('completed'),
+        likelihood: getLikelihood()
       });
 
     var $dimmable = $('.ui.dimmable').dimmer('show');
@@ -94,7 +111,6 @@ $(document).ready(function(){
             type: 'phone',
             prompt: 'Please enter a valid phone number.'
           }
-
         ]
       },
       shirt: {
@@ -103,6 +119,15 @@ $(document).ready(function(){
           {
             type: 'empty',
             prompt: "Please pick a t-shirt size!"
+          }
+        ]
+      },
+      graduation: {
+        identifier: 'graduation',
+        rules: [
+          {
+            type: 'empty',
+            prompt: "Please pick a graduation year! You can't stay in school forever."
           }
         ]
       },
@@ -132,9 +157,18 @@ $(document).ready(function(){
             prompt: 'Please enter your full legal name.'
           }
         ]
+      },
+      github: {
+        identifier: 'github',
+        rules: [
+          {
+            type: 'empty',
+            prompt: 'Please enter your github username. If you don\'t have one, go sign up at https://github.com!'
+          }
+        ]
       }
     },{
       onSuccess: validate
     })
-
 });
+

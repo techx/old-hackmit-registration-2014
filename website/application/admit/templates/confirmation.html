@@ -79,11 +79,33 @@
             {% include 'attendee_form.html' with context %}
 
             <div class="field">
+              <label>Graduation Year</label>
+              <div class="ui fluid selection dropdown">
+                <div class="text">Select</div>
+                <i class="dropdown icon"></i>
+                <input id="graduation" type="hidden">
+                <div class="menu">
+                  <div class="item" data-value="2015">2015</div>
+                  <div class="item" data-value="2016">2016</div>
+                  <div class="item" data-value="2017">2017</div>
+                  <div class="item" data-value="2018">2018</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="inline field {% if not mit %} invisible {% endif %}">
+              <div class="ui checkbox">
+                <input id="meng" type="checkbox">
+                <label for="meng">I'm an MIT MEng student</label>
+              </div>
+            </div>
+
+            <div class="field">
               <label>Dietary Restrictions</label>
               <div class="ui fluid selection dropdown">
                 <div class="text">Select</div>
                 <i class="dropdown icon"></i>
-                <input id="diet" type="hidden" value="{{ admit.dietary_restriction if admit.dietary_restriction != None }}">
+                <input id="diet" type="hidden">
                 <div class="menu">
                   <div class="item" data-value="none">No restrictions!</div>
                   <div class="item" data-value="veg">Vegetarian</div>
@@ -124,17 +146,25 @@
             </div>
 
                <label>Upload a PDF detailing your skills, abilities and experiences!</label>
-              <br /><br />
+              <br><br>
 
             <div class="inline field">
              <div class="ui checkbox">
-                <input id="resumeOptOut" type="checkbox" value="{{ (admit.resumeOptOut == 0) if admit.resumeOptOut != None }}">
+                <input id="resumeOptOut" type="checkbox">
                 <label for="resumeOptOut">Opt out of profile information for team/mentor matching</label>
               </div>
             </div>
 
             {% from 's3_upload.html' import upload_form with context %}
-            {{ upload_form(resume) }}
+            {{ upload_form(resume) }}<br>
+
+            <div class="field">
+              <label>
+                Enter your github username here. Make one over at
+                https://github.com/ if you don't already have one!
+              </label>
+              <input id="github" type="text">
+            </div>
 
             {% if bus %}
  
@@ -156,25 +186,25 @@
 
             {% endif %}
 
-            <p> How likely are you to come to HackMIT 2014?</p>
+            <p>How likely are you to come to HackMIT 2014?</p>
 
-            <div class="grouped inline fields">
+            <div class="grouped inline fields" id="likelihood">
               <div class="field">
                 <div class="ui radio checkbox">
-                  <input id="unlikely" name="likelihood" type="radio">
-                  <label for="unlikely">Not sure</label>
+                  <input id="li_maybe" name="likelihood" type="radio">
+                  <label for="li_maybe">Not sure</label>
                 </div>
               </div>
               <div class="field">
                 <div class="ui radio checkbox">
-                  <input id="maybe" name="likelihood" type="radio">
-                  <label for="maybe">Probably</label>
+                  <input id="li_prob" name="likelihood" type="radio">
+                  <label for="li_likely">Probably</label>
                 </div>
               </div>
               <div class="field">
                 <div class="ui radio checkbox">
-                  <input id="definitely" name="likelihood" type="radio">
-                  <label for="definitely">Definitely!</label>
+                  <input id="li_yes" name="likelihood" type="radio">
+                  <label for="li_yes">Definitely!</label>
                 </div>
               </div>
             </div>
