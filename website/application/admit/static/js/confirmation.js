@@ -11,8 +11,7 @@ $(document).ready(function(){
       $resumeOptOut = $('#resumeOptOut'),
       $resume = $('.s3.upload.form').eq(0).find('div[class*=s3][class*=upload][class*=button]'),
       $github =$('#github'),
-      $travel = $('.s3.upload.form').eq(1).find('div[class*=s3][class*=upload][class*=button]'),
-      $likelihood = $('input[name=likelihood]:checked', '#likelihood');
+      $travel = $('.s3.upload.form').eq(1).find('div[class*=s3][class*=upload][class*=button]');
 
   $resumeOptOut.prop('checked', $resumeOptOut.val() === "True");
 
@@ -31,7 +30,7 @@ $(document).ready(function(){
         resume: $resume.hasClass('completed'),
         github: $github.val(),
         travel: $travel.hasClass('completed'),
-        likelihood: $likelihood.val()
+        likelihood: $('input[name=likelihood]:checked', '#likelihood').val()
       });
 
     var $dimmable = $('.ui.dimmable').dimmer('show');
