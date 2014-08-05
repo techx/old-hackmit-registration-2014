@@ -23,7 +23,7 @@ $(document).ready(function(){
         phone: $phone.val().replace(/[^0-9]/gi, ""),
         shirt: $shirt.val(),
         graduation: $graduation.val(),
-        $meng: $meng.is(':checked'),
+        meng: $meng.is(':checked'),
         diet: $diet.val(),
         waiver: $waiver.val(),
         photoRelease: $photoRelease.val(),
