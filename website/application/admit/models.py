@@ -49,6 +49,9 @@ class Admit(db.Model, Role):
 
         return data
 
+    def is_confirmed(self):
+        return self.confirmed
+
     def get_deadline(self):
         # Always store in UTC but used Eastern for math
         return (self.creation + timedelta(10)).replace(tzinfo=utc).astimezone(eastern).replace(hour=23, minute=59, second=59, microsecond=999999).astimezone(utc)

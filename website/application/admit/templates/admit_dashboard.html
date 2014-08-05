@@ -1,32 +1,45 @@
 {% macro body_text(admit) -%}
              
-              {% if admit['confirmed'] %}
+             {% if admit['completed'] %}
 
-              <h2> Status: Confirmed </h2>
+             {% if admit['confirmed'] %}
 
-              <h3> Thanks for filling out the confirmation form! Your form has been reviewed by a HackMIT team member and your spot at HackMIT 2014 is officially secure. See you in October! </h3>
+             <h2>Status: Confirmed</h2>
 
-              {% else %}
+             <h3>Thanks for filling out the confirmation form! Your form has been reviewed by a HackMIT team member and your spot at HackMIT 2014 is officially secure. See you in October!</h3>
+
+             {% else %}
+
+             <h2>Status: Pending</h2>
+
+             <h3>Thanks for filling out the confirmation form -- if there are any issues with your registration, you'll be contacted by a team member. Otherwise, be on the lookout for an email in the next 10 days confirming any travel reimbursement and receipt of this form.</h3>
+             
+             {% endif %} 
               
-              <h2> Status: Admitted </h2>
+             {% else %}
               
-              <h3> Congratulations! You’ve received a spot at this year’s HackMIT. Confirm your spot by <span class="deadline">{{ admit['deadline'] }}</span> by filling out the confirmation form below. </h3>
+             <h2>Status: Admitted</h2>
+              
+             <h3>Congratulations! You’ve received a spot at this year’s HackMIT. Confirm your spot by<span class="deadline">{{ admit['deadline'] }}</span>by filling out the confirmation form below.</h3>
 
-              <h3> You can also change your team at any time, but any team you join can contain only admitted hackers. </h3>
+             {% endif %}
 
-              {% endif %}
+             <h3>You can change your team at any time, but any team you join can contain only admitted hackers.</h3>
+
 {% endmacro %}
 
 {% macro buttons(admit) -%}
+        {% if not admit['completed'] %}
         {% if not admit['confirmed'] %}
-        <button class="ui hack button" onclick="location.href='{{ url_for('admit.confirmation') }}'">
+       <button class="ui hack button" onclick="location.href='{{ url_for('admit.confirmation') }}'">
           Confirmation of Attendance
-        </button>
-        <br /><br />
+       </button>
+       <br /><br />
+        {% endif %}
         {% endif %}
 
-        <button class="ui hack button" onclick="location.href='{{ url_for('hackers.team') }}'">
+       <button class="ui hack button" onclick="location.href='{{ url_for('hackers.team') }}'">
           Teams
-        </button>
-        <br /><br />
+       </button>
+       <br /><br />
 {% endmacro %}

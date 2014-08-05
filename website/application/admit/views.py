@@ -19,10 +19,12 @@ from . import bp
 from .forms import ConfirmationForm
 from .models import Admit, buses
 
-def dashboard(): #TODO
+def dashboard():
     admit = Admit.lookup_from_account_id(current_user.id)
     deadline = admit.get_deadline()
-    return {'name':'admit_dashboard.html', 'context':{'deadline':format_utc_datetime(deadline, eastern)}}
+    completed = admit.get_admit_data()['graduation'] is not None
+    confirmed = admit.is_confirmed()
+    return {'name':'admit_dashboard.html', 'context':{'deadline':format_utc_datetime(deadline, eastern), 'completed':completed, 'confirmed':confirmed}}
 
 AdmitPermission = Permission(RoleNeed('admit'))
 
