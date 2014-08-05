@@ -262,11 +262,11 @@ def forgot_reset():
         with db_safety() as session:
             # In case the user hasn't already been confirmed.
             account.confirm_email(session)
-
+            email_address = account.email_address
             account.update_password(session, new_password)
 
         # Notify the user that their password has been reset
-        send_password_reset_email(account.email_address)
+        send_password_reset_email(email_address)
 
         return jsonify({"message": "You have successfully reset your password!"})
 
