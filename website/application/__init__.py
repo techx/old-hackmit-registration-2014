@@ -4,7 +4,7 @@ from flask import Flask, render_template, jsonify, abort
 from flask_sslify import SSLify
 from flask_wtf.csrf import CsrfProtect
 
-application = Flask(__name__, instance_relative_config=True)
+application = Flask(__name__, static_url_path='/s', instance_relative_config=True)
 
 # For AWS
 app = application
