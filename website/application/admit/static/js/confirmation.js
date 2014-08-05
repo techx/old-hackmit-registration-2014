@@ -77,6 +77,10 @@ $(document).ready(function(){
     return $('input[name=likelihood]:checked', '#likelihood').val() ? true: false
   };
 
+  $.fn.form.settings.rules.optOut = function(){
+    return $resumeOptOut.is(':checked') ^ $resume.hasClass('completed')
+  };
+
   $form
     .form({
       name: {
@@ -139,6 +143,15 @@ $(document).ready(function(){
           {
             type: 'empty',
             prompt: 'Please enter your full legal name.'
+          }
+        ]
+      },
+      resume: {
+        identifier: 'resumeOptOut',
+        rules: [
+          {
+            type: 'optOut',
+            prompt: 'Please upload a PDF!'
           }
         ]
       },
