@@ -118,7 +118,7 @@ $(document).ready(function(){
         rules: [
           {
             type: 'phone',
-            prompt: 'Please enter a valid phone number.'
+            prompt: 'Please enter a valid phone number. We need to be able to reach you at HackMIT.'
           }
         ]
       },
@@ -127,7 +127,7 @@ $(document).ready(function(){
         rules: [
           {
             type: 'empty',
-            prompt: "Please pick a t-shirt size!"
+            prompt: "Please pick a t-shirt size! We'd hate to run out of your size."
           }
         ]
       },
@@ -154,7 +154,7 @@ $(document).ready(function(){
         rules: [
           {
             type: 'empty',
-            prompt: "Please enter your full legal name."
+            prompt: "Please enter your full legal name to agree to the legal waiver."
           }
         ]
       },
@@ -163,7 +163,7 @@ $(document).ready(function(){
         rules: [
           {
             type: 'empty',
-            prompt: 'Please enter your full legal name.'
+            prompt: 'Please enter your full legal name to agree to the photo release.'
           }
         ]
       },
@@ -190,7 +190,7 @@ $(document).ready(function(){
         rules: [
           {
             type: 'likelihood',
-            prompt: 'Please choose how likely you are to come!'
+            prompt: 'Please let us know how likely you are to come!'
           }
         ]
       }
