@@ -11,9 +11,18 @@ $(document).ready(function(){
       $resumeOptOut = $('#resumeOptOut'),
       $resume = $('.s3.upload.form').eq(0).find('div[class*=s3][class*=upload][class*=button]'),
       $github =$('#github'),
+      $travelOptOut = $('#travelOptOut'),
       $travel = $('.s3.upload.form').eq(1).find('div[class*=s3][class*=upload][class*=button]');
 
   $resumeOptOut.prop('checked', $resumeOptOut.val() === "True");
+
+  $travelOptOut.change(function() {
+    if ($travelOptOut.is(':checked')) {
+      $travel.parent('.field').slideUp();
+    } else {
+      $travel.parent('.field').slideDown();
+    }
+  });
 
   function submitConfirmation() {
 
@@ -77,12 +86,12 @@ $(document).ready(function(){
     return $('input[name=likelihood]:checked', '#likelihood').val() ? true: false
   };
 
-  $.fn.form.settings.rules.optOut = function(){
-    return $resumeOptOut.is(':checked') ^ $resume.hasClass('completed')
+  $.fn.form.settings.rules.resume = function(){
+    return $resumeOptOut.is(':checked') ^ $resume.hasClass('completed');
   };
 
   $.fn.form.settings.rules.travel = function(){
-    return $travel.hasClass('completed')
+    return $travelOptOut.is(':checked') ^ $travel.hasClass('completed');
   };
 
   $form
@@ -141,15 +150,6 @@ $(document).ready(function(){
           }
         ]
       },
-      travel {
-        identifier: 'travel',
-        rules: [
-          {
-            type: 'empty',
-            prompt: "You must upload a travel receipt to confirm your spot."
-          }
-        ]
-      },
       photoRelease: {
         identifier: 'photoRelease',
         rules: [
@@ -163,8 +163,17 @@ $(document).ready(function(){
         identifier: 'resumeOptOut',
         rules: [
           {
-            type: 'optOut',
+            type: 'resume',
             prompt: 'Please upload a PDF!'
+          }
+        ]
+      },
+      travel: {
+        identifier: 'travelOptOut',
+        rules: [
+          {
+            type: 'travel',
+            prompt: "You must upload a travel receipt to confirm your spot, or let us know that you won't be requesting a travel reimbursement."
           }
         ]
       },

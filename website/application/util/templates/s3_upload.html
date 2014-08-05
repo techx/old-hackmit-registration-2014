@@ -1,6 +1,6 @@
 {% macro upload_form(context) -%}
 
-<div class="ui dimmable s3 upload form" action="{{ s3['bucket_url'] }}" method="post" enctype="multipart/form-data">
+<div class="ui dimmable field s3 upload form" action="{{ s3['bucket_url'] }}" method="post" enctype="multipart/form-data">
   <div class="invisible">
     <input type="hidden" name="AWSAccessKeyId" value="{{ s3['aws_key_id'] }}">
     <input type="hidden" name="key">

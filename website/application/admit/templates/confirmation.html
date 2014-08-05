@@ -181,6 +181,13 @@
 
             <p>Feel free to send any questions about travel reimbursements to team@hackmit.org. Please make sure to schedule your arrival such that you make the 9AM-11AM Saturday morning check-in period. HackMIT will end around 3pm on Sunday afternoon.</p>
 
+            <div class="inline field">
+              <div class="ui checkbox">
+                <input id="travelOptOut" type="checkbox">
+                <label for="travelOptOut">I don't need travel reimbursement</label>
+              </div>
+            </div>
+
             {% from 's3_upload.html' import upload_form with context %}
             {{ upload_form(travel_reimbursement) }}
 
