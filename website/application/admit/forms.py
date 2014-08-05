@@ -13,4 +13,4 @@ class ConfirmationForm(AttendeeForm):
     resume = TextField()
     github = TextField(validators=[Optional(), Length(min=1,max=39), Regexp("^[a-zA-Z0-9][-a-zA-Z0-9]{0,38}")])
     travel = TextField()
-    likelihood = TextField(validators=[InputRequired(), Length(min=4, max=10), AnyOf(['maybe', 'likely', 'yes'])])
+    likelihood = TextField(validators=[InputRequired(), Length(min=3, max=10), AnyOf(['maybe', 'likely', 'yes'])])
