@@ -12,26 +12,10 @@ $(document).ready(function(){
       $resume = $('.s3.upload.form').eq(0).find('div[class*=s3][class*=upload][class*=button]'),
       $github =$('#github'),
       $travel = $('.s3.upload.form').eq(1).find('div[class*=s3][class*=upload][class*=button]'),
-      $likelihood = $('#likelihood');
+      $likelihood = $('input[name=likelihood]:checked', '#likelihood');
 
   $resumeOptOut.prop('checked', $resumeOptOut.val() === "True");
 
-  function getLikelihood() {
-    $likelihood.find('input').each(function() {
-      if ($(this).is(':checked')) {
-        return $(this).val();
-      }
-    });
-    return null;
-  }
-
-  function validate() {
-  //    if (getLikelihood() is null) {
-  //     return false;
-  //  }
-    submitConfirmation();
-  }
- 
   function submitConfirmation() {
 
     var formData = JSON.stringify({
@@ -47,7 +31,7 @@ $(document).ready(function(){
         resume: $resume.hasClass('completed'),
         github: $github.val(),
         travel: $travel.hasClass('completed'),
-        likelihood: getLikelihood()
+        likelihood: $likelihood.val()
       });
 
     var $dimmable = $('.ui.dimmable').dimmer('show');
@@ -90,6 +74,10 @@ $(document).ready(function(){
     return stripped.length >= 10 && stripped.length <= 15
   };
 
+  $.fn.form.settings.rules.likelihood = function(){
+    return $('input[name=likelihood]:checked', '#likelihood').val() ? true: false
+  };
+
   $form
     .form({
       name: {
@@ -105,9 +93,6 @@ $(document).ready(function(){
         identifier: 'phone',
         rules: [
           {
-            type: 'empty',
-            prompt: 'Please enter your phone number.'
-          },{
             type: 'phone',
             prompt: 'Please enter a valid phone number.'
           }
@@ -136,7 +121,7 @@ $(document).ready(function(){
         rules: [
           {
             type: 'empty',
-            prompt: "Please pick a dietary restriction! If you don't have any, just choose None."
+            prompt: "Please pick a dietary restriction! If you don't have any, just choose 'No restrictions'."
           }
         ]
       },
@@ -158,17 +143,17 @@ $(document).ready(function(){
           }
         ]
       },
-      github: {
-        identifier: 'github',
+      likelihood: {
+        identifier: 'likelihood',
         rules: [
           {
-            type: 'empty',
-            prompt: 'Please enter your github username. If you don\'t have one, go sign up at https://github.com!'
+            type: 'likelihood',
+            prompt: 'Please choose how likely you are to come!'
           }
         ]
       }
     },{
-      onSuccess: validate
+      onSuccess: submitConfirmation
     })
 });
 
