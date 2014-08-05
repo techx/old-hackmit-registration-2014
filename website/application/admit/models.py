@@ -13,10 +13,14 @@ class Admit(db.Model, Role):
     __tablename__ = 'admits'
 
     creation = db.Column(db.DateTime())
+    graduation = db.Column(db.String(4))
+    meng = db.Column(db.Boolean)
     dietary_restriction = db.Column(db.String(6))
     resume_opt_out = db.Column(db.Boolean)
     resume = db.Column(db.Boolean)
+    github = db.Column(db.String(39), unique=True) # Max is 39 as per their signup page
     travel = db.Column(db.Boolean)
+    likelihood = db.Column(db.String(10))
     confirmed = db.Column(db.Boolean)
 
     @staticmethod
@@ -30,10 +34,14 @@ class Admit(db.Model, Role):
     def get_admit_data(self):
         data = {}
 
+        data['graduation'] = self.graduation
+        data['meng'] = self.meng
         data['dietary_restriction'] = self.dietary_restriction
         data['resume_opt_out'] = self.resume_opt_out
         data['resume'] = self.resume
+        data['github'] = self.github
         data['travel'] = self.travel
+        data['likelihood'] = self.likelihood
 
         return data
 
@@ -41,11 +49,15 @@ class Admit(db.Model, Role):
         # Always store in UTC but used Eastern for math
         return (self.creation + timedelta(10)).replace(tzinfo=utc).astimezone(eastern).replace(hour=23, minute=59, second=59, microsecond=999999).astimezone(utc)
 
-    def update_admit_data(self, session, dietary_restriction, resume_opt_out, resume, travel):
+    def update_admit_data(self, session, graduation, meng, dietary_restriction, resume_opt_out, resume, github, travel, likelihood):
+        self.graduation = graduation
+        self.meng = meng
         self.dietary_restriction = dietary_restriction
         self.resume_opt_out = resume_opt_out
         self.resume = resume
+        self.github = github
         self.travel = travel
+        self.likelihood = likelihood
 
     def confirm_admit(self, session):
         self.confirmed = True
