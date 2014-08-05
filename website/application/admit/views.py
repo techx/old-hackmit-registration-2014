@@ -62,7 +62,7 @@ def update_confirmation():
 
     hacker = Hacker.lookup_from_account_id(current_user.id)
 
-    if form.data.resumeOptOut is False and form.data.resume is None:
+    if form.resumeOptOut.data is False and form.resume.data is None:
         raise BadDataError()
 
     if hacker.school_id!=166683 and form.data.meng is True:

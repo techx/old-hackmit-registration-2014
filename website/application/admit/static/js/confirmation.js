@@ -86,11 +86,8 @@ $(document).ready(function(){
   }
 
   $.fn.form.settings.rules.phone = function(val){
-    if (!/[^0-9]/gi.test(val)){
-      var stripped = val.replace(/[^0-9]/gi, "");
-      return stripped.length >= 10 && stripped.length <= 15
-    }
-    return
+    var stripped = val.replace(/[^0-9]/gi, "");
+    return stripped.length >= 10 && stripped.length <= 15
   };
 
   $form

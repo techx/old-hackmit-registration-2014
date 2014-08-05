@@ -2,15 +2,15 @@
 
 <div class="ui dimmable s3 upload form" action="{{ s3['bucket_url'] }}" method="post" enctype="multipart/form-data">
   <div class="invisible">
-    <input type="hidden" name="AWSAccessKeyId" value="{{ s3['aws_key_id'] }}"></input>
-    <input type="hidden" name="key"></input>
-    <input type="hidden" name="acl" value="private"></input>
-    <input type="hidden" name="x-amz-meta-policy_endpoint" value="{{ context['policy_endpoint'] }}"></input>
-    <input type="hidden" name="policy"></input>
-    <input type="hidden" name="signature"></input>
-    <input type="hidden" name="success_action_status" value="201"></input>
-    <input type="file" name="file"></input>
-    <input type="hidden" name="x-amz-meta-bucket_url" value="{{ s3['bucket_url'] }}"></input>
+    <input type="hidden" name="AWSAccessKeyId" value="{{ s3['aws_key_id'] }}">
+    <input type="hidden" name="key">
+    <input type="hidden" name="acl" value="private">
+    <input type="hidden" name="x-amz-meta-policy_endpoint" value="{{ context['policy_endpoint'] }}">
+    <input type="hidden" name="policy">
+    <input type="hidden" name="signature">
+    <input type="hidden" name="success_action_status" value="201">
+    <input type="file" name="file">
+    <input type="hidden" name="x-amz-meta-bucket_url" value="{{ s3['bucket_url'] }}">
   </div>
   <div class="ui hack fluid s3 upload button">
     <i class="file icon"></i>
