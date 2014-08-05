@@ -33,8 +33,8 @@ class Account(db.Model, UserMixin):
         return self.confirmed
 
     def get_name(self):
-        name = Name.query.get(int(self.id))
-        if name.name is None:
+        name_object = Name.query.get(int(self.id))
+        if name_object is None or name_object.name is None:
             name = None
 
             # Name migration code
@@ -42,13 +42,10 @@ class Account(db.Model, UserMixin):
             hacker = Hacker.lookup_from_account_id(self.id)
             if hacker is not None:
                 name = hacker.name
-                session = db.Session.object_session(self)
-                self.update_name(session, name)
-
+            
             return name
-
         else:
-            return name.name
+            return name_object.name
 
     @staticmethod
     def create(session, email_address, hashed_password, initial_role):
@@ -70,11 +67,10 @@ class Account(db.Model, UserMixin):
 
     def update_name(self, session, new_name):
         name = Name.query.get(int(self.id))
-
         # Name migration code 
         if name is None:
             Name.create(session, self.id)
-
+            name = Name.query.get(int(self.id))
         name.update_name(session, new_name)
 
     def add_role(self, session, role):
