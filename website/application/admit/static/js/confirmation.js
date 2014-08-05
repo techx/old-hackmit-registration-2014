@@ -11,7 +11,6 @@ $(document).ready(function(){
       $travel = $('.s3.upload.form').eq(1).find('div[class*=s3][class*=upload][class*=button]');
 
   $resumeOptOut.prop('checked', $resumeOptOut.val() === "True");
-  $resumeOptOut.click(function() { console.log('clicked'); } );
 
   function validate() {
     console.log($resume.hasClass('completed'));
@@ -70,11 +69,8 @@ $(document).ready(function(){
   }
 
   $.fn.form.settings.rules.phone = function(val){
-    if (!/[^0-9]/gi.test(val)){
-      var stripped = val.replace(/[^0-9]/gi, "");
-      return stripped.length >= 10 && stripped.length <= 15
-    }
-    return false
+    var stripped = val.replace(/[^0-9]/gi, "");
+    return stripped.length >= 10 && stripped.length <= 15
   };
 
   $form
