@@ -21,6 +21,11 @@
     margin-right: 4px;
   }
 
+  .ui.celled.grid>.row>.column {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+  }
+
 </style>
 
 {% endblock %}
@@ -41,14 +46,14 @@
 
   <div class="confirmation">
 
-    <div class="ui stackable aligned three column page grid">
+    <div class="ui stackable aligned celled page grid">
 
       <div class="row"></div>
 
       <div class="row">
         <div class="column"></div>
 
-        <div class="column">
+        <div class="two wide column">
           <div class="ui dimmable form">
 
             <div class="ui inverted dimmer">
