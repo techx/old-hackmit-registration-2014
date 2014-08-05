@@ -1,0 +1,25 @@
+{
+  "name": "HackMIT",
+  "version": "0.0.1",
+  "homepage": "https://github.com/techx/hackmit",
+  "authors": [
+    "Edwin Zhang <ehzhang@mit.edu>",
+    "Aneesh Agrawal <aneesh1@mit.edu>"
+  ],
+  "description": "HackMIT Bower Packages",
+  "keywords": [
+    "HackMIT"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "semantic-ui": "~0.18.0"
+  }
+}

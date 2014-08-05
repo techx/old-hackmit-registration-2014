@@ -1,4 +1,0 @@
-import base
-class ProductionConfig(base.Config):
-    SECRET_KEY = "THIS SHOULD ALWAYS BE SECRET!"
-

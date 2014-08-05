@@ -1,0 +1,58 @@
+{% macro body_text(hacker) -%}
+            {% for role, context in roles if role=='admit' %}
+
+            {% else %}
+
+            {% if 'lottery_closing' in passed_dates %}
+
+            <h2> Status: Waitlisted </h2>
+
+            <h3> Unfortunately, we are currently unable to offer you a spot at HackMIT through the initial round of the lottery. However, you’ve been placed on our waitlist, so if a spot at HackMIT opens, you’ll be notified via email and asked to confirm your registration. </h3>
+            
+            <h3> An unbelievable number of people registered for HackMIT this year, and we wish we could offer spots to everyone. Thanks for your interest in HackMIT, and we hope to see you at some hackathons this fall! </h3>
+            
+
+            {% else %}
+
+            {% if hacker['lottery_complete'] %}
+
+             <h3> You're all set! Feel free to change any information
+              in your lottery application until midnight on July 28th -
+              that's when we'll let you know if you're guaranteed a spot at this year's HackMIT. </h3>
+
+              <h3> We'll reach out with more details and instructions if you're selected, including
+              information about travel reimbursement. If you don't make the first wave,
+              don't worry - we'll let hackers in as spots open up! And we hear there might be a loophole to the lottery...but only if you're quick enough. </h3>
+
+              <h3> Already have a team in mind? Make a team and invite your friends or enter your friend's team code. You'll be entered in the lottery together! While you will still be able to make changes to your team after the lottery, every individual on the team must have received admittance. </h3>
+
+            {% else %}
+
+              <h2> Your email is confirmed! </h2>
+
+              <h3> Looks like you haven't filled out the lottery application. You should do that!</h3>
+
+              <h3> Lottery applications close on July 28th at midnight, so make sure you submit yours before then! </h3>
+
+            {% endif %}
+
+            {% endif %}
+
+            {% endfor %}
+{% endmacro %}
+
+{% macro buttons(hacker) -%}
+        {% for role, context in roles if role=='admit'%}
+
+        {% else %}
+ 
+        {% if hacker['lottery_complete'] and 'lottery_closing' not in passed_dates %}
+          <button class="ui hack button" onclick="location.href='/team'">
+            Teams
+          </button>
+
+          <br><br>
+        {% endif %}
+
+        {% endfor %}
+{% endmacro %}

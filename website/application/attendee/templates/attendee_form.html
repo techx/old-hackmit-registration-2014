@@ -1,0 +1,26 @@
+            <div class="field">
+              <label>Name to print on your badge</label>
+              <input id="badge" type="text" value="{{ attendee.badge_name if attendee.badge_name !=None }}">
+            </div>
+
+            <div class="field">
+              <label>Phone number</label>
+              <input id="phone" type="text" value="{{ attendee.phone_number if attendee.phone_number !=None }}">
+            </div>
+
+            <div class="field">
+              <label>T-shirt size</label>
+              <div class="ui fluid selection dropdown">
+                <div class="text">Select</div>
+                <i class="dropdown icon"></i>
+                <input id="shirt" type="hidden" value="{{ attendee.shirt_size if attendee.shirt_size !=None }}">
+                <div class="menu">
+                  <div class="item" data-value="xsmall">Extra Small</div>
+                  <div class="item" data-value="small">Small</div>
+                  <div class="item" data-value="medium">Medium</div>
+                  <div class="item" data-value="large">Large</div>
+                  <div class="item" data-value="xlarge">Extra Large</div>
+                </div>
+              </div>
+            </div>
+

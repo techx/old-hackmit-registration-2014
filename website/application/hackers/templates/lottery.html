@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block head %}
+
+<script src="{{ url_for('.static', filename='js/lottery.js') }}"></script>
+<script src="{{ url_for('.static', filename='bower_components/select2/select2.min.js') }}"></script>
+<link href="{{ url_for('.static', filename='stylesheets/select2.css') }}" type="text/css" rel="stylesheet">
+
+{% endblock %}
+
+{% block title %}
+
+    Apply
+
+{% endblock %}
+
+{% block headerTitle %}
+
+    LOTTERY
+
+{% endblock %}
+
+{% block content %}
+
+  <div class="lottery">
+
+    <div class="ui stackable aligned three column page grid">
+
+      <div class="row"></div>
+
+      <div class="row">
+        <div class="column"></div>
+
+        <div class="column">
+          <div class="ui dimmable form">
+
+            <div class="ui inverted dimmer">
+              <div class="content">
+                <div class="center">
+                  <h3> Sit tight, saving your settings... </h3>
+                </div>
+              </div>
+            </div>
+
+            <div class="ui error message">
+              <div class="header">Action Forbidden</div>
+              <p>You can only sign up for an account once with a given e-mail address.</p>
+            </div>
+
+            <div class="name field">
+              <label>Full Legal Name</label>
+              <input id="name" type="text" value="{{ name if name !=None }}">
+            </div>
+
+            <div class="field">
+              <label>Gender</label>
+              <div class="ui fluid selection dropdown">
+                <div class="text">Select</div>
+                <i class="dropdown icon"></i>
+                <input id="gender" type="hidden" value="{{ hacker.gender if hacker.gender !=None }}">
+                <div class="menu">
+                  <div class="item" data-value="male">Male</div>
+                  <div class="item" data-value="female">Female</div>
+                  <div class="item" data-value="other">Other</div>
+                  <div class="item" data-value="nope">I would prefer not to respond. </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="field">
+              <label>School</label>
+              <input type='hidden' id="school" type="hidden" style="width: 100%" value="{{ hacker.school_id if hacker.school_id != None}}">
+              </input>
+            </div>
+
+            <div class="inline field">
+              <div class="ui checkbox">
+                <input id="otherSchool" type="checkbox"
+                value="{{ (hacker.school_id == 0) if hacker.school_id != None }}">
+                <label for="otherSchool">My school isn't on this list.</label>
+              </div>
+            </div>
+
+            <div class="field" style="display:none">
+              <label> School name (not on list) </label>
+              <input id="schoolName" type="text" value="{{ hacker.school if hacker.school != None}}">
+            </div>
+
+            <div class="field">
+              <label>Traveling from (if not school)</label>
+              <input id="travelling" type="text" value="{{ hacker.location if hacker.location != None}}">
+            </div>
+
+            <div class="field">
+              <label>What do you want to learn at HackMIT?</label>
+              <textarea id="interests" style="height:120px" type="text">{{ hacker.interests if hacker.interests != None}}</textarea>
+            </div>
+
+            <div class="field">
+              <label>Secret Code (optional) - We won't tell you if your code is correct, so no cheating! :)</label>
+              <input id="invite" type="text" value="{{ hacker.invite_code if hacker.invite_code != None}}">
+            </div>
+
+            <div class="inline field">
+              <div class="ui checkbox">
+                <input id="adult" type="checkbox" value="{{ hacker.adult if hacker.adult != None}}">
+                <label for="adult">I will be 18+ years old by HackMIT (Oct 4).</label>
+              </div>
+            </div>
+
+            <div class="ui hack fluid submit button">Save</div>
+          </div>
+        </div>
+
+        <div class="column"></div>
+
+      </div>
+
+      <div class="row"></div>
+
+    </div>
+ </div>
+
+{% endblock %}

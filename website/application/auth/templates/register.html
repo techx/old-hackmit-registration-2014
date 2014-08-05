@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block head %}
+
+<script src="{{ url_for('.static', filename='js/sha256.js') }}"></script>
+<script src="{{ url_for('.static', filename='js/register.js') }}"></script>
+
+{% endblock %}
+
+{% block title %}
+
+    Register
+
+{% endblock %}
+
+{% block headerTitle %}
+
+    REGISTER
+
+{% endblock %}
+
+{% block content %}
+
+  <div class="register">
+
+    <div class="ui stackable middle aligned three column grid">
+
+      <div class="row">
+      </div>
+
+      <div class="row">
+        <div class="column">
+        </div>
+        <div class="column">
+          <div class="ui form dimmable">
+            <div class="ui inverted dimmer">
+              <div class="content">
+                <div class="center">
+                  <h3> Sit tight, Registering your account... </h3>
+                </div>
+              </div>
+            </div>
+            <div class="email field">
+              <label> Email Address </label>
+              <div class="ui left icon input">
+                <input id="email" type="text" >
+                <i class="mail icon"></i>
+              </div>
+            </div>
+            <div class="password field">
+              <label> Password </label>
+              <div class="ui left icon input">
+                <input id="password" type="password" >
+                <i class="lock icon"></i>
+              </div>
+            </div>
+            <div class="confirm password field">
+              <label> Confirm Password </label>
+              <div class="ui left icon input">
+                <input id="confirm" type="password" >
+                <i class="lock icon"></i>
+              </div>
+            </div>
+            <button class="ui fluid hack submit button">REGISTER</button>
+            <div class="ui error message">
+              <div class="header">We noticed some issues</div>
+            </div>
+          </div>
+
+        </div>
+        <div class="column">
+        </div>
+      </div>
+
+      <div class="column"></div>
+      <div class="center aligned column">
+
+        <button class="ui fluid hack button" onclick="location.href='{{ url_for('.login') }}'">
+          I Already have an account
+        </button>
+
+      </div>
+      <div class="column"></div>
+
+    </div>
+
+  </div>
+
+{% endblock %}

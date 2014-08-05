@@ -1,0 +1,225 @@
+{% extends "base.html" %}
+
+{% block head %}
+
+<script src="{{ url_for('.static', filename='js/confirmation.js') }}"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.9.0/jquery-ui.min.js"></script>
+<script type="text/javascript" src="{{ url_for('util.static', filename='js/jquery.fileupload.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('util.static', filename='js/s3-upload.js') }}"></script>
+
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+<style>
+
+  .waiver a {
+    text-decoration: none;
+    color: rgb(35, 177, 150);
+    font-size: 1.4em;
+    text-align: center;
+  }
+
+  .waiver i {
+    margin-right: 4px;
+  }
+
+  .ui.celled.grid>.row>.column,
+  .ui.celled.grid>.row {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+  }
+
+  .ui.stackable.celled.grid .column,
+  .ui.stackable.divided.grid .column {
+    border-top: none;
+  }
+
+</style>
+
+{% endblock %}
+
+{% block title %}
+
+    Confirm
+
+{% endblock %}
+
+{% block headerTitle %}
+
+    CONFIRMATION
+
+{% endblock %}
+
+{% block content %}
+
+  <div class="confirmation">
+    <br>
+    <div class="ui stackable aligned celled page grid">
+
+      <div class="computer only row"></div>
+
+      <div class="row">
+        <div class="column"></div>
+
+        <div class="two wide column">
+          <div class="ui dimmable form">
+
+            <div class="ui inverted dimmer">
+              <div class="content">
+                <div class="center">
+                  <h3> Sit tight, saving your settings... </h3>
+                </div>
+              </div>
+            </div>
+
+            <div class="ui error message">
+              <div class="header">Action Forbidden</div>
+              <p></p>
+            </div>
+
+            <h3> Carefully review your information before submitting! Once you submit, your confirmation form will be reviewed by a HackMIT team member, who will confirm your spot at HackMIT 2014. </h3>
+
+            {% include 'attendee_form.html' with context %}
+
+            <div class="field">
+              <label>Graduation Year</label>
+              <div class="ui fluid selection dropdown">
+                <div class="text">Select</div>
+                <i class="dropdown icon"></i>
+                <input id="graduation" type="hidden">
+                <div class="menu">
+                  <div class="item" data-value="2015">2015</div>
+                  <div class="item" data-value="2016">2016</div>
+                  <div class="item" data-value="2017">2017</div>
+                  <div class="item" data-value="2018">2018</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="inline field {% if not mit %} invisible {% endif %}">
+              <div class="ui checkbox">
+                <input id="meng" type="checkbox">
+                <label for="meng">I'm an MIT MEng student</label>
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Dietary Restrictions</label>
+              <div class="ui fluid selection dropdown">
+                <div class="text">Select</div>
+                <i class="dropdown icon"></i>
+                <input id="diet" type="hidden">
+                <div class="menu">
+                  <div class="item" data-value="none">No restrictions!</div>
+                  <div class="item" data-value="veg">Vegetarian</div>
+                  <div class="item" data-value="vegan">Vegan</div>
+                  <div class="item" data-value="kosher">Kosher</div>
+                  <div class="item" data-value="halal">Halal</div>
+                  <div class="item" data-value="other">Other</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="waiver">
+                <a
+                   href="{{ url_for('.static', filename='docs/HackMITLiabilityRelease.pdf') }}">
+                  <i class="fa fa-file-pdf-o"></i> HACKMIT LIABILITY WAIVER
+                </a>
+              </label>
+              <label>
+                By typing my full legal name below, I affirm that
+                I have read and agree to the waiver presented above.
+              </label>
+              <input id="waiver" type="text">
+            </div>
+
+            <div class="field">
+              <label class="waiver">
+                <a
+                   href="{{ url_for('.static', filename='docs/HackMITPhotoRelease.pdf') }}">
+                  <i class="fa fa-file-pdf-o"></i> HACKMIT PHOTO RELEASE
+                </a>
+              </label>
+              <label>
+                By typing my full legal name below, I affirm that
+                I have read and agree to the photo release presented above.
+              </label>
+              <input id="photoRelease" type="text">
+            </div>
+
+               <label>Upload a PDF detailing your background, skills, abilities and experiences!</label>
+              <br><br>
+
+            {% from 's3_upload.html' import upload_form with context %}
+            {{ upload_form(resume) }}<br>
+
+            <div class="inline field">
+             <div class="ui checkbox">
+                <input id="resumeOptOut" type="checkbox">
+                <label for="resumeOptOut">Opt out of profile information for team/mentor matching</label>
+              </div>
+            </div>
+
+            <div class="field">
+              <label>
+                (Optional) Enter your github username!
+              </label>
+              <input id="github" type="text">
+            </div>
+
+            {% if bus %}
+ 
+            <p>We will be providing bus transportation from your school to HackMIT. Keep an eye on your inbox for an email with logistical information about the bus ride from your school’s point person.</p>
+            {% elif mit %}
+           
+            <!-- Show nothing, it's jarring and comes out of nowhere. <p>As an MIT student, you're not eligible for travel reimbursement.</p> -->
+
+            {% else %}
+
+            <p>This year, we won’t be sending a bus to your school, but HackMIT is offering up to $200 in travel reimbursement to students living outside of Massachusetts.</p> 
+
+            </p>To claim this reimbursement, please upload documentation from your travel bookings (airline receipts, train tickets, etc.). We cannot offer reimbursement for business or first-class tickets. If you plan on driving to HackMIT, we’ll reimburse you at the rate of $0.30 cents per mile up to a cap of $200; just upload a screenshot of your route on Google Maps along with the trip distance and requested reimbursement amount.</p>
+
+            <p>Feel free to send any questions about travel reimbursements to team@hackmit.org.</p>
+
+            {% from 's3_upload.html' import upload_form with context %}
+            {{ upload_form(travel_reimbursement) }}
+
+            {% endif %}
+
+            <p>How likely are you to come to HackMIT 2014?</p>
+
+            <div class="grouped inline fields" id="likelihood">
+              <div class="field">
+                <div class="ui radio checkbox">
+                  <input id="li_maybe" name="likelihood" type="radio" value="maybe">
+                  <label for="li_maybe">Not sure</label>
+                </div>
+              </div>
+              <div class="field">
+                <div class="ui radio checkbox">
+                  <input id="li_probably" name="likelihood" type="radio" value="likely">
+                  <label for="li_probably">Probably</label>
+                </div>
+              </div>
+              <div class="field">
+                <div class="ui radio checkbox">
+                  <input id="li_yes" name="likelihood" type="radio" value="yes">
+                  <label for="li_yes">Definitely!</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="ui hack fluid submit button">Submit</div>
+          </div>
+        </div>
+
+        <div class="column"></div>
+
+      </div>
+
+      <div class="computer only row"></div>
+
+    </div>
+ </div>
+
+{% endblock %}

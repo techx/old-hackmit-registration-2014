@@ -1,0 +1,10 @@
+*.pyc
+**/config/prod.py
+venv/
+.idea/
+*.iml
+*.DS_Store
+**/bower_components/*
+*.swp
+*~
+*.db
