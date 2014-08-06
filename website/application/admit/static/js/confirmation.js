@@ -14,8 +14,6 @@ $(document).ready(function(){
       $travelOptOut = $('#travelOptOut'),
       $travel = $('.s3.upload.form').eq(1).find('div[class*=s3][class*=upload][class*=button]');
 
-  $resumeOptOut.prop('checked', $resumeOptOut.val() === "True");
-
   $resumeOptOut.change(function() {
     if ($resumeOptOut.is(':checked')) {
       $resume.parent('.field').slideUp();

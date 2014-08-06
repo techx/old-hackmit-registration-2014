@@ -84,7 +84,7 @@
               <div class="ui fluid selection dropdown">
                 <div class="text">Select</div>
                 <i class="dropdown icon"></i>
-                <input id="graduation" type="hidden">
+                <input id="graduation" type="hidden" value="{{ admit.graduation if admit.graduation!=None }}">
                 <div class="menu">
                   <div class="item" data-value="2015">2015</div>
                   <div class="item" data-value="2016">2016</div>
@@ -94,9 +94,9 @@
               </div>
             </div>
 
-            <div class="inline field {% if not mit %} invisible {% endif %}">
+            <div class="inline field {% if not mit %}invisible{% endif %}">
               <div class="ui checkbox">
-                <input id="meng" type="checkbox">
+                <input id="meng" type="checkbox" {% if admit.meng %}:checked{% endif %}>
                 <label for="meng">I'm an MIT MEng student</label>
               </div>
             </div>
@@ -106,7 +106,7 @@
               <div class="ui fluid selection dropdown">
                 <div class="text">Select</div>
                 <i class="dropdown icon"></i>
-                <input id="diet" type="hidden">
+                <input id="diet" type="hidden" value="{{ admit.dietary_restriction if admit.dietary_restriction != None }}">
                 <div class="menu">
                   <div class="item" data-value="none">No restrictions!</div>
                   <div class="item" data-value="veg">Vegetarian</div>
@@ -129,7 +129,7 @@
                 By typing my full legal name below, I affirm that
                 I have read and agree to the waiver presented above.
               </label>
-              <input id="waiver" type="text">
+              <input id="waiver" type="text" value="{{ admit.legal_waiver if admit.legal_waiver != None }}">
             </div>
 
             <div class="field">
@@ -143,7 +143,7 @@
                 By typing my full legal name below, I affirm that
                 I have read and agree to the photo release presented above.
               </label>
-              <input id="photoRelease" type="text">
+              <input id="photoRelease" type="text" value="{{ admit.photo_release if admit.photo_release != None }}">
             </div>
 
             <label>Upload a PDF detailing your background, skills, abilities and experiences!</label>
@@ -152,13 +152,15 @@
 
             <div class="inline field">
               <div class="ui checkbox">
-                <input id="resumeOptOut" type="checkbox">
+                <input id="resumeOptOut" type="checkbox" {% if admit.resume_opt_out %}checked{% endif %}>
                 <label for="resumeOptOut">Opt out of profile information for team/mentor matching</label>
               </div>
             </div>
 
+            <p>{{ admit }}</p>
+
             {% from 's3_upload.html' import upload_form with context %}
-            {{ upload_form(resume) }}
+            {{ upload_form(resume, not admit.resume_opt_out, admit.resume) }}
 
             <div class="field">
               <label>
@@ -184,13 +186,13 @@
 
             <div class="inline field">
               <div class="ui checkbox">
-                <input id="travelOptOut" type="checkbox">
+                <input id="travelOptOut" type="checkbox" {% if not admit.travel %}checked{% endif %}>
                 <label for="travelOptOut">I don't need travel reimbursement</label>
               </div>
             </div>
 
             {% from 's3_upload.html' import upload_form with context %}
-            {{ upload_form(travel_reimbursement) }}
+            {{ upload_form(travel_reimbursement, admit.travel, admit.travel) }}
 
             {% endif %}
 
@@ -199,19 +201,19 @@
             <div class="grouped inline fields" id="likelihood">
               <div class="field">
                 <div class="ui radio checkbox">
-                  <input id="li_maybe" name="likelihood" type="radio" value="maybe">
+                  <input id="li_maybe" name="likelihood" type="radio" value="maybe"{% if admit.likelihood=="maybe" %} checked{% endif %}>
                   <label for="li_maybe">Not sure</label>
                 </div>
               </div>
               <div class="field">
                 <div class="ui radio checkbox">
-                  <input id="li_probably" name="likelihood" type="radio" value="likely">
+                  <input id="li_probably" name="likelihood" type="radio" value="likely"{% if admit.likelihood=="likely" %} checked{% endif %}>
                   <label for="li_probably">Probably</label>
                 </div>
               </div>
               <div class="field">
                 <div class="ui radio checkbox">
-                  <input id="li_yes" name="likelihood" type="radio" value="yes">
+                  <input id="li_yes" name="likelihood" type="radio" value="yes"{% if admit.likelihood=="yes" %} checked{% endif %}>
                   <label for="li_yes">Definitely!</label>
                 </div>
               </div>
