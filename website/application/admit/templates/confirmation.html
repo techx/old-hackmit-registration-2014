@@ -157,8 +157,6 @@
               </div>
             </div>
 
-            <p>{{ admit }}</p>
-
             {% from 's3_upload.html' import upload_form with context %}
             {{ upload_form(resume, not admit.resume_opt_out, admit.resume) }}
 
