@@ -93,11 +93,11 @@ $(document).ready(function(){
   };
 
   $.fn.form.settings.rules.resume = function(){
-    return $resumeOptOut.is(':checked') ^ $resume.hasClass('completed');
+    return $resumeOptOut.is(':checked') || $resume.hasClass('completed');
   };
 
   $.fn.form.settings.rules.travel = function(){
-    return $travelOptOut.is(':checked') ^ $travel.hasClass('completed');
+    return $travelOptOut.is(':checked') || $travel.hasClass('completed');
   };
 
   $form
