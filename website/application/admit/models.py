@@ -1,6 +1,7 @@
 from datetime import timedelta, datetime
 
 from ..models import db
+from ..util.dates import has_passed
 from ..util.timezones import utc, eastern
 
 from ..auth.models import Role
@@ -33,6 +34,14 @@ class Admit(db.Model, Role):
     def implied_roles():
         return ['attendee', 'hacker']
 
+    def perms(self):
+        permissions = []
+        if not has_passed(self.get_deadline()):
+            permissions.append('valid')
+            if not self.confirmed:
+                permissions.append('pending')
+        return permissions
+    
     def get_admit_data(self):
         data = {}
 

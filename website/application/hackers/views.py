@@ -27,7 +27,7 @@ def dashboard():
     return {'name':'hacker_dashboard.html', 'context':{'lottery_complete':lottery_complete}}
 
 HackerPermission = Permission(RoleNeed('hacker'))
-TeamPermission = Permission(AttributeNeed('hacker', 'lottery_submitted'), RoleNeed('admit'))
+TeamPermission = Permission(AttributeNeed('admit', 'valid'))
 
 @bp.route('/hackers', methods=['POST'])
 @HackerPermission.require()
