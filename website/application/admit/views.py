@@ -9,8 +9,10 @@ from .. import render_full_template
 from ..errors import BadDataError
 from ..models import db_safety
 
+from ..auth.models import AttributeNeed
 from ..attendee.models import Attendee
 from ..hackers.models import Hacker
+from ..util.dates import has_passed
 from ..util.datetime_format import format_utc_datetime
 from ..util.timezones import eastern
 from ..util.s3_upload import s3_config, register_policy_route
@@ -22,18 +24,19 @@ from .models import Admit, buses
 def dashboard():
     admit = Admit.lookup_from_account_id(current_user.id)
     deadline = admit.get_deadline()
+    too_late = has_passed(deadline)
     completed = admit.get_admit_data()['graduation'] is not None
     confirmed = admit.is_confirmed()
-    return {'name':'admit_dashboard.html', 'context':{'deadline':format_utc_datetime(deadline, eastern), 'completed':completed, 'confirmed':confirmed}}
+    return {'name':'admit_dashboard.html', 'context':{'deadline':format_utc_datetime(deadline, eastern), 'completed':completed, 'confirmed':confirmed, 'too_late':too_late}}
 
-AdmitPermission = Permission(RoleNeed('admit'))
+ConfirmationPermission = Permission(AttributeNeed('admit', 'pending'))
 
-register_policy_route('/accounts/<int:account_id>/resume/policy', 'resume', AdmitPermission, lambda kwargs: 'accounts/' + str(kwargs['account_id']) + '/resume.pdf')
+register_policy_route('/accounts/<int:account_id>/resume/policy', 'resume', ConfirmationPermission, lambda kwargs: 'accounts/' + str(kwargs['account_id']) + '/resume.pdf')
 
-register_policy_route('/accounts/<int:account_id>/travel/policy', 'travel', AdmitPermission, lambda kwargs: 'accounts/' + str(kwargs['account_id']) + '/travel.pdf')
+register_policy_route('/accounts/<int:account_id>/travel/policy', 'travel', ConfirmationPermission, lambda kwargs: 'accounts/' + str(kwargs['account_id']) + '/travel.pdf')
 
 @bp.route('/confirmation')
-@AdmitPermission.require()
+@ConfirmationPermission.require()
 def confirmation():
     attendee = Attendee.lookup_from_account_id(current_user.id).get_attendee_data()
     if attendee['badge_name'] is None:
@@ -55,7 +58,7 @@ def confirmation():
     return render_full_template('confirmation.html', attendee=attendee, admit=admit, s3=s3_config(), resume=resume, bus=bus, mit=mit, travel_reimbursement=travel)
 
 @bp.route('/admits', methods=['PUT'])
-@AdmitPermission.require()
+@ConfirmationPermission.require()
 def update_confirmation():
     form = ConfirmationForm()
     # First find the hacker if they already exist

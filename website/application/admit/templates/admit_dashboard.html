@@ -1,43 +1,64 @@
 {% macro body_text(admit) -%}
+
+  {% if admit['too_late'] %}
+
+    {% if admit['completed'] %}
+
+             <h2>Status: Ineligible</h2>
+
+             <h3>You filled out the confirmation form but something wasn't quite right. Sadly, you're ineligible to attend HackMIT this year - we hope to see you next year!</h3>
+
+    {% else %}
+
+             <h2>Status: Unreceived</h2>
+
+             <h3>You were admitted to HackMIT, but you never filled out the confirmation form. Unfortunately, you can't attend HackMIT this year, but we hope to see you next year!</h3>
+
+    {% endif %}
+
+  {% else %}
+
+    {% if admit['confirmed'] %}
              
-             {% if admit['completed'] %}
-
-             {% if admit['confirmed'] %}
-
              <h2>Status: Confirmed</h2>
 
              <h3>Thanks for filling out the confirmation form! Your form has been reviewed by a HackMIT team member and your spot at HackMIT 2014 is officially secure. See you in October!</h3>
 
-             {% else %}
+    {% else %}
+
+      {% if admit['completed'] %}
 
              <h2>Status: Pending</h2>
 
              <h3>Thanks for filling out the confirmation form! You can update your form below any time before <span class="deadline">{{ admit['deadline'] }}</span> - make sure you have everything filled out! Be on the lookout for an email after that confirming any travel reimbursement and receipt of your form -- if there are any issues with your registration, you'll be contacted by a team member.</h3>
              
-             {% endif %} 
-              
-             {% else %}
+      {% else %}
               
              <h2>Status: Admitted</h2>
               
              <h3>Congratulations! You’ve received a spot at this year’s HackMIT. Confirm your spot by <span class="deadline">{{ admit['deadline'] }}</span> by filling out the confirmation form below.</h3>
 
-             {% endif %}
+      {% endif %}
+
+    {% endif %}
 
              <h3>You can change your team at any time, but any team you join can contain only admitted hackers.</h3>
+
+  {% endif %}
 
 {% endmacro %}
 
 {% macro buttons(admit) -%}
-        {% if not admit['confirmed'] %}
+  {% if not admit['too_late'] %}
+    {% if not admit['confirmed'] %}
        <button class="ui hack button" onclick="location.href='{{ url_for('admit.confirmation') }}'">
           Confirmation of Attendance
        </button>
        <br /><br />
-        {% endif %}
-
+    {% endif %}
        <button class="ui hack button" onclick="location.href='{{ url_for('hackers.team') }}'">
           Teams
        </button>
        <br /><br />
+  {% endif %}
 {% endmacro %}
