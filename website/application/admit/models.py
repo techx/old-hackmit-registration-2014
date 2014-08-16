@@ -40,6 +40,9 @@ class Admit(db.Model, Role):
             permissions.append('valid')
             if not self.confirmed:
                 permissions.append('pending')
+        else:
+            if self.graduation is not None:
+                permissions.append('valid')
         return permissions
     
     def get_admit_data(self):
