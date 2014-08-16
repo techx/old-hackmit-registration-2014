@@ -2,7 +2,7 @@ from datetime import timedelta, datetime
 
 from ..models import db
 from ..util.dates import has_passed
-from ..util.timezones import utc, eastern
+from ..util.timezones import utc, pacific
 
 from ..auth.models import Role
 
@@ -66,7 +66,7 @@ class Admit(db.Model, Role):
 
     def get_deadline(self):
         # Always store in UTC but used Eastern for math
-        return (self.creation + timedelta(10)).replace(tzinfo=utc).astimezone(eastern).replace(hour=23, minute=59, second=59, microsecond=999999).astimezone(utc)
+        return (self.creation + timedelta(11)).replace(tzinfo=utc).astimezone(pacific).replace(hour=23, minute=59, second=59, microsecond=999999).astimezone(utc)
 
     def update_admit_data(self, session, graduation, meng, dietary_restriction, legal_waiver, photo_release, resume_opt_out, resume, github, travel, likelihood):
         self.graduation = graduation
