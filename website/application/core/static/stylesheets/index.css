@@ -187,10 +187,49 @@ section#faq {
     color: white !important;
   }
 
+/* SCHEDULE PANEL */
+section#schedule {
+  background: rgba(255, 255, 255, .85);
+  text-align: center;
+  color: black;
+}
+
+section#schedule .list {
+  margin: 0 auto;
+}
+
+section#schedule .header {
+  font-family: 'Montserrat', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+  font-size: 1.3em;
+  color: rgb(56, 153, 179);
+  margin-bottom: 8px;
+}
+
+section#schedule .list i{
+  background: rgb(56, 153, 179);
+  color:white;
+  margin-bottom: 12px;
+}
+
+section#schedule .list .item{
+  margin: 20px 0;
+}
+
+section#schedule .schedule-title{
+  font-family: 'Montserrat', 'Helvetica Neue','Helvetica', 'Arial', sans-serif;
+    font-size: 4em;
+    font-weight: 700;
+    color: rgb(56,153,179);
+    text-align: center;
+  margin-bottom: 12px;
+}
+
+
 /* SPEAKERS PANEL */
 section#speakers .speakers-title {
   font-family: 'Montserrat', 'Helvetica Neue','Helvetica', 'Arial', sans-serif;
-  font-size: 4em;
+    font-size: 4em;
+    font-weight: 700;
   text-align: center;
   margin-bottom: 80px;
 }
