@@ -237,6 +237,8 @@ section#speakers .speakers-title {
 section#speakers img {
   margin: 0 auto;
   border: 8px solid white;
+  height: 200px;
+  width: 200px;
 }
 
 section#speakers .name {
