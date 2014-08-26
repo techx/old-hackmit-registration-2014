@@ -6,8 +6,8 @@ from ..util.timezones import utc, pacific
 
 from ..auth.models import Role
 
-# [Rutgers, UPenn, Yale, Brown, Waterloo, Toronto, Columbia, NYU, Princeton, Tufts, Wellesley, Brandeis]
-buses = [186380, 215062, 130794, 217156, 900001, 900003, 190150, 193900, 186131, 168148, 168218, 165015]
+# [Yale, Brown, Waterloo, Toronto, Columbia, NYU, Princeton, Tufts, Wellesley, Brandeis]
+buses = [130794, 217156, 900001, 900003, 190150, 193900, 186131, 168148, 168218, 165015]
 
 class Admit(db.Model, Role):
     __bind_key__ = 'local'
