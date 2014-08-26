@@ -11,7 +11,7 @@ from ..errors import BadDataError
 
 from ..auth.models import Account, AttributeNeed
 from ..admit.models import Admit
-from ..util.dates import utc_lottery_closing, has_passed, before
+from ..util.dates import has_passed, before
 
 from . import bp
 from .forms import LotteryForm
@@ -31,7 +31,7 @@ TeamPermission = Permission(AttributeNeed('admit', 'valid'))
 
 @bp.route('/hackers', methods=['POST'])
 @HackerPermission.require()
-@before(utc_lottery_closing)
+@before('lottery_closing')
 def hackers():
     form = LotteryForm()
     # First find the hacker if they already exist
@@ -56,7 +56,7 @@ def hackers():
 
 @bp.route('/lottery')
 @HackerPermission.require()
-@before(utc_lottery_closing)
+@before('lottery_closing')
 def lottery():
     name = current_user.get_name()
     hacker = Hacker.lookup_from_account_id(current_user.id)
@@ -127,7 +127,7 @@ def join_team(team_invite_code):
     if len(members) >= MAX_TEAM_SIZE:
         raise BadDataError("Aww. There are too many people on this team!")
 
-    if has_passed(utc_lottery_closing):
+    if has_passed('lottery_closing'):
         for member in members:
             if Admit.lookup_from_account_id(member.account_id) is None:
                 raise BadDataError("You can't join a team with people who didn't get admitted to HackMIT.")

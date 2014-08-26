@@ -33,19 +33,12 @@ class Account(db.Model, UserMixin):
         return self.confirmed
 
     def get_name(self):
-        name_object = Name.query.get(int(self.id))
-        if name_object is None or name_object.name is None:
-            name = None
-
-            # Name migration code
-            from ..hackers.models import Hacker
-            hacker = Hacker.lookup_from_account_id(self.id)
-            if hacker is not None:
-                name = hacker.name
-            
-            return name
-        else:
-            return name_object.name
+        # Hard-coded dependency due to impending EOL
+        from ..hackers.models import Hacker
+        hacker = Hacker.lookup_from_account_id(self.id)
+        if hacker is None:
+            return None
+        return hacker.name
 
     @staticmethod
     def create(session, email_address, hashed_password, initial_role):
@@ -66,12 +59,13 @@ class Account(db.Model, UserMixin):
         self.hashed_password = generate_password_hash(password)
 
     def update_name(self, session, new_name):
-        name = Name.query.get(int(self.id))
-        # Name migration code 
-        if name is None:
-            Name.create(session, self.id)
-            name = Name.query.get(int(self.id))
-        name.update_name(session, new_name)
+        # Hard-coded dependency due to impending EOL
+        from ..hackers.models import Hacker
+        hacker = Hacker.lookup_from_account_id(self.id)
+        if hacker is None:
+            # Should raise but this is EOL so let's swallow
+            pass
+        hacker.name = new_name
 
     def add_role(self, session, role):
         from . import roles
@@ -120,21 +114,3 @@ class Role:
 
     def perms(self):
         return []
-
-class Name(db.Model):
-    __bind_key__ = 'local'
-    __tablename__ = 'names'
-
-    account_id = db.Column(db.Integer, db.ForeignKey('accounts.id'), primary_key=True)
-    name = db.Column(db.String(100))
-
-    @staticmethod
-    def create(session, account_id):
-        new_name = Name(account_id)
-        session.add(new_name)
-
-    def update_name(self, session, name):
-        self.name = name
-
-    def __init__(self, account_id):
-        self.account_id = account_id
