@@ -8,19 +8,10 @@ $(document).ready(function(){
       $diet = $('#diet'),
       $waiver = $('#waiver'),
       $photoRelease = $('#photoRelease'),
-      $resumeOptOut = $('#resumeOptOut'),
-      $resume = $('.s3.upload.form').eq(0).find('div[class*=s3][class*=upload][class*=button]'),
+      $resume = $('#resume'),
       $github =$('#github'),
       $travelOptOut = $('#travelOptOut'),
-      $travel = $('.s3.upload.form').eq(1).find('div[class*=s3][class*=upload][class*=button]');
-
-  $resumeOptOut.change(function() {
-    if ($resumeOptOut.is(':checked')) {
-      $resume.parent('.field').slideUp();
-    } else {
-      $resume.parent('.field').slideDown();
-    }
-  });
+      $travel = $('#travel');
 
   $travelOptOut.change(function() {
     if ($travelOptOut.is(':checked')) {
@@ -41,7 +32,7 @@ $(document).ready(function(){
         diet: $diet.val(),
         waiver: $waiver.val(),
         photoRelease: $photoRelease.val(),
-        resumeOptOut: $resumeOptOut.is(':checked'),
+        resumeOptOut: false,
         resume: $resume.hasClass('completed'),
         github: $github.val(),
         travel: $travel.hasClass('completed'),
@@ -93,7 +84,7 @@ $(document).ready(function(){
   };
 
   $.fn.form.settings.rules.resume = function(){
-    return $resumeOptOut.is(':checked') || $resume.hasClass('completed');
+    return $resume.hasClass('completed');
   };
 
   $.fn.form.settings.rules.travel = function(){
@@ -166,16 +157,16 @@ $(document).ready(function(){
         ]
       },
       resume: {
-        identifier: 'resumeOptOut',
+        identifier: 'resume',
         rules: [
           {
             type: 'resume',
-            prompt: 'Please upload a PDF, or click the opt out checkbox.'
+            prompt: 'Please upload a PDF.'
           }
         ]
       },
       travel: {
-        identifier: 'travelOptOut',
+        identifier: 'travel',
         rules: [
           {
             type: 'travel',

@@ -14,7 +14,7 @@ from ..attendee.models import Attendee
 from ..hackers.models import Hacker
 from ..util.dates import has_passed
 from ..util.datetime_format import format_utc_datetime
-from ..util.timezones import pacific
+from ..util.timezones import eastern
 from ..util.s3_upload import s3_config, register_policy_route
 
 from . import bp
@@ -27,7 +27,7 @@ def dashboard():
     too_late = has_passed(deadline)
     completed = admit.get_admit_data()['graduation'] is not None
     confirmed = admit.is_confirmed()
-    return {'name':'admit_dashboard.html', 'context':{'deadline':format_utc_datetime(deadline, pacific), 'completed':completed, 'confirmed':confirmed, 'too_late':too_late}}
+    return {'name':'admit_dashboard.html', 'context':{'deadline':format_utc_datetime(deadline, eastern), 'completed':completed, 'confirmed':confirmed, 'too_late':too_late}}
 
 ConfirmationPermission = Permission(AttributeNeed('admit', 'pending'))
 
@@ -42,6 +42,8 @@ def confirmation():
     if attendee['badge_name'] is None:
         attendee['badge_name'] = current_user.get_name()
     admit = Admit.lookup_from_account_id(current_user.id).get_admit_data()
+
+    admit['deadline'] = format_utc_datetime(Admit.lookup_from_account_id(current_user.id).get_deadline(), eastern)
 
     resume= {}
     resume['policy_endpoint'] = '/accounts/' + str(current_user.id) + '/resume/policy'

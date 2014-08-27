@@ -9,7 +9,7 @@ from .timezones import eastern, utc
 # Declare all dates in Eastern Time and convert to UTC
 
 dates = {}
-dates['lottery_closing'] = utc_lottery_closing = datetime(2014, 7, 28, 23, 59, 59, 999999, eastern).astimezone(utc)
+dates['lottery_closing'] = datetime(2014, 7, 28, 23, 59, 59, 999999, eastern).astimezone(utc)
 
 def has_passed(test_datetime):
     if isinstance(test_datetime, str):
@@ -29,7 +29,7 @@ def before(test_datetime):
         def wrapped_timed_function(*args, **kwargs):
             if has_passed(test_datetime):
                 abort(404)
-            view_func(*args, **kwargs)
+            return view_func(*args, **kwargs)
         return wrapped_timed_function
     return wrap
 
@@ -39,6 +39,6 @@ def after(test_datetime):
         def wrapped_timed_function(*args, **kwargs):
             if not has_passed(test_datetime):
                 abort(404)
-            view_func(*args, **kwargs)
+            return view_func(*args, **kwargs)
         return wrapped_timed_function
     return wrap

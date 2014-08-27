@@ -2,12 +2,12 @@ from datetime import timedelta, datetime
 
 from ..models import db
 from ..util.dates import has_passed
-from ..util.timezones import utc, pacific
+from ..util.timezones import utc, eastern
 
 from ..auth.models import Role
 
-# [Rutgers, UPenn, Yale, Brown, Waterloo, Toronto, Columbia, NYU, Princeton, Tufts, Wellesley, Brandeis]
-buses = [186380, 215062, 130794, 217156, 900001, 900003, 190150, 193900, 186131, 168148, 168218, 165015]
+# [Yale, Brown, Waterloo, Toronto, Columbia, NYU, Princeton, Tufts, Wellesley, Brandeis]
+buses = [130794, 217156, 900001, 900003, 190150, 193900, 186131, 168148, 168218, 165015]
 
 class Admit(db.Model, Role):
     __bind_key__ = 'local'
@@ -65,8 +65,12 @@ class Admit(db.Model, Role):
         return self.confirmed
 
     def get_deadline(self):
+        deadline = Deadline.query.get(self.id)
+        if deadline is not None:
+            if deadline.deadline is not None:
+                return deadline.deadline.replace(tzinfo=utc)
         # Always store in UTC but used Eastern for math
-        return (self.creation + timedelta(11)).replace(tzinfo=utc).astimezone(pacific).replace(hour=23, minute=59, second=59, microsecond=999999).astimezone(utc)
+        return (self.creation + timedelta(10)).replace(tzinfo=utc).astimezone(eastern).replace(hour=23, minute=59, second=59, microsecond=999999).astimezone(utc)
 
     def update_admit_data(self, session, graduation, meng, dietary_restriction, legal_waiver, photo_release, resume_opt_out, resume, github, travel, likelihood):
         self.graduation = graduation
@@ -87,3 +91,27 @@ class Admit(db.Model, Role):
         self.account_id = account_id
         self.creation = datetime.utcnow()
         self.confirmed = False
+
+class Deadline(db.Model):
+    __bind_key__ = 'local'
+    __tablename__ = 'admit_confirmation_extended_deadlines'
+
+    admit_id = db.Column(db.Integer, db.ForeignKey('admits.id'), primary_key=True)
+    deadline = db.Column(db.DateTime())
+
+    @staticmethod
+    def create(session, admit_id, deadline=None):
+        new_deadline = Deadline(admit_id)
+        if deadline is not None:
+            new_deadline.update_deadline(session, deadline)
+        session.add(new_deadline)
+
+    def update_deadline(self, session, deadline):
+        # Require timezone aware datetime
+        if deadline.tzinfo is not None:
+            # Require UTC timezone
+            # But must store as naive datetime
+            self.deadline = deadline.astimezone(utc).replace(tzinfo=None)
+
+    def __init__(self, admit_id):
+        self.admit_id = admit_id
