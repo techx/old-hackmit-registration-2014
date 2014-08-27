@@ -1,4 +1,4 @@
-{% macro upload_form(context, display, completed) -%}
+{% macro upload_form(context, display, completed, elementId) -%}
 
 <div class="ui dimmable field s3 upload form" action="{{ s3['bucket_url'] }}" method="post" enctype="multipart/form-data" style="display:{% if display %}block{% else %}none{% endif %}">
   <div class="invisible">
@@ -12,7 +12,7 @@
     <input type="file" name="file">
     <input type="hidden" name="x-amz-meta-bucket_url" value="{{ s3['bucket_url'] }}">
   </div>
-  <div class="ui hack fluid s3 upload button{% if completed %} completed{% endif %}">
+  <div id="{{ elementId }}" class="ui hack fluid s3 upload button{% if completed %} completed{% endif %}">
     <i class="file icon"></i>
     {{ context['resource_name'] }}
   </div>

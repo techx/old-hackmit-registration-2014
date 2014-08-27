@@ -1,4 +1,9 @@
+// Make sure to include this before the main .js code to ensure the button validation gets activated properly
 $(function() {
+
+  // To enable validation of our Semantic UI "button" as a div
+  $.fn.form.settings.selector.field += ', div'
+
   function getSanitizedData(form) {
     var fullData = form.find('input').toArray();
     var publicData = $.grep(fullData, function(element, index) { return element.name.indexOf('x-amz-meta-')===0; }, true);
@@ -37,7 +42,10 @@ $(function() {
           button.text(button.text().replace('Upload', 'Upload new'));
         }
         result.parent('.field').slideDown();
+        if (form.hasClass('error')) {
+          form.parent('.form').form('validate form');
         }
+      }
     });
   });
 });
