@@ -2,12 +2,13 @@
 
 {% block head %}
 
-<script src="{{ url_for('.static', filename='js/confirmation.js') }}"></script>
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.9.0/jquery-ui.min.js"></script>
 <script type="text/javascript" src="{{ url_for('util.static', filename='js/jquery.fileupload.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('util.static', filename='js/s3-upload.js') }}"></script>
+<script src="{{ url_for('.static', filename='js/confirmation.js') }}"></script>
 
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+<link href="{{ url_for('util.static', filename='stylesheets/s3_upload.css') }}" rel="stylesheet" type="text/css">
 <style>
 
   .waiver a {
@@ -146,19 +147,12 @@
               <input id="photoRelease" type="text" value="{{ admit.photo_release if admit.photo_release != None }}">
             </div>
 
-            <label>Upload a PDF detailing your background, skills, abilities and experiences!</label>
+            <label>Upload a PDF detailing your background, skills, abilities and work experiences!</label>
 
             <br><br>
 
-            <div class="inline field">
-              <div class="ui checkbox">
-                <input id="resumeOptOut" type="checkbox" {% if admit.resume_opt_out %}checked{% endif %}>
-                <label for="resumeOptOut">Opt out of profile information for team/mentor matching</label>
-              </div>
-            </div>
-
             {% from 's3_upload.html' import upload_form with context %}
-            {{ upload_form(resume, not admit.resume_opt_out, admit.resume) }}
+            {{ upload_form(resume, True, admit.resume, 'resume') }}
 
             <div class="field">
               <label>
@@ -190,7 +184,7 @@
             </div>
 
             {% from 's3_upload.html' import upload_form with context %}
-            {{ upload_form(travel_reimbursement, admit.travel, admit.travel) }}
+            {{ upload_form(travel_reimbursement, admit.travel, admit.travel, 'travel') }}
 
             {% endif %}
 
