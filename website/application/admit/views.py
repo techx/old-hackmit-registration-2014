@@ -43,6 +43,8 @@ def confirmation():
         attendee['badge_name'] = current_user.get_name()
     admit = Admit.lookup_from_account_id(current_user.id).get_admit_data()
 
+    admit['deadline'] = format_utc_datetime(Admit.lookup_from_account_id(current_user.id).get_deadline(), eastern)
+
     resume= {}
     resume['policy_endpoint'] = '/accounts/' + str(current_user.id) + '/resume/policy'
     resume['resource_name'] = "PDF"

@@ -76,7 +76,7 @@
               <p></p>
             </div>
 
-            <h3> Carefully review your information before submitting! Once you submit, your confirmation form will be reviewed by a HackMIT team member, who will confirm your spot at HackMIT 2014. </h3>
+            <h3>This form will close at {{ admit['deadline'] }} - make sure you complete and submit the form before that time!</h3>
 
             {% include 'attendee_form.html' with context %}
 
@@ -216,6 +216,8 @@
                 </div>
               </div>
             </div>
+
+            <h3> Carefully review your information before submitting! Once you submit, your confirmation form will be reviewed by a HackMIT team member, who will confirm your spot at HackMIT 2014. </h3>
 
             <div class="ui hack fluid submit button">Submit</div>
           </div>
