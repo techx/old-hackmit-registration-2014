@@ -24,13 +24,12 @@ def roles_with_context(view_name):
 
     for role in roles:
         role_model = roles[role]['model'].lookup_from_account_id(current_user.id)
-        if role_model is not None:
-            if roles[role][view_name] is not None:
-                roles_for_view.append(role)
+        if role_model is not None and roles[role][view_name] is not None:
+            roles_for_view.append(role)
 
     toposort(roles_for_view, lambda collection, item: roles[item]['model'].implied_roles())
 
-    return [(role, roles[role][view_name]()) for role in roles_for_view]
+    return [(role, roles[role]['model'].implied_roles(), roles[role][view_name]()) for role in roles_for_view]
 
 @principal.identity_loader
 def load_identity_from_flask_login_session(): # TODO: Switch to a before request handler for 100% stateless auth
