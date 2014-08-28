@@ -1,5 +1,5 @@
 {% macro body_text(hacker) -%}
-            {% for role, context in roles if role=='admit' %}
+            {% for role, implied_roles, context in roles if 'hacker' in implied_roles %}
 
             {% else %}
 
@@ -42,7 +42,7 @@
 {% endmacro %}
 
 {% macro buttons(hacker) -%}
-        {% for role, context in roles if role=='admit'%}
+        {% for role, implied_roles, context in roles if 'hacker' in implied_roles %}
 
         {% else %}
  
