@@ -248,11 +248,13 @@ section#speakers .name {
 
 /* SPONSOR PANEL */
 section#sponsor {
-  background: rgba(255, 255, 255, .8);
+  background: rgba(255, 255, 255, 1);
   min-height: 120px;
   height: 20%;
   text-align: center;
   color: rgb(56,153,179);
+  padding-left:12%;
+  padding-right:12%;
 }
 
   #sponsor .sponsor-title {
@@ -265,11 +267,65 @@ section#sponsor {
   #sponsor .sponsor-message {
     font-size: 1.2em;
     color: black;
+    margin-top: 1.5em;
   }
 
   #sponsor .sponsor-message a{
     text-decoration: none;
     color: rgb(56,153,179);
+  }
+
+  #sponsor .tier .title {
+    font-size: 2.2em;
+    margin-bottom: .7em;
+    border-bottom: 1px solid rgb(56, 153, 179);
+    display: none;
+  }
+
+  #sponsor img{
+    width: 100%;
+    display: inline-block;
+    vertical-align: middle;
+    margin: 16px;
+
+  }
+
+  #sponsor .platinum img{
+    width: 40%;
+  }
+
+  #sponsor .platinum .grid {
+    padding-left: 5%;
+    padding-right: 5%;
+  }
+
+  #sponsor .gold {
+    padding: 0 5%;
+  }
+
+  #sponsor .gold img {
+    display: inline-block;
+    width: 28%;
+  }
+
+  #sponsor .silver {
+    padding: 0 5%;
+  }
+
+  #sponsor .silver img {
+    width: 20%;
+  }
+
+  #sponsor .bronze {
+    padding: 0 5%;
+  }
+
+  #sponsor .bronze img {
+    width: 14%;
+  }
+
+  #sponsor .ui.grid {
+    margin-bottom: 2em;
   }
 
 /* REGISTER PANEL */
@@ -317,6 +373,22 @@ section#footer .icon:hover {
     position: relative !important;
     padding: 50px 0 !important;
   }
+
+  section#sponsor {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  section#sponsor .tier .title {
+    display: inline-block;
+  }
+
+  #sponsor img {
+    display: block !important;
+    position: relative !important;
+    margin: 4em auto !important;
+    width: 75% !important;
+  }
 }
 
 /* Extra Small Devices, Phones */
@@ -352,6 +424,23 @@ section#footer .icon:hover {
 
   #info .info-description {
     width: 100%;
+  }
+
+
+  section#sponsor {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  section#sponsor .tier .title {
+    display: inline-block;
+  }
+
+  #sponsor img {
+    display: block !important;
+    position: relative !important;
+    margin: 4em auto !important;
+    width: 75% !important;
   }
 
 }
