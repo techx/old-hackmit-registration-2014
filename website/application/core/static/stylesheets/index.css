@@ -282,6 +282,10 @@ section#sponsor {
     display: none;
   }
 
+  #sponsor a{
+    text-decoration: none;
+  }
+
   #sponsor img{
     width: 100%;
     display: inline-block;
