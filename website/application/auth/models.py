@@ -46,8 +46,6 @@ class Account(db.Model, UserMixin):
         session.add(new_account)
         session.flush()
 
-        Name.create(session, new_account.id)
-
         new_account.add_role(session, initial_role)
 
         return new_account.id
