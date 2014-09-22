@@ -1,5 +1,5 @@
 *.pyc
-**/config/prod.py
+**/config/prod*.py
 venv/
 .idea/
 *.iml
