@@ -1,7 +1,7 @@
 from datetime import timedelta, datetime
 
 from ..models import db
-from ..util.dates import has_passed
+from ..util.dates import dates, has_passed
 from ..util.timezones import utc, eastern
 
 from ..auth.models import Role
@@ -36,6 +36,8 @@ class Admit(db.Model, Role):
 
     def perms(self):
         permissions = []
+        if self.confirmed and not has_passed(dates['profile_update_closing']):
+            permissions.append('update')
         if not has_passed(self.get_deadline()):
             permissions.append('valid')
             if not self.confirmed:
@@ -84,6 +86,11 @@ class Admit(db.Model, Role):
         self.travel = travel
         self.likelihood = likelihood
 
+    def update_profile_data(self, session, resume_opt_out, resume, github):
+        self.resume_opt_out = resume_opt_out
+        self.resume = resume
+        self.github = github
+
     def confirm_admit(self, session):
         self.confirmed = True
 
@@ -112,6 +119,50 @@ class Deadline(db.Model):
             # Require UTC timezone
             # But must store as naive datetime
             self.deadline = deadline.astimezone(utc).replace(tzinfo=None)
+
+    def __init__(self, admit_id):
+        self.admit_id = admit_id
+
+class Profile(db.Model):
+    __bind_key__ = 'local'
+    __tablename__ = 'profiles'
+
+    admit_id = db.Column(db.Integer, db.ForeignKey('admits.id'), primary_key=True)
+    mit_host = db.Column(db.String(50))
+    non_smoking = db.Column(db.Boolean)
+    pets = db.Column(db.Boolean)
+    considerations = db.Column(db.String(400))
+    address = db.Column(db.String(150))
+
+    @staticmethod
+    def lookup_from_admit_id(admit_id):
+        return Profile.query.get(admit_id)
+
+    def get_profile_data(self):
+        data = {}
+
+        data['mit_host'] = self.mit_host
+        data['non_smoking'] = self.non_smoking
+        data['pets'] = self.pets
+        data['considerations'] = self.considerations
+        data['address'] = self.address
+
+        return data
+
+    def update_hosting_data(self, session, mit_host, non_smoking, pets, considerations):
+        self.mit_host = mit_host
+        self.non_smoking = non_smoking
+        self.pets = pets
+        self.considerations = considerations
+
+    def update_address_data(self, session, address):
+        self.address = address
+
+    @staticmethod
+    def create(session, admit_id):
+        new_profile = Profile(admit_id)
+        session.add(new_profile)
+        session.flush()
 
     def __init__(self, admit_id):
         self.admit_id = admit_id

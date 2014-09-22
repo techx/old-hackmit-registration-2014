@@ -1,3 +1,4 @@
+from flask_wtf import Form
 from wtforms import TextField
 from wtforms.validators import Optional, InputRequired, Length, Regexp, AnyOf
 
@@ -11,6 +12,16 @@ class ConfirmationForm(AttendeeForm):
     photoRelease = TextField(validators=[InputRequired(), Length(max=50)])
     resumeOptOut = TextField()
     resume = TextField()
-    github = TextField(validators=[Optional(), Length(min=1,max=39), Regexp("^[a-zA-Z0-9][-a-zA-Z0-9]{0,38}")])
+    github = TextField(validators=[Optional(), Length(min=1,max=39), Regexp('^[a-zA-Z0-9][-a-zA-Z0-9]{0,38}')])
     travel = TextField()
     likelihood = TextField(validators=[InputRequired(), Length(min=3, max=10), AnyOf(['maybe', 'likely', 'yes'])])
+
+class UpdateForm(Form):
+    resumeOptOut = TextField()
+    resume = TextField()
+    github = TextField(validators=[Optional(), Length(min=1,max=39), Regexp('^[a-zA-Z0-9][-a-zA-Z0-9]{0,38}')])
+    mitHost = TextField(validators=[Optional(), Length(min=1, max=50)])
+    nonSmoking = TextField(validators=[Optional()])
+    pets = TextField(validators=[Optional()])
+    considerations = TextField(validators=[Optional(), Length(min=1, max=400)])
+    address = TextField(validators=[Optional(), Length(min=1, max=150)])

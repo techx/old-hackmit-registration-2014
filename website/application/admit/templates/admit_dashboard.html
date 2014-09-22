@@ -4,9 +4,15 @@
              
              <h2>Status: Confirmed</h2>
 
-             <h3>Thanks for filling out the confirmation form! Your form has been reviewed by a HackMIT team member and your spot at HackMIT 2014 is officially secure. See you in October!</h3>
+             <h3>Thanks for filling out the confirmation form - your form has been reviewed by a HackMIT team member and your spot at HackMIT 2014 is officially secure. See you in October!</h3>
 
              <h3>You can change your team at any time, but any team you join can contain only admitted hackers.</h3>
+
+              {% if 'profile_update_closing' not in passed_dates %}
+
+             <h3>Make sure to fill out the profile update form below by {{ admit['profile_update_deadline'] }} if you want to update your skills sheet{% if admit['travel'] %}, receive travel reimbursement{% endif %}{% if not admit['mit'] %} or specify your preferences for your MIT host{% endif %}! You can check if you've completed it by looking at the form.</h3>
+
+              {% endif %}
 
   {% else %}
 
@@ -77,6 +83,10 @@
        <br /><br />
      {% endif %}
   {% endif %}
-
-
+  {% if admit['confirmed'] and 'profile_update_closing' not in passed_dates %}
+    <button class="ui hack button" onclick="location.href='{{ url_for('admit.profile') }}'">
+        Profile Update
+    </button>
+    <br /><br />
+  {% endif %}
 {% endmacro %}

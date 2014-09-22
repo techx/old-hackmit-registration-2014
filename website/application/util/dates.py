@@ -10,6 +10,7 @@ from .timezones import eastern, utc
 
 dates = {}
 dates['lottery_closing'] = datetime(2014, 7, 28, 23, 59, 59, 999999, eastern).astimezone(utc)
+dates['profile_update_closing'] = datetime(2014, 9, 25, 23, 59, 59, 999999, eastern).astimezone(utc)
 
 def has_passed(test_datetime):
     if isinstance(test_datetime, str):

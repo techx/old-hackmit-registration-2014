@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+
+{% block head %}
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.9.0/jquery-ui.min.js"></script>
+<script type="text/javascript" src="{{ url_for('util.static', filename='js/jquery.fileupload.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('util.static', filename='js/s3-upload.js') }}"></script>
+<script src="{{ url_for('.static', filename='js/update.js') }}"></script>
+
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+<link href="{{ url_for('util.static', filename='stylesheets/s3_upload.css') }}" rel="stylesheet" type="text/css">
+<style>
+
+  .waiver a {
+    text-decoration: none;
+    color: rgb(35, 177, 150);
+    font-size: 1.4em;
+    text-align: center;
+  }
+
+  .waiver i {
+    margin-right: 4px;
+  }
+
+  .ui.celled.grid>.row>.column,
+  .ui.celled.grid>.row {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+  }
+
+  .ui.stackable.celled.grid .column,
+  .ui.stackable.divided.grid .column {
+    border-top: none;
+  }
+
+</style>
+
+{% endblock %}
+
+{% block title %}
+
+    Update
+
+{% endblock %}
+
+{% block headerTitle %}
+
+    PROFILE UPDATE
+
+{% endblock %}
+
+{% block content %}
+
+  <div class="confirmation">
+    <br>
+    <div class="ui stackable aligned celled page grid">
+
+      <div class="computer only row"></div>
+
+      <div class="row">
+        <div class="column"></div>
+
+        <div class="two wide column">
+          <div class="ui dimmable form">
+
+            <div class="ui inverted dimmer">
+              <div class="content">
+                <div class="center">
+                  <h3> Sit tight, saving your settings... </h3>
+                </div>
+              </div>
+            </div>
+
+            <div class="ui error message">
+              <div class="header">Action Forbidden</div>
+              <p></p>
+            </div>
+
+            <label>Upload a PDF detailing your background, skills, abilities and work experiences! You can upload a new one here if you've already submitted a PDF.</label>
+
+            <br><br>
+
+            {% from 's3_upload.html' import upload_form with context %}
+            {{ upload_form(resume, True, admit.resume, 'resume') }}
+
+            <div class="field">
+              <label>
+                (Optional) Enter your github username!
+              </label>
+              <input id="github" type="text" value="{{ admit.github if admit.github != None }}">
+            </div>
+
+            {% if not mit %}
+
+            <div class="field">
+              <label>
+                If there is an MIT student you would like to host you, indicate their first and last name here. They must indicate a mutual interest in hosting you.
+              </label>
+              <input id="mitHost" type="text" value="{{ profile.mit_host if profile.mit_host != None }}">
+            </div>
+
+            <p>Do you need a non-smoking room?</p>
+
+            <div class="grouped inline fields" id="nonSmoking">
+              <div class="field">
+                <div class="ui radio checkbox">
+                  <input id="nonSmokingYes" name="nonSmoking" type="radio" value="yes"{% if profile.non_smoking %} checked{% endif %}>
+                  <label for="nonSmokingYes">Yes</label>
+                </div>
+              </div>
+              <div class="field">
+                <div class="ui radio checkbox">
+                  <input id="nonSmokingNo" name="nonSmoking" type="radio" value="no"{% if profile.non_smoking is not none and not profile.non_smoking %} checked{% endif %}>
+                  <label for="nonSmokingNo">No</label>
+                </div>
+              </div>
+            </div>
+
+            <p>Are you ok with pets in your room?</p>
+
+            <div class="grouped inline fields" id="pets">
+              <div class="field">
+                <div class="ui radio checkbox">
+                  <input id="petsYes" name="pets" type="radio" value="yes"{% if profile.pets %} checked{% endif %}>
+                  <label for="petsYes">Yes</label>
+                </div>
+              </div>
+              <div class="field">
+                <div class="ui radio checkbox">
+                  <input id="petsNo" name="pets" type="radio" value="no"{% if profile.pets is not none and not profile.pets %} checked{% endif %}>
+                  <label for="petsNo">No</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="field">
+              <label>
+                (Optional) Do you have special considerations for the student hosting you?
+              </label>
+              <textarea id="considerations">{{ profile.considerations if profile.considerations != None }}</textarea>
+            </div>
+
+            {% endif %}
+
+            {% if admit.travel %}
+
+            <div class="field">
+              <label>
+                Mailing address for travel reimbursement check
+              </label>
+              <textarea id="address">{{ profile.address if profile.address != None }}</textarea>
+            </div>
+
+            {% endif %}
+
+            <div class="ui hack fluid submit button">Submit</div>
+          </div>
+        </div>
+
+        <div class="column"></div>
+
+      </div>
+
+      <div class="computer only row"></div>
+
+    </div>
+ </div>
+
+{% endblock %}
