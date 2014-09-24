@@ -328,6 +328,10 @@ section#sponsor {
     width: 14%;
   }
 
+  #sponsor .partners img {
+    width: 25%;
+  }
+
   #sponsor .ui.grid {
     margin-bottom: 2em;
   }
