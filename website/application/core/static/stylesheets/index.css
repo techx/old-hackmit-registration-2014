@@ -194,6 +194,29 @@ section#schedule {
   color: black;
 }
 
+section#schedule button {
+  font-size: 20px;
+  width: 320px;
+  border-radius:3px;
+  padding: 8px;
+  margin-top: 38px;
+  margin-bottom: -20px;
+  color: rgb(56,153,179);
+  background: rgba(56,153,179,0.15);
+  border: solid rgb(56,153,179) 2px;
+  opacity:.75;
+  -webkit-transition: color 500ms, background 500ms;
+  -moz-transition: color 500ms, background 500ms;
+  -o-transition: color 500ms, background 500ms;
+  -ms-transition: color 500ms, background 500ms;
+  transition: color 500ms, background 500ms;
+}
+
+section#schedule button:hover {
+  color: rgba(255,255,255,0.85);
+  background: rgba(56,153,179,1);
+}
+
 section#schedule .list {
   margin: 0 auto;
 }
@@ -205,7 +228,7 @@ section#schedule .header {
   margin-bottom: 8px;
 }
 
-section#schedule .day-separator{
+section#schedule .day-header{
   font-family: 'Montserrat', 'Helvetica Neue','Helvetica', 'Arial', sans-serif;
     font-size: 2.5em;
     font-weight: 700;
@@ -214,14 +237,8 @@ section#schedule .day-separator{
   margin-top: 12px;
 }
 
-section#schedule .list i{
-  background: rgb(56, 153, 179);
-  color:white;
-  margin-bottom: 12px;
-}
-
-section#schedule .list .item{
-  margin: 20px 0;
+section#schedule .column{
+  text-align: center;
 }
 
 section#schedule .schedule-title{
