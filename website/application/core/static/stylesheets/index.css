@@ -250,6 +250,9 @@ section#schedule .schedule-title{
   margin-bottom: 12px;
 }
 
+section#schedule .event{
+    margin-bottom: 24px;
+}
 
 /* SPEAKERS PANEL */
 section#speakers .speakers-title {
