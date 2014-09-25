@@ -205,6 +205,15 @@ section#schedule .header {
   margin-bottom: 8px;
 }
 
+section#schedule .day-separator{
+  font-family: 'Montserrat', 'Helvetica Neue','Helvetica', 'Arial', sans-serif;
+    font-size: 2.5em;
+    font-weight: 700;
+    color: rgb(56,153,179);
+    text-align: center;
+  margin-top: 12px;
+}
+
 section#schedule .list i{
   background: rgb(56, 153, 179);
   color:white;
