@@ -241,13 +241,24 @@ section#schedule .column{
   text-align: center;
 }
 
-section#schedule .schedule-title{
+section#schedule .schedule-title {
   font-family: 'Montserrat', 'Helvetica Neue','Helvetica', 'Arial', sans-serif;
     font-size: 4em;
     font-weight: 700;
     color: rgb(56,153,179);
     text-align: center;
   margin-bottom: 12px;
+}
+
+@media only screen and (max-width: 320px) {
+  section#schedule .schedule-title{
+    font-family: 'Montserrat', 'Helvetica Neue','Helvetica', 'Arial', sans-serif;
+      font-size: 3.3em;
+      font-weight: 700;
+      color: rgb(56,153,179);
+      text-align: center;
+    margin-bottom: 12px;
+  }
 }
 
 section#schedule .event{
