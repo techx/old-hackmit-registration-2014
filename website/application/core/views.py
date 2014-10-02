@@ -1,6 +1,6 @@
 from binascii import unhexlify
 
-from flask import current_app
+from flask import current_app, redirect
 
 from .. import app, render_full_template
 
@@ -24,3 +24,8 @@ if extra is not None:
             return render_full_template(template_name + '.html')
         except TypeError:
             pass
+
+@bp.route('/walkin')
+def walkin():
+    # Temporary redirect in case we need to change
+    return redirect('https://techx.wufoo.com/forms/hackmit-walkin-registration/', code=307)
