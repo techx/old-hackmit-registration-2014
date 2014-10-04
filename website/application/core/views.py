@@ -42,3 +42,7 @@ def mentor_matching():
 @bp.route('/massages')
 def massages():
     return redirect('https://techx.wufoo.com/forms/hackmit-massage-signup/', code=307)
+
+@bp.route('/prizes')
+def prizes():
+    return redirect('https://docs.google.com/spreadsheets/d/1HZQNmQRBsfeU8p7st5PXq4QOBvYn2Q6Wk2EuKAlEIoM/edit#gid=0', code=307)
