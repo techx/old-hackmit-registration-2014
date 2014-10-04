@@ -34,3 +34,11 @@ def walkin():
 def dayof():
     # Temporary redirect in case we switch off of gh-pages
     return redirect('http://dayof.hackmit.org/', code=307)
+
+@bp.route('/mentormatching')
+def mentor_matching():
+    return redirect('https://techx.wufoo.com/forms/hackmit-mentor-matching/', code=307)
+
+@bp.route('/massages')
+def massages():
+    return redirect('https://techx.wufoo.com/forms/hackmit-massage-signup/', code=307)
