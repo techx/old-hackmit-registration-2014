@@ -29,3 +29,8 @@ if extra is not None:
 def walkin():
     # Temporary redirect in case we need to change
     return redirect('https://techx.wufoo.com/forms/hackmit-walkin-registration/', code=307)
+
+@bp.route('/dayof')
+def dayof():
+    # Temporary redirect in case we switch off of gh-pages
+    return redirect('http://dayof.hackmit.org/', code=307)
