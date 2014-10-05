@@ -46,3 +46,11 @@ def massages():
 @bp.route('/prizes')
 def prizes():
     return redirect('https://docs.google.com/spreadsheets/d/1HZQNmQRBsfeU8p7st5PXq4QOBvYn2Q6Wk2EuKAlEIoM/edit#gid=0', code=307)
+
+@bp.route('/hackerfeedback')
+def hacker_feedback():
+    return redirect('https://techx.wufoo.com/forms/hackmit-2014-hacker-feedback/', code=307)
+
+@bp.route('/sponsorfeedback')
+def sponsor_feedback():
+    return redirect('https://techx.wufoo.com/forms/hackmit-2014-sponsormentor-feedback-survey/', code=307)
