@@ -1,5 +1,7 @@
-Welcome to the HackMIT Repo!
+hackmit-registration-old
 ==========
+This is the old HackMIT Registration System used for HackMIT 2014
+
 Ground rules
 -----------
 1. We're using git flow. Always develop on a feature branch (branch off of develop and name appropriately) and submit pull requests back to develop when you're ready to pull your code in.
